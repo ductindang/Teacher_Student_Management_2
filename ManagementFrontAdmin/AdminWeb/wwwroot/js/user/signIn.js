@@ -1,0 +1,72 @@
+﻿$(document).ready(function () {
+    $("#signin-form").on("submit", function (e) {
+        e.preventDefault(); // default submit blocking
+
+        checkSignIn();
+    });
+});
+
+function checkSignIn() {
+    var loading = $("#pageLoading");
+    loading.removeClass("d-none");
+
+    $.ajax({
+        // take url from form action
+        url: '/user/CheckSignIn',
+        type: 'POST',
+        // send form data
+        data: {
+            email: $("#email").val(),
+            password: $("#password").val()
+        },
+        success: function (response) {
+            loading.addClass("d-none");
+            // Fade overlay for 500ms
+            $('.overlay').fadeIn(500);
+
+            // Show success message with animation
+            $('#successNotification').text("Đăng nhập thành công, chờ một lúc!").css({
+                backgroundColor: '#5aff4d',
+                right: '-300px',
+                display: 'block'
+            }).animate({
+                // Slide into place from the right
+                right: '20px'
+            }, 500);
+
+            // After 2 seconds, slide out and hide the overlay, then redirect the page
+            setTimeout(function () {
+                $('#successNotification').animate({
+                    // Slide off screen
+                    right: '-300px'
+                }, 500, function () {
+                    $('#successNotification').hide();
+                    $('.overlay').fadeOut(500);
+                    window.location.href = '/dashboard/index';
+                });
+            }, 2000);
+        },
+        error: function (xhr, status, error) {
+            loading.addClass("d-none");
+            // Show dark overlay
+            $('.overlay').fadeIn(500);
+
+            $('#successNotification').text('Đăng nhập thất bại: ' + xhr.responseText).css({
+                backgroundColor: '#ff573e',
+                right: '-300px',
+                display: 'block'
+            }).animate({
+                right: '20px'
+            }, 500);
+
+            setTimeout(function () {
+                $('#successNotification').animate({
+                    right: '-300px'
+                }, 500, function () {
+                    $(this).hide();
+                    $('.overlay').fadeOut(500);
+                });
+            }, 2000);
+        }
+    });
+}

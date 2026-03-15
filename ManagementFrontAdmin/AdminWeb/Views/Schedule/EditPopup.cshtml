@@ -1,0 +1,209 @@
+﻿@using BLL.DTOs
+@using BLL.DTOs.Enum
+@model Schedule
+@section HeaderStyles {
+    <link rel="stylesheet" href="~/css/customs/assets/light/apps/blog-post.css" />
+    <link rel="stylesheet" href="~/css/customs/assets/light/apps/ecommerce-create.css" />
+
+    <link rel="stylesheet" href="~/plugins/table/datatable/datatables.css" />
+    <link rel="stylesheet" href="~/plugins/table/datatable/extensions/col-reorder/col-reorder.datatables.min.css" />
+    <link rel="stylesheet" href="~/plugins/table/datatable/extensions/fixed-columns/fixed-columns.datatables.min.css" />
+
+    <link rel="stylesheet" href="~/css/customs/plugins/light/table/datatable/dt-global_style.css" />
+    <link rel="stylesheet" href="~/css/customs/plugins/light/table/datatable/custom_dt_custom.css" />
+
+    <link rel="stylesheet" href="~/css/customs/assets/light/apps/blog-create.css" />
+
+    <link rel="stylesheet" href="~/css/customs/plugins/light/tomSelect/custom-tomSelect.css" />
+    <link rel="stylesheet" href="~/css/customs/plugins/dark/tomSelect/custom-tomSelect.css" />
+    <link rel="stylesheet" href="~/plugins/tomSelect/tom-select.default.min.css" />
+
+    <style>
+        #datatable thead th {
+            font-weight: bold;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        #datatable tbody td {
+            vertical-align: middle;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .widget-content-area {
+            padding: 20px !important;
+        }
+    </style>
+}
+
+<div class="modal fade" id="editScheduleModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <form asp-action="Edit" asp-controller="Schedule" method="post">
+                <input asp-for="Id" type="hidden" id="scheduleIdEdit" />
+                <input asp-for="ClassId" type="hidden" id="scheduleClassIdEdit" />
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Chỉnh sửa lịch học</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <!-- Day Of Week -->
+                        <div class="col-md-6 mb-3">
+                            <label>Thứ trong tuần *</label>
+                            <select asp-for="DayOfWeek" class="form-control" asp-items="Html.GetEnumSelectList<EDateOfWeek>()" required>
+                                <option value="">-- Chọn thứ --</option>
+                            </select>
+                            <span asp-validation-for="DayOfWeek" class="text-danger"></span>
+                        </div>
+
+                        <!-- Start Time -->
+                        <div class="col-md-6 mb-3">
+                            <label>Giờ bắt đầu *</label>
+                            <select name="StartTime" class="form-control" id="startTimeEdit">
+                                <option value="">-- Chọn giờ bắt đầu --</option>
+                                @for (var time = new TimeSpan(7, 0, 0); time <= new TimeSpan(19, 0, 0); time = time.Add(TimeSpan.FromMinutes(30)))
+                                {
+                                    <option value="@time">@time.ToString(@"hh\:mm")</option>
+                                }
+                            </select>
+                            <span class="text-danger" id="startTimeError"></span>
+                        </div>
+
+                        <!-- End Time -->
+                        <div class="col-md-6 mb-3">
+                            <label>Giờ kết thúc *</label>
+                            <select name="EndTime" class="form-control" id="endTimeEdit">
+                                <option value="">-- Chọn giờ kết thúc --</option>
+                                @for (var time = new TimeSpan(7, 0, 0); time <= new TimeSpan(19, 0, 0); time = time.Add(TimeSpan.FromMinutes(30)))
+                                {
+                                    <option value="@time">@time.ToString(@"hh\:mm")</option>
+                                }
+                            </select>
+                            <span class="text-danger" id="endTimeError"></span>
+                        </div>
+
+                        <!-- Room -->
+                        <div class="col-md-6 mb-3">
+                            <label>Phòng học *</label>
+                            <input asp-for="Room" type="text" class="form-control" placeholder="Nhập phòng học" required />
+                            <span asp-validation-for="Room" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Hoàn tất</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+        const startSelect = document.getElementById("startTimeEdit");
+        const endSelect = document.getElementById("endTimeEdit");
+        const form = document.querySelector("#editScheduleModal form");
+
+        const startError = document.getElementById("startTimeError");
+        const endError = document.getElementById("endTimeError");
+
+        function updateEndTimeOptions() {
+
+            const startValue = startSelect.value;
+
+            Array.from(endSelect.options).forEach(option => {
+                if (!option.value) return;
+
+                if (startValue && option.value <= startValue) {
+                    option.disabled = true;
+                    option.style.color = "red";
+                    option.style.backgroundColor = "#ffe5e5";
+                } else {
+                    option.disabled = false;
+                    option.style.color = "";
+                    option.style.backgroundColor = "";
+                }
+            });
+        }
+
+        function validateTime() {
+            clearErrors();
+            let isValid = true;
+
+            if (!startSelect.value) {
+                startError.textContent = "Vui lòng chọn giờ bắt đầu.";
+                startSelect.classList.add("is-invalid");
+                isValid = false;
+            }
+
+            if (!endSelect.value) {
+                endError.textContent = "Vui lòng chọn giờ kết thúc.";
+                endSelect.classList.add("is-invalid");
+                isValid = false;
+            }
+
+            if (startSelect.value && endSelect.value && endSelect.value <= startSelect.value) {
+                endError.textContent = "Giờ kết thúc phải lớn hơn giờ bắt đầu.";
+                endSelect.classList.add("is-invalid");
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function clearErrors() {
+            startError.textContent = "";
+            endError.textContent = "";
+            startSelect.classList.remove("is-invalid");
+            endSelect.classList.remove("is-invalid");
+        }
+
+        // Khi change
+        startSelect.addEventListener("change", function () {
+            updateEndTimeOptions();
+            endSelect.value = "";
+            clearErrors();
+        });
+
+        endSelect.addEventListener("change", clearErrors);
+
+        // Validate khi submit
+        form.addEventListener("submit", function (e) {
+            if (!validateTime()) {
+                e.preventDefault();
+            }
+        });
+
+        // 🔥 QUAN TRỌNG: Khi modal mở → check luôn
+        const editModal = document.getElementById("editScheduleModal");
+
+        editModal.addEventListener("shown.bs.modal", function () {
+            updateEndTimeOptions();
+            validateTime();
+        });
+
+    });
+</script>
+
+@section FooterFiles {
+    @* <script src="~/js/customs/assets/apps/blog-create.js"></script> *@
+
+    <script src="~/plugins/table/datatable/datatables.js"></script>
+    <script src="~/plugins/table/datatable/extensions/col-reorder/col-reorder.datatables.min.js"></script>
+    <script src="~/plugins/table/datatable/extensions/fixed-columns/fixed-columns.datatables.min.js"></script>
+
+    @* <script src="~/plugins/tomSelect/tom-select.base.js"></script>
+    <script src="~/plugins/tomSelect/custom-tom-select.js"></script> *@
+    @* <script src="~/js/profile/create.js"></script> *@
+}

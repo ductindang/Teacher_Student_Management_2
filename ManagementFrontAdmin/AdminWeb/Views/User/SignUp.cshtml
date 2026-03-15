@@ -1,0 +1,259 @@
+﻿@model BLL.DTOs.User
+
+@{
+    ViewData["Title"] = "SignUp";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/AdminWeb.styles.css" asp-append-version="true" />
+	<link href="~/plugins/notification/snackbar/snackbar.min.css" rel="stylesheet" />
+	<script src="/js/customs/layouts/modern-light-menu/loader.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
+	<link href="/css/customs/layouts/modern-light-menu/light/loader.css" rel="stylesheet" />
+	<link href="/css/customs/assets/light/scrollspyNav.css" rel="stylesheet" />
+
+	<link href="/css/customs/layouts/modern-light-menu/light/structure.css" rel="stylesheet" type="text/css" />
+	<link href="/css/customs/assets/light/components/modal.css" rel="stylesheet" type="text/css" />
+
+	<link href="/plugins/highlight/styles/monokai-sublime.css" rel="stylesheet" />
+	<link href="/plugins/waves/waves.min.css" rel="stylesheet" type="text/css" />
+
+	<link href="/css/customs/plugins/light/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" type="text/css" />
+
+	<link href="~/css/customs/assets/light/main.css" rel="stylesheet" type="text/css" />
+
+	<link href="/css/customs/layouts/modern-light-menu/light/plugin.css" rel="stylesheet" type="text/css" />
+
+	<link href="/css/customs/assets/light/dashboard/dash_1.css" rel="stylesheet" type="text/css" />
+	<link href="/css/customs/plugins/light/sweetalerts2/custom-sweetalert.css" rel="stylesheet" type="text/css" />
+
+	<link href="/css/customs/assets/light/authentication/auth-cover.css" rel="stylesheet" />
+
+	<!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+	<style>
+		.notification {
+			position: fixed;
+			top: 60px;
+			right: 20px;
+			font-size: 30px;
+			background-color: #5cb85c;
+			color: white;
+			padding: 10px;
+			border-radius: 4px;
+			display: none;
+			z-index: 1000;
+		}
+
+		.page-loading {
+			position: fixed;
+			inset: 0;
+			background: rgba(0, 0, 0, 0.35);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			z-index: 9999;
+		}
+
+		body {
+			margin: 0;
+			height: 100vh;
+			font-family: 'Nunito',sans-serif;
+			background: linear-gradient(135deg,#4f46e5,#9333ea);
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.signup-wrapper {
+			width: 100%;
+			max-width: 420px;
+			padding: 20px;
+		}
+
+		.signup-card {
+			background: white;
+			border-radius: 14px;
+			padding: 35px;
+			box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+		}
+
+		.signup-header {
+			text-align: center;
+			margin-bottom: 25px;
+		}
+
+			.signup-header h2 {
+				font-weight: 700;
+			}
+
+			.signup-header p {
+				color: #777;
+			}
+
+		.input-group-custom {
+			margin-bottom: 18px;
+		}
+
+			.input-group-custom label {
+				font-weight: 600;
+				margin-bottom: 5px;
+				display: block;
+			}
+
+			.input-group-custom input {
+				width: 100%;
+				height: 45px;
+				border-radius: 8px;
+				border: 1px solid #ddd;
+				padding: 10px;
+				transition: 0.3s;
+			}
+
+				.input-group-custom input:focus {
+					border-color: #6366f1;
+					box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+				}
+
+		.btn-register {
+			width: 100%;
+			height: 45px;
+			border: none;
+			border-radius: 8px;
+			font-weight: 600;
+			background: linear-gradient(135deg,#6366f1,#8b5cf6);
+			color: white;
+			margin-top: 10px;
+			transition: 0.3s;
+		}
+
+			.btn-register:hover {
+				opacity: 0.9;
+			}
+
+		.login-link {
+			text-align: center;
+			margin-top: 20px;
+		}
+
+			.login-link a {
+				color: #6366f1;
+				font-weight: 600;
+			}
+
+		.error-text {
+			font-size: 13px;
+			color: red;
+		}
+
+	</style>
+
+
+</head>
+
+<body class="form">
+
+	<!-- BEGIN LOADER -->
+	<div id="load_screen">
+		<div class="loader">
+			<div class="loader-content">
+				<div class="spinner-grow align-self-center"></div>
+			</div>
+		</div>
+	</div>
+	<!--  END LOADER -->
+
+	<div class="signup-wrapper">
+
+		<div class="signup-card">
+
+			<div class="signup-header">
+
+				<h2>Tạo tài khoản</h2>
+
+				<p>Nhập thông tin để tạo tài khoản</p>
+
+			</div>
+
+			<form asp-action="SignUp" id="signup-form" method="post">
+
+				<div class="input-group-custom">
+
+					<label>Username</label>
+
+					<input type="text" id="username" class="form-control" required>
+
+				</div>
+
+				<div class="input-group-custom">
+
+					<label>Email</label>
+
+					<input type="email" id="email" class="form-control" onblur="checkEmailExist()" required>
+
+					<span id="email-error" class="error-text"></span>
+
+				</div>
+
+				<div class="input-group-custom">
+
+					<label>Mật khẩu</label>
+
+					<input type="password" id="password" oninput="validatePassword()" class="form-control" required>
+
+					<span id="password-error" class="error-text"></span>
+
+				</div>
+
+				<div class="input-group-custom">
+
+					<label>Số điện thoại</label>
+
+					<input type="text" id="phone-number" oninput="validatePhoneNumber()" class="form-control" required>
+
+					<span id="phone-number-error" class="error-text"></span>
+
+				</div>
+
+				<div class="form-check mb-3">
+
+					<input class="form-check-input" type="checkbox" id="terms">
+
+					<label class="form-check-label">
+
+						Tôi đồng ý với <a href="#">chính sách</a>
+
+					</label>
+
+				</div>
+
+				<button type="submit" class="btn-register">
+
+					ĐĂNG KÝ
+
+				</button>
+
+			</form>
+
+			<div class="login-link">
+
+				Bạn đã có tài khoản ?
+
+				<a href="/user/login">Đăng nhập</a>
+
+			</div>
+
+		</div>
+
+	</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="/js/user/signup.js"></script>
+<script src="/js/user/formValidation.js"></script>
+
+</body>
+</html>

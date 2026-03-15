@@ -1,0 +1,573 @@
+﻿@using BLL.DTOs
+@using BLL.DTOs.Enum
+@using BLL.Request
+@using BLL.Response
+@using ClientWeb.Helper.Extensions
+@using Newtonsoft.Json
+
+@model IEnumerable<StudentAttendanceResponse>
+@{
+    ViewData["Title"] = "Lớp học";
+    Layout = "~/Views/Shared/_LayoutProject.cshtml";
+}
+
+
+@section HeaderStyles {
+    <link href="~/plugins/table/datatable/datatables.css" rel="stylesheet" />
+    <link href="~/plugins/table/datatable/extensions/col-reorder/col-reorder.datatables.min.css" rel="stylesheet" />
+    <link href="~/plugins/table/datatable/extensions/fixed-columns/fixed-columns.datatables.min.css" rel="stylesheet" />
+    <link href="~/css/customs/plugins/light/table/datatable/dt-global_style.css" rel="stylesheet" />
+    <link href="~/css/customs/plugins/light/table/datatable/custom_dt_custom.css" rel="stylesheet" />
+
+    <link href="/css/customs/assets/light/elements/custom-pagination.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="/css/customs/assets/light/apps/blog-post.css">
+
+
+    <link href="~/plugins/filepond/filepond.min.css" rel="stylesheet" />
+    <link href="~/plugins/filepond/FilePondPluginImagePreview.min.css" rel="stylesheet" />
+    <link href="~/plugins/tagify/tagify.css" rel="stylesheet" />
+    <link href="~/css/customs/plugins/light/editors/quill/quill.snow.css" rel="stylesheet" />
+    <link href="~/css/customs/plugins/light/tagify/custom-tagify.css" rel="stylesheet" />
+    <link href="~/css/customs/plugins/light/filepond/custom-filepond.css" rel="stylesheet" />
+
+    <link href="~/css/customs/assets/light/apps/blog-create.css" rel="stylesheet" />
+    <style>
+        .featured-image{
+            background-size: cover;
+            height: 650px;
+            border-radius:20px;
+            overflow:hidden;
+        }
+
+        .class-info-wrapper {
+            margin-top: 40px;
+        }
+
+        .class-section {
+            margin-bottom: 35px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border-left: 4px solid #4361ee;
+            padding-left: 10px;
+        }
+
+        .class-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+            gap: 20px;
+        }
+
+        .info-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .info-label {
+            display: block;
+            font-size: 13px;
+            color: #888;
+        }
+
+        .info-value {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .class-description {
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+            .class-description p {
+                margin-bottom: 10px;
+            }
+
+        .class-extra {
+            padding-left: 18px;
+        }
+
+            .class-extra li {
+                margin-bottom: 8px;
+                line-height: 1.6;
+            }
+
+        .empty-description {
+            color: #999;
+            font-style: italic;
+        }
+
+        .status-present {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-absent {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-late {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+    </style>
+}
+
+@{
+    var userJson = Context.Session.GetString("UserLogin");
+    var user = new User();
+
+    if (!string.IsNullOrEmpty(userJson))
+    {
+        user = JsonConvert.DeserializeObject<User>(userJson);
+    }
+
+
+    string backgroundImage;
+    var classDetails = ViewBag.ClassDetails;
+
+    if (classDetails.ClassImage != null)
+    {
+        var base64 = Convert.ToBase64String(classDetails.ClassImage);
+        backgroundImage = $"data:image/jpeg;base64,{base64}";
+    }
+    else
+    {
+        backgroundImage = Url.Content("~/images/lightbox-2.jpeg");
+    }
+
+    // var students = ViewBag.Students;
+    var teacherReviews = ViewBag.TeacherReviews;
+
+    // Đánh giá chung trong lớp học
+    var reviews = ViewBag.TeacherReviews as List<TeacherReview>;
+
+    double avgRating = 0;
+    int totalReviews = 0;
+
+    if (reviews != null && reviews.Any())
+    {
+        totalReviews = reviews.Count;
+        avgRating = reviews.Average(r => r.Rating);
+    }
+}
+
+<div class="layout-px-spacing">
+
+    <div class="middle-content container-xxl p-0">
+
+        <div class="row layout-top-spacing">
+
+            <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+
+
+                <div class="single-post-content">
+
+                    <div class="featured-image" style="background: url('@backgroundImage') no-repeat center; background-size: cover;">
+
+                        <div class="featured-image-overlay"></div>
+
+                        <div class="post-header">
+
+                            <div class="post-title">
+                                <h1 class="mb-0">@classDetails.Name</h1>
+                            </div>
+
+                            <div class="post-meta-info d-flex justify-content-between">
+
+                                <div class="media">
+                                    <img src="~/images/profile-12.jpeg" alt="profile">
+                                    <div class="media-body">
+                                        <h5>@classDetails.TeacherName</h5>
+                                        <div class="teacher-rating">
+                                            <span style="font-weight:600; color:#ffcece">@avgRating.ToString("0.0")</span>
+
+                                            <span style="color:#ffc107; font-size:18px;">
+                                                @{
+                                                    int fullStars = (int)Math.Floor(avgRating);
+                                                    bool halfStar = avgRating - fullStars >= 0.5;
+
+                                                    for (int i = 0; i < fullStars; i++)
+                                                    {
+                                                        <span>★</span>
+                                                    }
+
+                                                    if (halfStar)
+                                                    {
+                                                        <span>☆</span>
+                                                    }
+
+                                                    for (int i = fullStars + (halfStar ? 1 : 0); i < 5; i++)
+                                                    {
+                                                        <span style="color:#ddd;">★</span>
+                                                    }
+                                                }
+                                            </span>
+
+                                            <span style="color:#ffcece">(@totalReviews đánh giá)</span>
+                                        </div>
+                                        <p>Ngày dạy: @classDetails.StartDate.ToString("dd/MM/yyyy") - @classDetails.EndDate.ToString("dd/MM/yyyy")</p>
+                                    </div>
+                                </div>
+
+                                <div class="align-self-center">
+                                    <button class="btn btn-success btn-icon btn-share btn-rounded">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-share-2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                                    </button>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="post-content">
+
+                        <div class="class-info-wrapper">
+
+                            <!-- Thông tin tổng quan -->
+                            <div class="class-section">
+                                <h3 class="section-title">Thông tin lớp học</h3>
+
+                                <div class="class-info-grid">
+
+                                    <div class="info-item">
+                                        <span class="info-label">Tên lớp học</span>
+                                        <span class="info-value">@classDetails.Name</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Khóa học</span>
+                                        <span class="info-value">@classDetails.CourseName</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Giảng viên</span>
+                                        <span class="info-value">@classDetails.TeacherName</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Số lượng học viên tối đa</span>
+                                        <span class="info-value">@classDetails.MaxStudents học viên</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Ngày bắt đầu</span>
+                                        <span class="info-value">@classDetails.StartDate.ToString("dd/MM/yyyy")</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Ngày kết thúc</span>
+                                        <span class="info-value">@classDetails.EndDate.ToString("dd/MM/yyyy")</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Học phí</span>
+                                        <span class="info-value">@classDetails.CoursePrice.ToString("N0") VNĐ</span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <!-- Mô tả lớp học -->
+                            <div class="class-section">
+
+                                <h3 class="section-title">Mô tả lớp học</h3>
+
+                                <div class="class-description">
+
+                                    @if (!string.IsNullOrEmpty(classDetails.Description))
+                                    {
+                                        @Html.Raw(classDetails.Description)
+                                    }
+                                    else
+                                    {
+                                        <div class="empty-description">
+                                            Lớp học này chưa có mô tả chi tiết.
+                                        </div>
+                                    }
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Thông tin bổ sung -->
+                            <div class="class-section">
+
+                                <h3 class="section-title">Thông tin bổ sung</h3>
+
+                                <ul class="class-extra">
+
+                                    <li>
+                                        Khóa học <b>@classDetails.CourseName</b> được thiết kế nhằm cung cấp kiến thức và kỹ năng cần thiết cho học viên.
+                                    </li>
+
+                                    <li>
+                                        Lớp học do giảng viên <b>@classDetails.TeacherName</b> trực tiếp giảng dạy.
+                                    </li>
+
+                                    <li>
+                                        Lớp học kéo dài từ
+                                        <b>@classDetails.StartDate.ToString("dd/MM/yyyy")</b>
+                                        đến
+                                        <b>@classDetails.EndDate.ToString("dd/MM/yyyy")</b>.
+                                    </li>
+
+                                    <li>
+                                        Số lượng học viên tối đa cho lớp học này là
+                                        <b>@classDetails.MaxStudents</b> học viên.
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    @if(user != null)
+                    {
+                        if(user.RoleId == (int)ERoleName.Teacher)
+                        {
+                            <div class="post-info">
+
+                                <hr>
+
+                                <!-- DATATABLE -->
+                                <div class="row layout-top-spacing">
+                                    <div class="col-xl-12 col-lg-12 col-sm-12">
+                                        <div class="statbox widget box box-shadow">
+                                            <div class="widget-header">
+                                                <div class="row">
+                                                    <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                                        <h4>Học viên trong lớp</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="widget-content widget-content-area">
+                                                <div style="margin-bottom:15px">
+                                                    <button class="btn btn-primary" id="saveAttendanceBtn" style="margin: 20px 10px 3px 20px;">
+                                                        Lưu điểm danh
+                                                    </button>
+                                                </div>
+                                                <table id="student-table" class="table style-3 dt-table-hover" style="width: 100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th style="width: 5%">STT</th>
+                                                            <th>Mã học viên</th>
+                                                            <th>Tên học viên</th>
+                                                            <th>Giới tính</th>
+                                                            <th>Điểm danh</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @{
+                                                            int sttStd = 1;
+                                                        }
+                                                        @if (Model != null)
+                                                        {
+
+                                                            @foreach (var student in Model)
+                                                            {
+                                                                <tr>
+                                                                    <td>@sttStd</td>
+                                                                    <td>@student.StudentId</td>
+                                                                    <td>@student.FullName</td>
+                                                                    <td>@(((EGender)student.Gender).GetDisplayName())</td>
+                                                                    <td>
+                                                                        <select class="attendance-status form-select"
+                                                                                data-student-id="@student.StudentId">
+
+                                                                            <option value="0" selected="@(student.Status == null)">Chọn</option>
+
+                                                                            <option value="1" class="status-present"
+                                                                                    selected="@(student.Status == EAttendanceStatus.Present)">
+                                                                                Có mặt
+                                                                            </option>
+
+                                                                            <option value="2" class="status-absent"
+                                                                                    selected="@(student.Status == EAttendanceStatus.Absent)">
+                                                                                Vắng
+                                                                            </option>
+
+                                                                            <option value="3" class="status-late"
+                                                                                    selected="@(student.Status == EAttendanceStatus.Late)">
+                                                                                Đi trễ
+                                                                            </option>
+
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+
+                                                                sttStd++;
+                                                            }
+                                                        }
+
+                                                    </tbody>
+                                                    
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- /DATATABLE -->
+
+                                <hr>
+
+                            </div>
+                        }
+                    }
+                    
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <script src="~/plugins/table/datatable/datatables.js"></script>
+    <script src="~/plugins/table/datatable/extensions/col-reorder/col-reorder.datatables.min.js"></script>
+    <script src="~/plugins/table/datatable/extensions/fixed-columns/fixed-columns.datatables.min.js"></script>
+
+    <script src="~/plugins/editors/quill/quill.js"></script>
+    <script src="~/plugins/filepond/filepond.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginFileValidateType.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginImageExifOrientation.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginImagePreview.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginImageCrop.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginImageResize.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginImageTransform.min.js"></script>
+    <script src="~/plugins/filepond/filepondPluginFileValidateSize.min.js"></script>
+
+
+    <script src="~/plugins/tagify/tagify.min.js"></script>
+    <script src="~/js/customs/assets/apps/blog-create.js"></script>
+
+
+    <script src="/js/teacher/teacher.js"></script>
+
+    <script>
+        $('#student-table').DataTable(
+            {
+                "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>"
+                    + "<'table-responsive'tr>"
+                    + "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+                "oLanguage": {
+                    "oPaginate": {
+                        "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
+                        "sNext": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>'
+                    },
+                    "sEmptyTable": "Chưa có dữ liệu",
+                    "sInfo": "Đang hiển thị trang _PAGE_ của  _PAGES_",
+                    "sSearch": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>',
+                    "sSearchPlaceholder": "Tìm kiếm...",
+                    "sZeroRecords": "Không có bản ghi nào trùng khớp",
+                    "sLengthMenu": "Kết quả :  _MENU_",
+                },
+                "stripeClasses": [],
+                "lengthMenu": [7, 10, 20, 50],
+                "pageLength": 10,
+                "ordering": false
+            });
+    </script>
+
+    <script>
+        $('#teacher-table').DataTable(
+            {
+                "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>"
+                    + "<'table-responsive'tr>"
+                    + "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+                "oLanguage": {
+                    "oPaginate": {
+                        "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
+                        "sNext": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>'
+                    },
+                    "sEmptyTable": "Chưa có dữ liệu",
+                    "sInfo": "Đang hiển thị trang _PAGE_ của  _PAGES_",
+                    "sSearch": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>',
+                    "sSearchPlaceholder": "Tìm kiếm...",
+                    "sZeroRecords": "Không có bản ghi nào trùng khớp",
+                    "sLengthMenu": "Kết quả :  _MENU_",
+                },
+                "stripeClasses": [],
+                "lengthMenu": [7, 10, 20, 50],
+                "pageLength": 10,
+                "ordering": false
+            });
+    </script>
+
+    <script>
+        const btn = document.getElementById("saveAttendanceBtn");
+
+        if (btn) {
+            btn.addEventListener("click", async function () {
+
+                const scheduleId = @ViewBag.ScheduleId;
+                const classId = @classDetails.Id;
+
+                const students = [];
+                let hasEmpty = false;
+
+                document.querySelectorAll(".attendance-status").forEach(el => {
+
+                    const studentId = parseInt(el.dataset.studentId);
+                    const status = parseInt(el.value);
+
+                    if (status === 0) {
+                        hasEmpty = true;
+                    }
+
+                    students.push({
+                        studentId: studentId,
+                        status: status
+                    });
+
+                });
+
+                // Nếu có học viên chưa chọn
+                if (hasEmpty) {
+                    alert("Vui lòng chọn trạng thái điểm danh cho tất cả học viên.");
+                    return;
+                }
+
+                const request = {
+                    scheduleId: scheduleId,
+                    classId: classId,
+                    students: students
+                };
+
+                const response = await fetch("/Attendance/TakeAttendance", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(request)
+                });
+
+                if (response.ok) {
+                    alert("Điểm danh thành công");
+                } else {
+                    alert("Có lỗi xảy ra");
+                }
+
+            });
+        }
+    </script>
+}
+

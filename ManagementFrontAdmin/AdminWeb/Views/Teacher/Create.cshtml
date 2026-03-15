@@ -1,0 +1,128 @@
+﻿@using BLL.DTOs
+@{
+    ViewData["Title"] = "Thêm mới giáo viên";
+    Layout = "~/Views/Shared/_LayoutProject.cshtml";
+}
+
+@model Teacher
+@section HeaderStyles {
+    <link rel="stylesheet" href="~/css/customs/assets/light/apps/blog-post.css" />
+    <link rel="stylesheet" href="~/css/customs/assets/light/apps/ecommerce-create.css" />
+
+    <link rel="stylesheet" href="~/plugins/table/datatable/datatables.css" />
+    <link rel="stylesheet" href="~/plugins/table/datatable/extensions/col-reorder/col-reorder.datatables.min.css" />
+    <link rel="stylesheet" href="~/plugins/table/datatable/extensions/fixed-columns/fixed-columns.datatables.min.css" />
+
+    <link rel="stylesheet" href="~/css/customs/plugins/light/table/datatable/dt-global_style.css" />
+    <link rel="stylesheet" href="~/css/customs/plugins/light/table/datatable/custom_dt_custom.css" />
+
+    <link rel="stylesheet" href="~/css/customs/assets/light/apps/blog-create.css" />
+
+    <link rel="stylesheet" href="~/css/customs/plugins/light/tomSelect/custom-tomSelect.css" />
+    <link rel="stylesheet" href="~/css/customs/plugins/dark/tomSelect/custom-tomSelect.css" />
+    <link rel="stylesheet" href="~/plugins/tomSelect/tom-select.default.min.css" />
+
+    <style>
+        #datatable thead th {
+            font-weight: bold;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        #datatable tbody td {
+            vertical-align: middle;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .widget-content-area {
+            padding: 20px !important;
+        }
+    </style>
+}
+
+<div class="middle-content container-xxl p-0">
+
+    <div class="d-flex justify-content-between mt-4 mb-2">
+        <h5 class="text-bold">
+            THÊM MỚI GIÁO VIÊN
+        </h5>
+
+        <a asp-action="Index" asp-controller="Teacher" class="btn">
+            Trở lại
+        </a>
+    </div>
+
+    <div class="row mb-4 layout-spacing">
+        <div class="col-xxl-8 col-xl-12">
+            <div class="statbox widget box box-shadow">
+                <div class="widget-header">
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                            <h4>Thông tin giáo viên</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <form asp-action="Create" method="post" id="general-settings">
+                    <div class="widget-content widget-content-area blog-create-section">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-4">
+                                    <label for="fullname">Tên giáo viên <strong class="text-danger">*</strong></label>
+                                    <input asp-for="FullName"
+                                           type="text"
+                                           id="fullname"
+                                           class="form-control @(ViewData.ModelState["FullName"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                                           placeholder="Tên giáo viên">
+                                    <span asp-validation-for="FullName" class="invalid-feedback" role="alert"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-4">
+                                    <label for="experience">Số năm kinh nghiệm <strong class="text-danger">*</strong></label>
+                                    <input asp-for="Experience"
+                                           type="number"
+                                           min="1"
+                                           id="experience"
+                                           class="form-control @(ViewData.ModelState["Experience"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                                           placeholder="Nhập số năm kinh nghiệm">
+                                    <span asp-validation-for="Experience" class="invalid-feedback"></span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="form-group mb-4">
+                                <label for="degree">Bằng cấp <strong class="text-danger">*</strong></label>
+                                <input asp-for="Degree"
+                                       type="text"
+                                       id="degree"
+                                       class="form-control @(ViewData.ModelState["Degree"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                                       placeholder="Bằng cấp của giáo viên">
+                                <span asp-validation-for="Degree" class="invalid-feedback" role="alert"></span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Hoàn tất</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section FooterFiles {
+    @* <script src="~/js/customs/assets/apps/blog-create.js"></script> *@
+
+    <script src="~/plugins/table/datatable/datatables.js"></script>
+    <script src="~/plugins/table/datatable/extensions/col-reorder/col-reorder.datatables.min.js"></script>
+    <script src="~/plugins/table/datatable/extensions/fixed-columns/fixed-columns.datatables.min.js"></script>
+
+    @* <script src="~/plugins/tomSelect/tom-select.base.js"></script>
+    <script src="~/plugins/tomSelect/custom-tom-select.js"></script> *@
+    @* <script src="~/js/profile/create.js"></script> *@
+}

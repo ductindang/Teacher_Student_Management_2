@@ -1,0 +1,72 @@
+﻿@using BLL.Response
+@model IEnumerable<ClassDetailResponse>
+<style>
+    .empty-box {
+        width: 100%;
+        padding: 40px 20px;
+        border: 2px dashed #d3d3d3;
+        border-radius: 10px;
+        text-align: center;
+        color: #6c757d;
+        font-size: 16px;
+        background: #fafafa;
+        margin-top: 20px;
+    }
+
+        .empty-box span {
+            display: block;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+</style>
+
+<div class="row">
+    @if (Model != null && Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-6 mb-4">
+                <a asp-controller="Class" asp-action="Details" asp-route-id="@item.Id" class="card style-2 mb-md-0 mb-4">
+
+                    @if (item.ClassImage != null)
+                    {
+                        var base64 = Convert.ToBase64String(item.ClassImage);
+                        var imgSrc = $"data:image/jpeg;base64,{base64}";
+
+                        <div class="mb-3">
+                            <img src="@imgSrc" class="card-img-top fixed-img" />
+                        </div>
+                    }
+                    else
+                    {
+                        <img src="images/Student-Management-Logo.jpg" class="card-img-top fixed-img" />
+                    }
+
+                    <div class="card-body px-0 pb-0">
+                        <h5 class="card-title mb-3">@item.Name</h5>
+
+                        <div class="media mt-4 mb-0 pt-1">
+                            <img src="images/Student-Management-Logo.jpg" class="card-media-image me-3">
+
+                            <div class="media-body">
+                                <h4 class="media-heading mb-1">@item.CourseName</h4>
+                                <p class="media-text">
+                                    @item.StartDate.ToString("dd/MM/yyyy") - @item.EndDate.ToString("dd/MM/yyyy")
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="col-12">
+            <div class="empty-box">
+                Hiện tại không có lớp học nào
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,308 @@
+﻿@using BLL.DTOs
+@using BLL.DTOs.Enum
+@{
+    ViewData["Title"] = "Chỉnh sửa đăng ký";
+    Layout = "~/Views/Shared/_LayoutProject.cshtml";
+}
+
+@model Enrollment
+
+<div>
+    <!-- BREADCRUMB -->
+    <div class="page-meta">
+        <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Đăng ký</a></li>
+                <li class="breadcrumb-item" aria-current="page"><a href="@Url.Action("Index", "Enrollment")">Quản lý lớp học</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Chỉnh sửa đăng ký</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- /BREADCRUMB -->
+
+    <div class="layout-top-spacing col-12">
+        <a href="@Url.Action("Index", "Enrollment")" class="btn">
+            Trở lại
+        </a>
+    </div>
+
+    <div class="row layout-top-spacing">
+        <div id="user-management" class="col-xxl-8 col-xl-12 layout-spacing">
+            <div class="statbox widget box box-shadow">
+                <div class="widget-header">
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                            <h4>Chỉnh sửa</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <div class="col-12">
+                        <form asp-action="Edit" method="POST" id="general-settings">
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label>Học viên <strong class="text-danger">*</strong></label>
+                                        <select asp-for="StudentId" id="studentId"
+                                                class="form-control @(ViewData.ModelState["StudentId"]?.Errors.Count > 0 ? "is-invalid" : "")">
+                                            <option value="">-- Chọn học viên --</option>
+                                            @foreach (var item in ViewBag.Students)
+                                            {
+                                                <option value="@item.Id">@item.FullName</option>
+                                            }
+                                        </select>
+                                        <span asp-validation-for="StudentId" class="invalid-feedback"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label>Lớp học <strong class="text-danger">*</strong></label>
+                                        <select asp-for="ClassId" id="classId"
+                                                class="form-control @(ViewData.ModelState["ClassId"]?.Errors.Count > 0 ? "is-invalid" : "")">
+                                            <option value="">-- Chọn lớp học --</option>
+                                            @foreach (var item in ViewBag.Classes)
+                                            {
+                                                <option value="@item.Id" data-course-id="@item.CourseId">@item.Name</option>
+                                            }
+                                        </select>
+                                        <span asp-validation-for="ClassId" class="invalid-feedback"></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="enrllDate">Ngày đăng ký <strong class="text-danger">*</strong></label>
+                                        <input asp-for="EnrollDate"
+                                               type="date"
+                                               id="enrollDate"
+                                               class="form-control @(ViewData.ModelState["EnrollDate"]?.Errors.Count > 0 ? "is-invalid" : "")">
+                                        <span asp-validation-for="EnrollDate" class="invalid-feedback"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label asp-for="Status">
+                                            Trạng thái <strong class="text-danger">*</strong>
+                                        </label>
+
+                                        <select asp-for="Status"
+                                                class="form-control"
+                                                asp-items="Html.GetEnumSelectList<EEnrollStatus>()">
+                                        </select>
+
+                                        <span asp-validation-for="Status" class="invalid-feedback"></span>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <button type="submit" class="btn btn-primary">Hoàn tất</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="statbox widget box box-shadow" style="margin-top: 20px">
+                <div class="widget-header">
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                            <h4>Thông tin học viên:</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget-content widget-content-area blog-create-section" id="student-info">
+                    <div class="row">
+                        <div class="col-xxl-12">
+                            <div class="d-flex">
+                                <p class="text-start me-1">Mã học viên :</p>
+                                <b>
+                                    <p class="text-dark text-bold"></p>
+                                </b>
+                            </div>
+                            <div class="d-flex">
+                                <p class="text-start me-1">Họ và tên :</p>
+                                <b>
+                                    <p class="text-dark text-bold"></p>
+                                </b>
+                            </div>
+                            <div class="d-flex">
+                                <p class="text-start me-1">Ngày sinh :</p>
+                                <b>
+                                    <p class="text-dark text-bold"></p>
+                                </b>
+                            </div>
+                            <div class="d-flex">
+                                <p class="text-start me-1">Giới tính :</p>
+                                <b>
+                                    <p class="text-dark text-bold"></p>
+                                </b>
+                            </div>
+                            <div class="d-flex">
+                                <p class="text-start me-1">Địa chỉ :</p>
+                                <b>
+                                    <p class="text-dark text-bold"></p>
+                                </b>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xxl-4 col-xl-12 col-lg-12 col-md-12 col-sm-12 mt-xxl-0 mt-4">
+            <div class="statbox widget box box-shadow mt-3">
+                <div class="widget-header">
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                            <h4>Thông tin lớp học:</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget-content widget-content-area blog-create-section" id="class-info">
+                    <div class="row">
+                        <div class="col-xxl-12">
+                            <div class="d-flex">
+                                <p class="text-start me-1">Mã lớp học :</p>
+                                <b>
+                                    <p class="text-dark text-bold"></p>
+                                </b>
+                            </div>
+                            <div class="d-flex">
+                                <p class="text-start me-1">Giáo viên :</p>
+                                <b>
+                                    <p class="text-dark text-bold"></p>
+                                </b>
+                            </div>
+                            <div class="d-flex">
+                                <p class="text-start me-1">Tên lớp học :</p>
+                                <b>
+                                    <p class="text-dark text-bold"></p>
+                                </b>
+                            </div>
+                            <div class="d-flex">
+                                <p class="text-start me-1">Ngày bắt đầu :</p>
+                                <b>
+                                    <p class="text-dark text-bold"></p>
+                                </b>
+                            </div>
+                            <div class="d-flex">
+                                <p class="text-start me-1">Ngày kết thúc :</p>
+                                <b>
+                                    <p class="text-dark text-bold"></p>
+                                </b>
+                            </div>
+                            <div class="d-flex">
+                                <p class="text-start me-1">Số lượng học viên :</p>
+                                <b>
+                                    <p class="text-dark text-bold"></p>
+                                </b>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="statbox widget box box-shadow mt-3">
+                <div class="widget-header">
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                            <h4>Thông tin khóa học:</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget-content widget-content-area blog-create-section" id="course-info">
+                    <div class="row">
+                        <div class="col-xxl-12">
+                            <div class="d-flex">
+                                <p class="text-start me-1">Mã khóa học :</p>
+                                <b>
+                                    <p class="text-dark text-bold"></p>
+                                </b>
+                            </div>
+                            <div class="d-flex">
+                                <p class="text-start me-1">Tên :</p>
+                                <b>
+                                    <p class="text-dark text-bold"></p>
+                                </b>
+                            </div>
+                            <div class="d-flex">
+                                <p class="text-start me-1">Học phí :</p>
+                                <b>
+                                    <p class="text-dark text-bold"></p>
+                                </b>
+                            </div>
+                            <div class="d-flex">
+                                <p class="text-start me-1">Trạng thái :</p>
+                                <b>
+                                    <p class="text-dark text-bold"></p>
+                                </b>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section FooterFiles {
+    <script src="/js/course/course.js"></script>
+    <script src="/js/class/class.js"></script>
+    <script src="/js/student/student.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function(){
+            const studentSelect = document.getElementById("studentId");
+
+            function handleInfo(){
+
+                const studentId = studentSelect.value;
+
+                if(studentId){
+                    loadStudentInfo(studentId);
+                }
+            }
+
+            studentSelect.addEventListener("change", handleInfo);
+
+            if(studentSelect.value){
+                handleInfo();
+            }
+        });
+        document.addEventListener("DOMContentLoaded", function(){
+            const classSelect = document.getElementById("classId");
+
+            function handleInfo(){
+                const selectedOption = classSelect.options[classSelect.selectedIndex];
+
+                const classId = classSelect.value;
+                const courseId = selectedOption.getAttribute("data-course-id");
+
+                if(classId){
+                    loadClassInfo(classId);
+                }
+
+                if(courseId){
+                    loadCourseInfo(courseId);
+                }
+            }
+
+            classSelect.addEventListener("change", handleInfo);
+
+            if(classSelect.value){
+                handleInfo();
+            }
+        });
+    </script>
+
+}

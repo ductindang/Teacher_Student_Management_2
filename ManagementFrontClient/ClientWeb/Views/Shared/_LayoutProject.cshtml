@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+	<title>@ViewData["Title"]</title>
+	<link rel="icon" type="image/x-icon" href="~/images/favicon.ico" />
+	<link href="/css/customs/layouts/horizontal-light-menu/light/loader.css" rel="stylesheet" type="text/css" />
+	<link href="/css/customs/layouts/horizontal-light-menu/dark/loader.css" rel="stylesheet" type="text/css" />
+	<link href="~/css/customs/layouts/modern-light-menu/light/loader.css" rel="stylesheet" />
+
+	<script src="~/js/customs/layouts/modern-light-menu/loader.js"></script>
+
+	<!-- BEGIN GLOBAL MANDATORY STYLES -->
+	@* <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet"> *@
+	<link href="~/plugins/notification/snackbar/snackbar.min.css" rel="stylesheet" />
+	<link href="~/css/customs/bootstrap/bootstrap.min.css" rel="stylesheet" />
+	<link href="~/css/customs/assets/light/main.css" rel="stylesheet" />
+	<link href="~/css/customs/assets/light/scrollspyNav.css" rel="stylesheet" />
+	<link href="~/css/customs/layouts/modern-light-menu/light/structure.css" rel="stylesheet" />
+	<link href="~/css/customs/layouts/modern-light-menu/light/plugins.css" rel="stylesheet" />
+	<link href="~/css/customs/assets/light/components/modal.css" rel="stylesheet" />
+	<link href="~/plugins/highlight/styles/monokai-sublime.css" rel="stylesheet" />
+	<link href="~/plugins/waves/waves.min.css" rel="stylesheet" />
+
+	<link href="~/css/customs/plugins/light/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" />
+	<!-- END GLOBAL MANDATORY STYLES -->
+	<!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+	<link href="~/plugins/apex/apexcharts.css" rel="stylesheet" type="text/css">
+	<link href="~/css/customs/assets/light/dashboard/dash_1.css" rel="stylesheet" />
+	<link href="~/css/customs/plugins/light/sweetalerts2/custom-sweetalert.css" rel="stylesheet" type="text/css" />
+	<!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+	<!-- Razor Section for Child Page Styles -->
+	@RenderSection("HeaderStyles", required: false)
+	@RenderSection("Styles", required: false)
+</head>
+<body class="layout-boxed">
+	<!-- LOADER -->
+	<div id="load_screen">
+		<div class="loader">
+			<div class="loader-content">
+				<div class="spinner-grow align-self-center"></div>
+			</div>
+		</div>
+	</div>
+
+	<!-- NAVBAR -->
+	@Html.Partial("~/Views/Shared/layouts/navbar/_StyleVerticalMenu.cshtml")
+
+	<div class="main-container" id="container">
+
+		<div class="overlay"></div>
+		<div class="search-overlay"></div>
+
+		<!-- SIDEBAR -->
+		@Html.Partial("~/Views/Shared/layouts/menu/_VerticalMenu.cshtml")
+
+
+		<!-- CONTENT -->
+		<div id="content" class="main-content">
+			<div class="layout-px-spacing">
+				@RenderBody()
+			</div>
+
+			<!-- FOOTER -->
+			@* @await Html.PartialAsync("_Footer") *@
+		</div>
+	</div>
+	<!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
+	@* <script src="~/js/customs/assets/scrollspynav.js"></script> *@
+	<script src="~/plugins/global/vendors.min.js"></script>
+	<script src="~/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+	<script src="~/plugins/mousetrap/mousetrap.min.js"></script>
+	<script src="~/plugins/waves/waves.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="~/js/customs/bootstrap/bootstrap.bundle.min.js"></script>
+	<!-- Tải Bootstrap JS sau jQuery -->
+	@* <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script> *@
+
+	<!-- Tải các thư viện khác nếu cần -->
+	<script src="https://cdn.jsdelivr.net/npm/snackbarjs/dist/snackbar.min.js"></script>
+
+	<script src="~/plugins/notification/snackbar/snackbar.min.js"></script>
+	<script src="~/plugins/font-icons/feather/feather.min.js"></script>
+	@* <script src="~/js/customs/layouts/modern-light-menu/app.js"></script> *@
+
+	<!-- END GLOBAL MANDATORY SCRIPTS -->
+	<!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
+	@* <script src="~/plugins/apex/apexcharts.min.js"></script> *@
+	@* <script src="~/js/customs/assets/dashboard/dash_1.js"></script> *@
+	<script src="~/plugins/sweetalerts2/sweetalerts2.min.js"></script>
+	<script src="~/js/customs/assets/custom.js"></script>
+	<script src="~/js/customs/assets/elements/custom-search.js"></script>
+	<script src="~/js/customs/layouts/horizontal-light-menu/app.js"></script>
+	<script src="~/js/customs/app.js"></script>
+	<!-- END PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
+	<!-- Razor Section for Child Page Scripts -->
+	@RenderSection("FooterFiles", required: false)
+	@RenderSection("Scripts", required: false)
+
+	<!-- NOTIFICATIONS -->
+	@if (TempData["success"] != null)
+	{
+		<script>
+			Snackbar.show({
+				text: '@TempData["success"]',
+				textColor: '#ddf5f0',
+				backgroundColor: '#00ab55',
+				actionText: 'Bỏ qua',
+				actionTextColor: '#3b3f5c'
+			});
+		</script>
+	}
+	@if (TempData["error"] != null)
+	{
+		<script>
+			Snackbar.show({
+				text: '@TempData["error"]',
+				textColor: '#fbeced',
+				backgroundColor: '#e7515a',
+				actionText: 'Bỏ qua',
+				actionTextColor: '#3b3f5c'
+			});
+		</script>
+	}
+	<!-- END NOTIFICATIONS -->
+</body>
+</html>

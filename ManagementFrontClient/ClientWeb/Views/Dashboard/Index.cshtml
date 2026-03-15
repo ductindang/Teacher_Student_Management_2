@@ -1,0 +1,372 @@
+﻿@using BLL.DTOs
+@using BLL.Response
+@using ClientWeb.Helper.Extensions
+@using Newtonsoft.Json
+@{
+    ViewData["Title"] = "Trang chủ";
+    Layout = "~/Views/Shared/_LayoutProject.cshtml";
+}
+
+@model List<ClassDetailResponse>
+
+@section HeaderStyles {
+    <link rel="stylesheet" href="~/css/customs/assets/light/apps/blog-post.css" />
+    <link rel="stylesheet" href="~/css/customs/assets/dark/apps/blog-post.css" />
+    <link rel="stylesheet" href="~/css/customs/assets/dark/apps/ecommerce-create.css" />
+    <link rel="stylesheet" href="~/css/customs/assets/light/apps/ecommerce-create.css" />
+
+    <link rel="stylesheet" href="~/plugins/flatpickr/flatpickr.css" />
+    <link rel="stylesheet" href="~/css/customs/plugins/dark/flatpickr/custom-flatpickr.css" />
+    <link rel="stylesheet" href="~/css/customs/plugins/light/flatpickr/custom-flatpickr.css" />
+
+    <link rel="stylesheet" href="~/css/customs/plugins/light/tomSelect/custom-tomSelect.css" />
+    <link rel="stylesheet" href="~/css/customs/plugins/dark/tomSelect/custom-tomSelect.css" />
+    <link rel="stylesheet" href="~/plugins/tomSelect/tom-select.default.min.css" />
+
+    <style>
+        .ts-control {
+            padding: 12px;
+        }
+
+        .dashboard {
+            max-width: 1440px;
+            margin: auto;
+            padding: 20px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* Greeting */
+        .greetingDiv {
+            color: black;
+        }
+        .teacherGreeting {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .makeFlexGreeting {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+        }
+
+        .motivation-quote {
+            margin-top: 15px;
+            font-style: italic;
+            color: black;
+            font-size: 16px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Alert Card */
+        .lowAvailabilityAlertCard {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: #fff4f4;
+            border: 1px solid #ffcaca;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 25px;
+        }
+
+        .alertContent {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+
+        .slotInfo h3 {
+            margin-top: 6px;
+            font-size: 16px;
+            color: #d32f2f;
+        }
+
+        .primaryBtn {
+            background: #6651e4;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+            .primaryBtn:hover {
+                background: #4d3ac7;
+            }
+
+        /* Empty state */
+        .emptyState {
+            margin-top: 40px;
+            padding: 40px;
+            text-align: center;
+            background: #f5f4fa;
+            border-radius: 12px;
+        }
+
+
+        .classList {
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .classCard {
+            background: white;
+            border-radius: 14px;
+            padding: 24px 32px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+            border-left: 6px solid #6651e4;
+            transition: 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+            .classCard:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 30px rgba(102,81,228,0.12);
+            }
+
+        /* Left side */
+
+        .classTitle {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2b2b2b;
+            margin-bottom: 4px;
+        }
+
+        .classCourse {
+            font-size: 15px;
+            font-weight: 600;
+            color: #6651e4;
+            margin-bottom: 10px;
+        }
+
+        .classInfo {
+            font-size: 14px;
+            color: #555;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        /* Right side */
+
+        .classTime {
+            background: #f4f2ff;
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #3f3d56;
+            line-height: 1.7;
+            min-width: 220px;
+        }
+
+        /* Spacing tweak */
+
+        .classLeft {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .classRight {
+            text-align: right;
+        }
+
+        /* Responsive */
+
+        @@media (max-width: 768px) {
+            .classCard
+
+        {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .classRight {
+            text-align: left;
+            width: 100%;
+        }
+
+        .classTime {
+            width: 100%;
+        }
+
+        }
+    </style>
+}
+
+@{
+    var userJson = Context.Session.GetString("UserLogin");
+    var user = new User();
+
+    if (!string.IsNullOrEmpty(userJson))
+    {
+        user = JsonConvert.DeserializeObject<User>(userJson);
+    }
+
+    var teacherJson = Context.Session.GetString("Teacher");
+    Teacher teacher = null;
+    if (!string.IsNullOrEmpty(teacherJson))
+    {
+        teacher = JsonConvert.DeserializeObject<Teacher>(teacherJson);
+    }
+
+    var studentJson = Context.Session.GetString("Student");
+    Student student = null;
+    if (!string.IsNullOrEmpty(studentJson))
+    {
+        student = JsonConvert.DeserializeObject<Student>(studentJson);
+    }
+}
+
+<div class="dashboard">
+
+    <!-- Greeting -->
+    <div class="greetingDiv">
+        <div class="teacherGreeting">
+            Xin chào 
+            @if(teacher != null)
+            {
+                <span>giáo viên @teacher.FullName 👋</span>
+            }
+            else if (student != null)
+            {
+                <span>học viên @student.FullName 👋</span>
+            }
+            else
+            {
+                <span>@(user?.Username ?? "") 👋</span>
+            }
+        </div>
+
+        <div class="makeFlexGreeting">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
+                <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z" />
+                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0" />
+            </svg>
+            <div class="timeDetails">
+                Thời gian được hiển thị tại Asia/Saigon +07 (+07:00)
+            </div>
+        </div>
+        @if (teacher != null)
+        {
+            <div class="motivation-quote">
+                <p class="quote-text">Để trờ thành một người giáo viên đúng nghĩa, bạn phải luôn là một người học trò.</p>
+                <p class="quote-author">- Søren Kierkegaard</p>
+            </div>
+        }
+        else
+        {
+            <div class="motivation-quote">
+                <p class="quote-text">Để trờ thành một người học viên đúng nghĩa, bạn phải luôn là một người biết lắng nghe lời dạy bảo.</p>
+                <p class="quote-author">- Søren Kierkegaard</p>
+            </div>
+        }
+
+    </div>
+
+    <!-- Alert Card -->
+    <div class="lowAvailabilityAlertCard">
+        <div class="iconContainer">
+            <img class="lowAvailabilityAlertCard_issueIcon__w0dDy" style="width: 60px" src="https://ik.imagekit.io/brightchamps/dashboard//slots.gif" alt="icon">
+        </div>
+
+        <div class="alertContent">
+            <div class="slotInfo">
+                Lịch trình ngày hôm nay
+                <h3>Hãy quản lý lịch của chính bạn</h3>
+            </div>
+
+            <div class="alertAction">
+                <div class="alertText">
+                    Xem chi tiết thời khóa biểu trong tuần
+                </div>
+                <div style="margin-top: 20px">
+                    <a class="primaryBtn" asp-controller="Schedule" asp-action="Index">Lịch trong tuần</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="classList">
+            @foreach (var item in Model)
+            {
+                <a asp-controller="Attendance" asp-action="Index" asp-route-scheduleId="@item.ScheduleId" asp-route-classId="@item.Id" class="dropdown-toggle">
+                    <div class="classCard">
+
+                        <div class="classLeft">
+                            <div class="classTitle">@item.Name</div>
+                            <div class="classCourse">@item.CourseName</div>
+
+                            <div class="classInfo">
+                                📅 @item.StartDate.ToString("dd/MM/yyyy")
+                                -
+                                @item.EndDate.ToString("dd/MM/yyyy")
+                            </div>
+
+                            <div class="classInfo">
+                                👥 Tối đa: @item.MaxStudents học viên
+                            </div>
+                        </div>
+
+                        @if(item.StartTime != null && item.EndTime != null)
+                        {
+                            <div class="classRight">
+                                <div class="classTime">
+                                    🗓 @item.DayOfWeek.GetDisplayName() <br />
+                                    ⏰ @item.StartTime?.ToString(@"hh\:mm")
+                                    -
+                                    @item.EndTime?.ToString(@"hh\:mm") <br />
+                                    📍 @item.Room
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </a>
+                
+            }
+        </div>
+    }
+    else
+    {
+        <!-- Empty State -->
+        <div class="emptyState">
+            <h3>Không có lớp học</h3>
+            <p>Bạn không có bất kỳ lớp học nào ngày hôm nay.</p>
+        </div>
+    }
+    
+
+</div>
+
+@section Scripts {
+
+    <script src="/plugins/tomSelect/tom-select.base.js"></script>
+    <script src="/plugins/flatpickr/flatpickr.js"></script>
+    @* <script src="/plugins/tomSelect/custom-tom-select.js"></script> *@
+
+    <script>
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const formattedDate = tomorrow.toISOString().split('T')[0];
+        // document.getElementById("departureDate").setAttribute("min", formattedDate);
+
+        // new TomSelect("#departureLocation");
+        // new TomSelect("#destinationLocation");
+    </script>
+}

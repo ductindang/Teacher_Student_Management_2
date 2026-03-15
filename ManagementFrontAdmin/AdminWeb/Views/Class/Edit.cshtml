@@ -1,0 +1,633 @@
+﻿@using BLL.DTOs
+@using AdminWeb.Helper.Extensions
+@using BLL.DTOs.Enum
+@using BLL.Response
+
+@{
+    ViewData["Title"] = "Chỉnh sửa lớp học";
+    Layout = "~/Views/Shared/_LayoutProject.cshtml";
+}
+
+@section Styles {
+    <link href="~/plugins/table/datatable/datatables.css" rel="stylesheet" />
+    <link href="~/plugins/table/datatable/extensions/col-reorder/col-reorder.datatables.min.css" rel="stylesheet" />
+    <link href="~/plugins/table/datatable/extensions/fixed-columns/fixed-columns.datatables.min.css" rel="stylesheet" />
+    <link href="~/css/customs/plugins/light/table/datatable/dt-global_style.css" rel="stylesheet" />
+    <link href="~/css/customs/plugins/light/table/datatable/custom_dt_custom.css" rel="stylesheet" />
+
+    <link href="~/plugins/filepond/filepond.min.css" rel="stylesheet" />
+    <link href="~/plugins/filepond/FilePondPluginImagePreview.min.css" rel="stylesheet" />
+    <link href="~/plugins/tagify/tagify.css" rel="stylesheet" />
+    <link href="~/css/customs/plugins/light/editors/quill/quill.snow.css" rel="stylesheet" />
+    <link href="~/css/customs/plugins/light/tagify/custom-tagify.css" rel="stylesheet" />
+    <link href="~/css/customs/plugins/light/filepond/custom-filepond.css" rel="stylesheet" />
+    
+    <link href="~/css/customs/assets/light/apps/blog-create.css" rel="stylesheet" />
+
+}
+
+<style>
+    .edit-area {
+        padding: 25px;
+    }
+
+    #emptyBox{
+        width: 200px;
+        height: 200px;
+        border: 1px dashed #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+    }
+</style>
+
+
+@model ClassEditViewModel
+
+<div>
+    <!-- BREADCRUMB -->
+    <div class="page-meta">
+        <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Lớp học</a></li>
+                <li class="breadcrumb-item" aria-current="page"><a href="@Url.Action("Index", "Class")">Quản lý lớp học</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Chỉnh sửa lớp học</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- /BREADCRUMB -->
+
+    <div class="layout-top-spacing col-12">
+        <a href="@Url.Action("Index", "Class")" class="btn">
+            Trở lại
+        </a>
+    </div>
+
+    <div class="row layout-top-spacing">
+        <div id="user-management" class="col-lg-12 layout-spacing">
+            <div class="statbox widget box box-shadow">
+                <div class="widget-header">
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                            <h4>Chỉnh sửa</h4>
+                        </div>
+                    </div>
+                </div>
+                <form asp-action="EditClassImage"
+                              method="POST"
+                              enctype="multipart/form-data"
+                              id="general-settings">
+                    <input type="hidden" asp-for="Class.Id" />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-4" style="padding: inherit">
+                                <label style="margin-left: 45px; font-size: 18px;">Ảnh lớp học</label>
+
+                                @if (Model.Class.ClassImage != null)
+                                {
+                                    var base64 = Convert.ToBase64String(Model.Class.ClassImage);
+                                    var imgSrc = $"data:image/jpeg;base64,{base64}";
+
+                                    <div class="mb-3">
+                                        <img id="previewImage" src="@imgSrc" style="width:200px;height:200px;object-fit:cover;border-radius:8px;border:1px solid #ddd;" />
+                                    </div>
+
+
+                                }
+                                else
+                                {
+                                    <img id="previewImage" src="" style="width:200px;height:200px;object-fit:cover;border-radius:8px;border:1px solid #ddd;display:none;" />
+                                    <div id="emptyBox">Chưa có ảnh</div>
+                                }
+                                <label class="btn btn-warning" style="margin-top: 20px; margin-left:30px">
+                                    Thay đổi ảnh
+                                    <input type="file"
+                                            id="imageInput"
+                                            name="file"
+                                            accept="image/*"
+                                            hidden />
+                                    <input type="hidden" name="classId" value="@Model.Class.Id" />
+                                </label>
+                                <div id="imageActionButtons" style="display:none; margin-top:15px; padding-left: 17px">
+                                    <button type="submit"
+                                            formaction="@Url.Action("EditClassImage", "Class")"
+                                            formmethod="post"
+                                            class="btn btn-success">
+                                        Lưu ảnh
+                                    </button>
+
+                                    <button type="button"
+                                            id="cancelImageBtn"
+                                            class="btn btn-secondary">
+                                        Huỷ
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+
+                <div class="widget-content widget-content-area edit-area">
+                    <div class="col-12">
+                        <form asp-action="Edit"
+                              method="POST"
+                              id="editForm">
+                            <input type="hidden" asp-for="Class.Id" />
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="name">Tên lớp học <strong class="text-danger">*</strong></label>
+                                        <input asp-for="Class.Name"
+                                               type="text"
+                                               id="name"
+                                               class="form-control @(ViewData.ModelState["Name"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                                               placeholder="Tên lớp học">
+                                        <span asp-validation-for="Class.Name" class="invalid-feedback" role="alert"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label>Khóa học <strong class="text-danger">*</strong></label>
+                                        <select asp-for="Class.CourseId"
+                                                class="form-control @(ViewData.ModelState["CourseId"]?.Errors.Count > 0 ? "is-invalid" : "")">
+                                            <option value="">-- Chọn khóa học --</option>
+                                            @foreach (var item in ViewBag.Courses)
+                                            {
+                                                <option value="@item.Id">@item.Name</option>
+                                            }
+                                        </select>
+                                        <span asp-validation-for="Class.CourseId" class="invalid-feedback"></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label>Giáo viên <strong class="text-danger">*</strong></label>
+                                        <select asp-for="Class.TeacherId"
+                                                class="form-control @(ViewData.ModelState["TeacherId"]?.Errors.Count > 0 ? "is-invalid" : "")">
+                                            <option value="">-- Chọn giáo viên --</option>
+                                            @foreach (var item in ViewBag.Teachers)
+                                            {
+                                                <option value="@item.Id">@item.FullName</option>
+                                            }
+                                        </select>
+                                        <span asp-validation-for="Class.TeacherId" class="invalid-feedback"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="maxStudents">Số học viên tối đa <strong class="text-danger">*</strong></label>
+                                        <input asp-for="Class.MaxStudents"
+                                               type="number"
+                                               min="1"
+                                               id="maxStudents"
+                                               class="form-control @(ViewData.ModelState["MaxStudents"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                                               placeholder="Nhập số học viên tối đa">
+                                        <span asp-validation-for="Class.MaxStudents" class="invalid-feedback"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="startDate">Ngày bắt đầu <strong class="text-danger">*</strong></label>
+                                        <input asp-for="Class.StartDate"
+                                               type="date"
+                                               id="startDate"
+                                               class="form-control @(ViewData.ModelState["StartDate"]?.Errors.Count > 0 ? "is-invalid" : "")">
+                                        <span asp-validation-for="Class.StartDate" class="invalid-feedback"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="endDate">Ngày kết thúc <strong class="text-danger">*</strong></label>
+                                        <input asp-for="Class.EndDate"
+                                               type="date"
+                                               id="endDate"
+                                               class="form-control @(ViewData.ModelState["EndDate"]?.Errors.Count > 0 ? "is-invalid" : "")">
+                                        <span asp-validation-for="Class.EndDate" class="invalid-feedback"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="row mb-4">
+                                    <div class="col-sm-12">
+                                        <label>Mô tả chi tiết lớp học</label>
+                                        <div id="blog-description"></div>
+                                        <input type="hidden" id="descriptionInput" asp-for="Class.Description" name="Class.Description">
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <button id="edit-class-button" type="submit" class="btn btn-primary">Hoàn tất</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div>
+    <!-- BREADCRUMB -->
+    <div class="page-meta">
+        <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Dịch vụ</a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    Quản lý lịch học
+                </li>
+            </ol>
+        </nav>
+    </div>
+    <!-- /BREADCRUMB -->
+    <!-- DATATABLE -->
+    <div class="row layout-top-spacing">
+        <div class="col-xl-12 col-lg-12 col-sm-12">
+            <div class="statbox widget box box-shadow">
+                <div class="widget-header">
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                            <h4>Quản lý lịch học</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <div class="layout-top-spacing ps-3 pe-3 col-12 mb-3">
+                        <a class="btn btn-primary create" data-classid="@Model.Class.Id">Thêm mới</a>
+                    </div>
+                    <table id="schedule-table" class="table style-3 dt-table-hover" style="width: 100%">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%">STT</th>
+                                <th>Ngày học</th>
+                                <th>Thời gian bắt đầu</th>
+                                <th>Thời gian kết thúc</th>
+                                <th>Phòng học</th>
+                                <th class="no-content" style="width: 5%">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int stt = 1;
+                            }
+                            @if (Model.Schedules != null)
+                            {
+
+                                @foreach (var schedule in Model.Schedules)
+                                {
+                                    <tr>
+                                        <td>@stt</td>
+                                        <td>@schedule.DayOfWeek.GetDisplayName()</td>
+                                        <td>@schedule.StartTime</td>
+                                        <td>@schedule.EndTime</td>
+                                        <td>@schedule.Room</td>
+
+                                        <td class="table-controls d-flex justify-content-center align-items-center pt-2">
+                                            <li>
+                                                <a href="#"
+                                                   class="bs-tooltip editSchedule"
+                                                   data-id="@schedule.Id"
+                                                   data-classid="@schedule.ClassId"
+                                                   data-day="@((int)schedule.DayOfWeek)"
+                                                   data-start="@schedule.StartTime.ToString(@"hh\:mm")"
+                                                   data-end="@schedule.EndTime.ToString(@"hh\:mm")"
+                                                   data-room="@schedule.Room"
+                                                   data-bs-toggle="tooltip"
+                                                   data-bs-placement="top">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                         stroke-width="2" stroke-linecap="round"
+                                                         stroke-linejoin="round"
+                                                         class="feather feather-edit-2 p-1 br-6 mb-1">
+                                                        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                                                        </path>
+                                                    </svg>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" data-schedule-id="@schedule.Id"
+                                                   class="bs-tooltip delete" data-bs-toggle="tooltip"
+                                                   data-bs-placement="top">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                         stroke-width="2" stroke-linecap="round"
+                                                         stroke-linejoin="round"
+                                                         class="feather feather-trash p-1 br-6 mb-1">
+                                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                                    </svg>
+                                                </a>
+                                            </li>
+                                        </td>
+                                    </tr>
+
+                                    stt++;
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- /DATATABLE -->
+</div>
+
+<div>
+    <!-- DATATABLE -->
+    <div class="row layout-top-spacing">
+        <div class="col-xl-12 col-lg-12 col-sm-12">
+            <div class="statbox widget box box-shadow">
+                <div class="widget-header">
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                            <h4>Quản lý học viên</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <table id="student-table" class="table style-3 dt-table-hover" style="width: 100%">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%">STT</th>
+                                <th>Mã học viên</th>
+                                <th>Tên học viên</th>
+                                <th>Giới tính</th>
+                                <th>Ngày đăng ký</th>
+                                <th>Trạng thái đăng ký</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int sttStd = 1;
+                            }
+                            @if (Model.Students != null)
+                            {
+
+                                @foreach (var student in Model.Students)
+                                {
+                                    <tr>
+                                        <td>@sttStd</td>
+                                        <td>@student.StudentId</td>
+                                        <td>@student.Fullname</td>
+                                        <td>@student.Gender.GetDisplayName()</td>
+                                        <td>@student.EnrollDate.ToString("dd/MM/yyyy | hh:mm:ss tt")</td>
+                                        <td>@student.EnrollStatus.GetDisplayName()</td>
+                                    </tr>
+
+                                    sttStd++;
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- /DATATABLE -->
+</div>
+
+
+@section Scripts {
+    <script src="~/plugins/table/datatable/datatables.js"></script>
+    <script src="~/plugins/table/datatable/extensions/col-reorder/col-reorder.datatables.min.js"></script>
+    <script src="~/plugins/table/datatable/extensions/fixed-columns/fixed-columns.datatables.min.js"></script>
+
+    <script src="~/plugins/editors/quill/quill.js"></script>
+    <script src="~/plugins/filepond/filepond.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginFileValidateType.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginImageExifOrientation.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginImagePreview.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginImageCrop.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginImageResize.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginImageTransform.min.js"></script>
+    <script src="~/plugins/filepond/filepondPluginFileValidateSize.min.js"></script>
+
+
+    <script src="~/plugins/tagify/tagify.min.js"></script>
+    <script src="~/js/customs/assets/apps/blog-create.js"></script>
+
+    <script>
+
+        // load description khi edit
+        var description = `@Html.Raw(Model.Class.Description ?? "")`;
+
+        if (description) {
+            quill.root.innerHTML = description;
+        }
+
+        // khi submit form
+        document.addEventListener("DOMContentLoaded", function () {
+            $('#edit-class-button').on('click', function (e) {
+                var html = quill.root.innerHTML;
+                document.getElementById("descriptionInput").value = html;
+            });
+        });
+
+    </script>
+
+    <script>
+        $('#student-table').DataTable(
+            {
+                "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>"
+                    + "<'table-responsive'tr>"
+                    + "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+                "oLanguage": {
+                    "oPaginate": {
+                        "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
+                        "sNext": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>'
+                    },
+                    "sEmptyTable": "Chưa có dữ liệu",
+                    "sInfo": "Đang hiển thị trang _PAGE_ của  _PAGES_",
+                    "sSearch": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>',
+                    "sSearchPlaceholder": "Tìm kiếm...",
+                    "sZeroRecords": "Không có bản ghi nào trùng khớp",
+                    "sLengthMenu": "Kết quả :  _MENU_",
+                },
+                "stripeClasses": [],
+                "lengthMenu": [7, 10, 20, 50],
+                "pageLength": 10,
+                "ordering": false
+            });
+    </script>
+
+    <script>
+        $('#schedule-table').DataTable(
+            {
+                "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>"
+                    + "<'table-responsive'tr>"
+                    + "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+                "oLanguage": {
+                    "oPaginate": {
+                        "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
+                        "sNext": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>'
+                    },
+                    "sEmptyTable": "Chưa có dữ liệu",
+                    "sInfo": "Đang hiển thị trang _PAGE_ của  _PAGES_",
+                    "sSearch": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>',
+                    "sSearchPlaceholder": "Tìm kiếm...",
+                    "sZeroRecords": "Không có bản ghi nào trùng khớp",
+                    "sLengthMenu": "Kết quả :  _MENU_",
+                },
+                "stripeClasses": [],
+                "lengthMenu": [7, 10, 20, 50],
+                "pageLength": 10,
+                "ordering": false
+            });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            let scheduleIdToDelete;
+
+            $('.delete').on('click', function (e) {
+                e.preventDefault();
+                scheduleIdToDelete = $(this).data('schedule-id');
+                $('#deleteModal').modal('show');
+            });
+
+
+            $('#confirmDelete').on('click', function () {
+                $.ajax({
+                    url: `/Schedule/Delete`,
+                    type: 'POST',
+                    data: {
+                        id: scheduleIdToDelete
+                    },
+                    success: function (response) {
+                        Snackbar.show({
+                            text: 'Xóa lớp học thành công',
+                            textColor: '#ddf5f0',
+                            backgroundColor: '#00ab55',
+                            actionText: 'Bỏ qua',
+                            actionTextColor: '#3b3f5c'
+                        });
+
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000);
+                    },
+                    error: function (xhr, status, error) {
+                        Snackbar.show({
+                            text: 'Xóa lớp học thất bại',
+                            textColor: '#fbeced',
+                            backgroundColor: '#e7515a',
+                            actionText: 'Bỏ qua',
+                            actionTextColor: '#3b3f5c'
+                        });
+                    }
+                });
+
+                $('#deleteModal').modal('hide');
+            });
+
+            $('.create').on('click', function (e) {
+                e.preventDefault();
+
+                var classId = $(this).data('classid');
+                console.log("class id: " + classId);
+
+                $('#scheduleClassId').val(classId);
+
+                $('#createScheduleModal').modal('show');
+            });
+
+        });
+
+        $(document).ready(function () {
+
+            const imageInput = document.getElementById("imageInput");
+            const preview = document.getElementById("previewImage");
+            const emptyBox = document.getElementById("emptyBox");
+            const actionButtons = document.getElementById("imageActionButtons");
+            const cancelBtn = document.getElementById("cancelImageBtn");
+
+            if (!imageInput) return;
+
+            const originalImageSrc = preview ? preview.getAttribute("src") : "";
+
+            imageInput.addEventListener("change", function (event) {
+
+                const file = event.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.style.display = "block";
+
+                    if (emptyBox) emptyBox.style.display = "none";
+
+                    actionButtons.style.display = "block";
+                };
+
+                reader.readAsDataURL(file);
+            });
+
+            if (cancelBtn) {
+                cancelBtn.addEventListener("click", function () {
+
+                    preview.src = originalImageSrc;
+
+                    if (!originalImageSrc) {
+                        preview.style.display = "none";
+                        if (emptyBox) emptyBox.style.display = "flex";
+                    }
+                    console.log("cancel click: " + originalImageSrc);
+
+                    imageInput.value = "";
+                    actionButtons.style.display = "none";
+                });
+            }
+
+        });
+    </script>
+
+
+    <script>
+        $(document).on('click', '.editSchedule', function (e) {
+            console.log("EDIT CLICKED");
+        });
+        $(document).on('click', '.editSchedule', function (e) {
+            e.preventDefault();
+
+            var scheduleId = $(this).data('id');
+            var classId = $(this).data('classid');
+            var day = $(this).data('day');
+            var start = $(this).data('start') + ":00";
+            var end = $(this).data('end') + ":00";
+            var room = $(this).data('room');
+
+            console.log("start raw:", "[" + start + "]");
+            console.log("length:", start.length);
+
+            $('#scheduleIdEdit').val(scheduleId);
+            $('#scheduleClassIdEdit').val(classId);
+
+            $('select[name="DayOfWeek"]').val(day);
+            $('#startTimeEdit').val(start);
+            $('#endTimeEdit').val(end);
+            $('input[name="Room"]').val(room);
+
+            $('#editScheduleModal').modal('show');
+        });
+    </script>
+}

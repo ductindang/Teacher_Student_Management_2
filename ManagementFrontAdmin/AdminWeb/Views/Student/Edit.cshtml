@@ -1,0 +1,363 @@
+﻿@using AdminWeb.Helper.Extensions
+@using BLL.DTOs
+@using BLL.DTOs.Enum
+@{
+    ViewData["Title"] = "Chỉnh sửa học viên";
+    Layout = "~/Views/Shared/_LayoutProject.cshtml";
+}
+
+@model Student
+
+@{
+    var studentAccount = ViewBag.StudentAccount;
+}
+
+<style>
+    .edit-area {
+        padding: 25px;
+    }
+
+    .edit-account {
+        padding: 25px;
+    }
+
+    .form-control[readonly]:not(.flatpickr-input) {
+        color: #64cf64;
+    }
+
+</style>
+
+<div>
+    <!-- BREADCRUMB -->
+    <div class="page-meta">
+        <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Người dùng</a></li>
+                <li class="breadcrumb-item" aria-current="page"><a href="@Url.Action("Index", "Student")">Quản lý học viên</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Chỉnh sửa học viên</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- /BREADCRUMB -->
+
+    <div class="layout-top-spacing col-12">
+        <a href="@Url.Action("Index", "Student")" class="btn">
+            Trở lại
+        </a>
+    </div>
+
+    <div class="row layout-top-spacing">
+        <div id="user-management" class="col-lg-12 layout-spacing">
+            <div class="statbox widget box box-shadow">
+                <div class="widget-header">
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                            <h4>Chỉnh sửa</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <div class="col-12">
+                        <form asp-action="Edit" method="POST" id="general-settings">
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="fullname">Tên học viên <strong class="text-danger">*</strong></label>
+                                        <input asp-for="FullName"
+                                               type="text"
+                                               id="fullname"
+                                               class="form-control @(ViewData.ModelState["FullName"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                                               placeholder="Tên học viên">
+                                        <span asp-validation-for="FullName" class="invalid-feedback" role="alert"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="birthDate">Ngày sinh <strong class="text-danger">*</strong></label>
+                                        <input asp-for="DateOfBirth"
+                                               type="date"
+                                               id="birthDate"
+                                               class="form-control @(ViewData.ModelState["DateOfBirth"]?.Errors.Count > 0 ? "is-invalid" : "")">
+                                        <span asp-validation-for="DateOfBirth" class="invalid-feedback"></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="form-group mb-4">
+                                    <label asp-for="Gender">
+                                        Giới tính <strong class="text-danger">*</strong>
+                                    </label>
+
+                                    <select asp-for="Gender"
+                                            class="form-control"
+                                            asp-items="Html.GetEnumSelectList<EGender>()">
+                                    </select>
+
+                                    <span asp-validation-for="Gender" class="invalid-feedback"></span>
+                                </div>
+                            </div>
+                            <div class="form-group mb-4">
+                                <label for="address">Địa chỉ <strong class="text-danger">*</strong></label>
+                                <input asp-for="Address"
+                                       type="text"
+                                       id="address"
+                                       class="form-control @(ViewData.ModelState["Address"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                                       placeholder="Địa chỉ học viên">
+                                <span asp-validation-for="Address" class="invalid-feedback" role="alert"></span>
+                            </div>
+
+
+                            <button type="submit" class="btn btn-primary">Hoàn tất</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+@if (studentAccount != null)
+{
+    <div>
+        <div class="row layout-top-spacing">
+            <div id="user-management" class="col-lg-12 layout-spacing">
+                <div class="statbox widget box box-shadow">
+                    <div class="widget-header">
+                        <div class="row">
+                            <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                <h4>Chỉnh sửa tài khoản</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="widget-content widget-content-area edit-account">
+                        <div class="col-12">
+                            <form id="edit-user-form">
+                                <input type="hidden" name="Id" value="@studentAccount.Id" />
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-4">
+                                            <label for="Username">Username <strong class="text-danger">*</strong></label>
+                                            <input type="text" id="Username" name="Username" value="@studentAccount.Username" class="form-control" readonly />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-4">
+                                            <label for="PasswordHash">Mật khẩu <strong class="text-danger">*</strong></label>
+                                            <input type="text" id="Password" name="PasswordHash" placeholder="Nhập mật khẩu mới (nếu có)" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-4">
+                                            <label for="email">Email <strong class="text-danger">*</strong></label>
+                                            <input type="text" id="Email" name="Email" value="@studentAccount.Email" class="form-control" readonly />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-4">
+                                            <label for="createdAt">Ngày tạo <strong class="text-danger">*</strong></label>
+                                            <input type="text" id="createdAt" name="CreatedAt" value="@studentAccount.CreatedAt.ToString("dd/MM/yyyy HH:mm")" class="form-control" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-4">
+                                            <label for="phone">Số điện thoại <strong class="text-danger">*</strong></label>
+                                            <input type="text" id="Phone" name="Phone" value="@studentAccount.Phone" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-4">
+                                            <label for="status">Trạng thái <strong class="text-danger">*</strong></label>
+                                            <select name="Status"
+                                                    class="form-control"
+                                                    asp-items="Html.GetEnumSelectList<EAccountStatus>()">
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <input type="hidden" name="RoleId" value="@studentAccount.RoleId" />
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-4">
+                                            <label>Quyền truy cập <strong class="text-danger">*</strong></label>
+                                            <input type="text" 
+                                                class="form-control"
+                                                value="@(((ERoleName)studentAccount.RoleId).GetDisplayName())"
+                                                readonly />
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <button type="button" id="btnUpdateAccount" class="btn btn-primary">Hoàn tất</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+else
+{
+    <div id="no-account-section">
+        <div class="row layout-top-spacing">
+            <div id="user-management" class="col-lg-12 layout-spacing">
+                <div class="statbox widget box box-shadow">
+                    <div class="widget-header">
+                        <div class="row">
+                            <div class="layout-top-spacing ps-3 pe-3 col-12 mb-3">
+                                <span>
+                                    Người dùng này chưa có tài khoản đăng nhập, hãy tạo ngay.
+                                </span>
+                                <br /><br />
+                                <button id="btnShowCreateAccount" class="btn btn-primary">
+                                    Thêm mới tài khoản
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" id="StudentId" value="@Model.Id" />
+
+    <div id="create-account-section" style="display:none">
+        <div class="row layout-top-spacing">
+            <div id="user-management" class="col-lg-12 layout-spacing">
+                <div class="statbox widget box box-shadow">
+                    <div class="widget-header">
+                        <div class="row">
+                            <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                <h4>Tạo tài khoản</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="widget-content widget-content-area edit-account">
+                        <div class="col-12">
+                            <form id="create-user-form">
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-4">
+                                            <label for="Username">Username <strong class="text-danger">*</strong></label>
+                                            <input type="text" id="Username" name="Username" placeholder="Nhập username" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-4">
+                                            <label for="PasswordHash">Mật khẩu <strong class="text-danger">*</strong></label>
+                                            <input type="text" id="password" name="PasswordHash" placeholder="Nhập mật khẩu" oninput="validatePassword()" class="form-control" />
+                                            <span id="password-error" class="text-danger mb-5"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-4">
+                                            <label for="email">Email <strong class="text-danger">*</strong></label>
+                                            <input type="text" id="email" name="Email" class="form-control" placeholder="Nhập email" onblur="checkEmailExist()" />
+                                            <span id="email-error" class="text-danger mb-5"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-4">
+                                            <label for="createdAt">Ngày tạo <strong class="text-danger">*</strong></label>
+                                            <input type="text" id="createdAt" name="CreatedAt" value="@DateTime.UtcNow" class="form-control" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-4">
+                                            <label for="phone">Số điện thoại <strong class="text-danger">*</strong></label>
+                                            <input type="text" id="phone-number" name="Phone" placeholder="Nhập số điện thoại" oninput="validatePhoneNumber()" class="form-control" />
+                                            <span id="phone-number-error" class="text-danger mb-5"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-4">
+                                            <label for="status">Trạng thái <strong class="text-danger">*</strong></label>
+                                            <select name="Status"
+                                                    class="form-control"
+                                                    asp-items="Html.GetEnumSelectList<EAccountStatus>()">
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <input type="hidden" name="RoleId" value="@( (int)ERoleName.Student )" />
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-4">
+                                            <label for="role">Quyền truy cập <strong class="text-danger">*</strong></label>
+                                            <input type="text" class="form-control" value="@ERoleName.Student.GetDisplayName()" readonly />
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex gap-2 mt-3">
+                                    <button type="button"
+                                            id="btnCreateAccount"
+                                            class="btn btn-primary">
+                                        Hoàn tất
+                                    </button>
+
+                                    <button type="button"
+                                            id="btnCancelCreateAccount"
+                                            class="btn btn-outline-secondary">
+                                        Hủy
+                                    </button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+@section Scripts {
+    <script src="/js/user/formValidation.js"></script>
+    <script src="/js/user/signup.js"></script>
+    <script src="/js/student/student.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            @if (studentAccount != null)
+            {
+                    <text>
+                        $('select[name="Status"]').val('@((int)studentAccount.Status)');
+                    </text>
+            }
+        });
+
+    </script>
+}

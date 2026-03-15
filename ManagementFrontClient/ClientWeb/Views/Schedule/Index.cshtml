@@ -1,0 +1,135 @@
+﻿@using BLL.Response
+@model List<ClassDetailResponse>
+
+@{
+    var weekStart = (DateTime)ViewBag.WeekStart;
+}
+
+<style>
+    .layout-px-spacing{
+        width: 100%;
+        margin-top: 30px;
+    }
+    .week-nav {
+        margin: 20px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+        background-color: beige;
+    }
+
+        .week-nav a {
+            text-decoration: none;
+            color: #6651e4;
+        }
+
+    .schedule-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+    }
+
+        .schedule-table th,
+        .schedule-table td {
+            border: 1px solid #eaeaea;
+            text-align: center;
+            height: 45px;
+            vertical-align: top;
+        }
+
+        .schedule-table th {
+            background: #6651e4;
+            color: white;
+            font-weight: 600;
+        }
+
+    .time-col {
+        background: #fafafa;
+        font-weight: 600;
+        width: 80px;
+    }
+
+    .class-block {
+        background: #6651e4;
+        color: white;
+        border-radius: 6px;
+        padding: 4px;
+        font-size: 12px;
+    }
+</style>
+<div class="schedule">
+    <div class="week-nav">
+        <a href="?weekStart=@weekStart.AddDays(-7).ToString("yyyy-MM-dd")">⬅ Tuần trước</a>
+
+        <strong>
+            @weekStart.ToString("dd/MM/yyyy")
+            -
+            @weekStart.AddDays(6).ToString("dd/MM/yyyy")
+        </strong>
+
+        <a href="?weekStart=@weekStart.AddDays(7).ToString("yyyy-MM-dd")">Tuần sau ➡</a>
+    </div>
+
+
+    <table class="schedule-table">
+        <thead>
+            <tr>
+                <th>Giờ</th>
+                @for (int i = 0; i < 7; i++)
+                {
+                    <th>
+                        @{
+                            var date = weekStart.AddDays(i);
+                        }
+                        @date.ToString("ddd dd/MM")
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+
+            @for (int hour = 7; hour < 19; hour++)
+            {
+                for (int minute = 0; minute < 60; minute += 30)
+                {
+                    var currentTime = new TimeSpan(hour, minute, 0);
+
+                    <tr>
+                        <td class="time-col">
+                            @($"{hour:D2}:{minute:D2}")
+                        </td>
+
+                        @for (int day = 0; day < 7; day++)
+                        {
+                            var currentDate = weekStart.AddDays(day);
+
+                            var schedule = Model.FirstOrDefault(s =>
+                                currentDate.Date >= s.StartDate.Date &&
+                                currentDate.Date <= s.EndDate.Date &&
+                                (int)s.DayOfWeek == (int)currentDate.DayOfWeek &&
+                                s.StartTime <= currentTime &&
+                                s.EndTime > currentTime
+                            );
+
+                            <td>
+                                @if (schedule != null)
+                                {
+                                    <div class="class-block">
+                                        <strong>@schedule.Name</strong><br />
+                                        @schedule.Room<br />
+                                        @schedule.StartTime?.ToString(@"hh\:mm")
+                                        -
+                                        @schedule.EndTime?.ToString(@"hh\:mm")
+                                    </div>
+                                }
+                            </td>
+                        }
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+</div>
+

@@ -1,0 +1,142 @@
+﻿@using BLL.DTOs
+@using BLL.DTOs.Enum
+@{
+    ViewData["Title"] = "Chỉnh sửa người dùng";
+    Layout = "~/Views/Shared/_LayoutProject.cshtml";
+}
+@model User
+
+<div>
+    <!-- BREADCRUMB -->
+    <div class="page-meta">
+        <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Người dùng</a></li>
+                <li class="breadcrumb-item" aria-current="page"><a href="@Url.Action("Index", "User")">Quản lý người dùng</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Chỉnh sửa người dùng</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- /BREADCRUMB -->
+
+    <div class="layout-top-spacing col-12">
+        <a href="@Url.Action("Index", "User")" class="btn">
+            Trở lại
+        </a>
+    </div>
+
+    <div class="row layout-top-spacing">
+        <div id="user-management" class="col-lg-12 layout-spacing">
+            <div class="statbox widget box box-shadow">
+                <div class="widget-header">
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                            <h4>Chỉnh sửa</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <div class="col-12">
+                        <form asp-action="Edit" method="POST" id="general-settings">
+
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="Username">Username <strong class="text-danger">*</strong></label>
+                                        <input asp-for="Username"
+                                               type="text"
+                                               id="UserName"
+                                               class="form-control @(ViewData.ModelState["Username"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                                               placeholder="Username">
+                                        <span asp-validation-for="Username" class="invalid-feedback" role="alert"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="PasswordHash">Mật khẩu <strong class="text-danger">*</strong></label>
+                                        <input type="text"
+                                               id="Password"
+                                               class="form-control @(ViewData.ModelState["PasswordHash"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                                               placeholder="Mật khẩu">
+                                        <span asp-validation-for="PasswordHash" class="invalid-feedback" role="alert"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="email">Email <strong class="text-danger">*</strong></label>
+                                        <input asp-for="Email"
+                                               type="text"
+                                               id="email"
+                                               class="form-control @(ViewData.ModelState["Email"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                                               placeholder="Email">
+                                        <span asp-validation-for="Email" class="invalid-feedback" role="alert"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="position">Ngày tạo <strong class="text-danger">*</strong></label>
+                                        <input asp-for="CreatedAt"
+                                               type="text"
+                                               id="position"
+                                               class="form-control @(ViewData.ModelState["Position"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                                               placeholder="Vị trí công việc">
+                                        <span asp-validation-for="CreatedAt" class="invalid-feedback" role="alert"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="phone">Số điện thoại <strong class="text-danger">*</strong></label>
+                                        <input asp-for="Phone"
+                                               type="text"
+                                               id="phone"
+                                               class="form-control @(ViewData.ModelState["Phone"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                                               placeholder="Số điện thoại">
+                                        <span asp-validation-for="Phone" class="invalid-feedback" role="alert"></span>
+                                    </div>
+                                </div>
+                                @* <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="RoleId">Vai trò <strong class="text-danger">*</strong></label>
+                                        <select asp-for="RoleId"
+                                                class="form-control @(ViewData.ModelState["roleId"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                                                asp-items="ViewBag.Roles">
+                                            <option value="">Chọn vai trò</option>
+                                        </select>
+                                        <span asp-validation-for="RoleId" class="invalid-feedback" role="alert"></span>
+                                    </div>
+                                </div> *@
+
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label asp-for="Status">
+                                            Trạng thái <strong class="text-danger">*</strong>
+                                        </label>
+
+                                        <select asp-for="Status"
+                                                class="form-control"
+                                                asp-items="Html.GetEnumSelectList<EAccountStatus>()">
+                                        </select>
+
+                                        <span asp-validation-for="Status" class="invalid-feedback"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <button type="submit" class="btn btn-primary">Hoàn tất</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

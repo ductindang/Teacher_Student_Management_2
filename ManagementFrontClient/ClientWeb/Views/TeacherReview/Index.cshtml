@@ -1,0 +1,191 @@
+﻿@using BLL.Response
+@{
+    ViewData["Title"] = "Đánh giá giảng viên";
+    Layout = "~/Views/Shared/_LayoutProject.cshtml";
+}
+
+@model IEnumerable<TeacherClassReviewResponse>
+
+@{
+    var reviewed = Model?.Where(x => x.TeacherReviewId > 0).ToList();
+    var notReviewed = Model?.Where(x => x.TeacherReviewId <= 0).ToList();
+}
+
+<style>
+    .fixed-img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+    }
+
+    .card.style-2 {
+        height: 100%;
+    }
+
+        .card.style-2 .card-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+    .empty-box {
+        width: 100%;
+        padding: 40px 20px;
+        border: 2px dashed #d3d3d3;
+        border-radius: 10px;
+        text-align: center;
+        color: #6c757d;
+        font-size: 16px;
+        background: #fafafa;
+        margin-top: 20px;
+    }
+
+        .empty-box span {
+            display: block;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+    .review-info{
+        color: black;
+        text-align: center;
+        font-size: 18px;
+    }
+</style>
+
+<div class="middle-content container-xxl p-0">
+    <div id="tabsSimple" class="col-xl-12 col-12 layout-spacing">
+        <div class="statbox widget box box-shadow" style="margin-top: 30px">
+            <div class="widget-content widget-content-area">
+
+                <div class="simple-pill">
+
+                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="pills-home-icon-tab" data-bs-toggle="pill" data-bs-target="#pills-home-icon" type="button" role="tab" aria-controls="pills-home-icon" aria-selected="true">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                                Các lớp học của bạn
+                            </button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-home-icon" role="tabpanel" aria-labelledby="pills-home-icon-tab" tabindex="0">
+                            <p class="mt-3">
+                                Những đánh giá của các bạn chính là <strong>sự hỗ trợ tốt nhất</strong> cho chúng tôi, 
+                                mong bạn giành thời gian ít phút để đánh giá các lớp học và đội ngũ giáo viên, chúng 
+                                tôi sẽ cải thiện dựa vào những đánh giá của bạn. Cảm ơn bạn rất nhiều, chúc bạn có 
+                                những trải nghiệm tuyệt vời với những bài học vui vẻ...
+                            </p>
+                            <div class="row">
+
+                                @if (Model != null && Model.Any())
+                                {
+                                    <hr />
+                                    <div class="mt-3 fw-bold review-info">Lớp học đã đánh giá</div>
+                                    if(reviewed != null && reviewed.Any())
+                                    {
+                                        @foreach (var item in reviewed)
+                                        {
+                                            <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-6 mb-4">
+                                                <a asp-controller="Class" asp-action="Details" asp-route-id="@item.Id" class="card style-2 mb-md-0 mb-4">
+                                                    @if (item.ClassImage != null)
+                                                    {
+                                                        var base64 = Convert.ToBase64String(item.ClassImage);
+                                                        var imgSrc = $"data:image/jpeg;base64,{base64}";
+
+                                                            <img src="@imgSrc"
+                                                                class="card-img-top fixed-img"
+                                                                alt="..." />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="images/Student-Management-Logo.jpg" class="card-img-top fixed-img" alt="...">
+                                                    }
+
+                                                    <div class="card-body px-0 pb-0">
+                                                        <h5 class="card-title mb-3">@item.ClassName</h5>
+                                                        <div class="media mt-4 mb-0 pt-1">
+                                                            <img src="images/Student-Management-Logo.jpg" class="card-media-image me-3" alt="">
+                                                            <div class="media-body">
+                                                                <h4 class="media-heading mb-1">@item.CourseName</h4>
+                                                                <p class="media-text">@item.StartDate.ToString("dd/MM/yyyy") - @item.EndDate.ToString("dd/MM/yyyy")</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="col-12">
+                                            <div class="empty-box">
+                                                Bạn chưa đánh giá lớp học nào
+                                                <span>Hãy giúp chúng tôi đưa ra các đánh giá để chúng tôi cải thiện hơn</span>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    <hr />
+
+                                    <div class="mt-4 fw-bold review-info">Lớp học bạn chưa đánh giá</div>
+                                    if(notReviewed != null && notReviewed.Any())
+                                    {
+                                        @foreach (var item in notReviewed)
+                                        {
+                                            <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-6 mb-4">
+                                                <a asp-controller="Class" asp-action="Details" asp-route-id="@item.Id" class="card style-2 mb-md-0 mb-4">
+                                                    @if (item.ClassImage != null)
+                                                    {
+                                                        var base64 = Convert.ToBase64String(item.ClassImage);
+                                                        var imgSrc = $"data:image/jpeg;base64,{base64}";
+
+                                                        <div class="mb-3">
+                                                            <img id="previewImage"
+                                                                 src="@imgSrc"
+                                                                 class="card-img-top fixed-img"
+                                                                 alt="..." />
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="images/Student-Management-Logo.jpg" class="card-img-top" alt="...">
+                                                    }
+
+                                                    <div class="card-body px-0 pb-0">
+                                                        <h5 class="card-title mb-3">@item.ClassName</h5>
+                                                        <div class="media mt-4 mb-0 pt-1">
+                                                            <img src="images/Student-Management-Logo.jpg" class="card-media-image me-3" alt="">
+                                                            <div class="media-body">
+                                                                <h4 class="media-heading mb-1">@item.CourseName</h4>
+                                                                <p class="media-text">@item.StartDate.ToString("dd/MM/yyyy") - @item.EndDate.ToString("dd/MM/yyyy")</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="col-12">
+                                            <div class="empty-box">
+                                                Không có lớp học nào bạn chưa đánh giá
+                                                <span>Tất cả lớp học của bạn đã được đánh giá</span>
+                                            </div>
+                                        </div>
+                                    }
+
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

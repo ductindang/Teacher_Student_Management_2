@@ -1,0 +1,194 @@
+﻿@using BLL.DTOs
+@using BLL.DTOs.Enum
+@model Schedule
+@section HeaderStyles {
+    <link rel="stylesheet" href="~/css/customs/assets/light/apps/blog-post.css" />
+    <link rel="stylesheet" href="~/css/customs/assets/light/apps/ecommerce-create.css" />
+
+    <link rel="stylesheet" href="~/plugins/table/datatable/datatables.css" />
+    <link rel="stylesheet" href="~/plugins/table/datatable/extensions/col-reorder/col-reorder.datatables.min.css" />
+    <link rel="stylesheet" href="~/plugins/table/datatable/extensions/fixed-columns/fixed-columns.datatables.min.css" />
+
+    <link rel="stylesheet" href="~/css/customs/plugins/light/table/datatable/dt-global_style.css" />
+    <link rel="stylesheet" href="~/css/customs/plugins/light/table/datatable/custom_dt_custom.css" />
+
+    <link rel="stylesheet" href="~/css/customs/assets/light/apps/blog-create.css" />
+
+    <link rel="stylesheet" href="~/css/customs/plugins/light/tomSelect/custom-tomSelect.css" />
+    <link rel="stylesheet" href="~/css/customs/plugins/dark/tomSelect/custom-tomSelect.css" />
+    <link rel="stylesheet" href="~/plugins/tomSelect/tom-select.default.min.css" />
+
+    <style>
+        #datatable thead th {
+            font-weight: bold;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        #datatable tbody td {
+            vertical-align: middle;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .widget-content-area {
+            padding: 20px !important;
+        }
+    </style>
+}
+
+<div class="modal fade" id="createScheduleModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <form asp-action="Create" asp-controller="Schedule" method="post">
+                <input asp-for="ClassId" type="hidden" id="scheduleClassId" />
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm mới lịch học</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <!-- Day Of Week -->
+                        <div class="col-md-6 mb-3">
+                            <label>Thứ trong tuần *</label>
+                            <select asp-for="DayOfWeek" class="form-control" asp-items="Html.GetEnumSelectList<EDateOfWeek>()" required>
+                                <option value="">-- Chọn thứ --</option>
+                            </select>
+                            <span asp-validation-for="DayOfWeek" class="text-danger"></span>
+                        </div>
+
+                        <!-- Start Time -->
+                        <div class="col-md-6 mb-3">
+                            <label>Giờ bắt đầu *</label>
+                            <select asp-for="StartTime" class="form-control" id="startTime">
+                                <option value="">-- Chọn giờ bắt đầu --</option>
+                                @for (var time = new TimeSpan(7, 0, 0); time <= new TimeSpan(19, 0, 0); time = time.Add(TimeSpan.FromMinutes(30)))
+                                {
+                                    <option value="@time">@time.ToString(@"hh\:mm")</option>
+                                }
+                            </select>
+                            <span class="text-danger" id="startTimeError"></span>
+                        </div>
+
+                        <!-- End Time -->
+                        <div class="col-md-6 mb-3">
+                            <label>Giờ kết thúc *</label>
+                            <select asp-for="EndTime" class="form-control" id="endTime">
+                                <option value="">-- Chọn giờ kết thúc --</option>
+                                @for (var time = new TimeSpan(7, 0, 0); time <= new TimeSpan(19, 0, 0); time = time.Add(TimeSpan.FromMinutes(30)))
+                                {
+                                    <option value="@time">@time.ToString(@"hh\:mm")</option>
+                                }
+                            </select>
+                            <span class="text-danger" id="endTimeError"></span>
+                        </div>
+
+                        <!-- Room -->
+                        <div class="col-md-6 mb-3">
+                            <label>Phòng học *</label>
+                            <input asp-for="Room" type="text" class="form-control" placeholder="Nhập phòng học" required />
+                            <span asp-validation-for="Room" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Hoàn tất</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const startSelect = document.getElementById("startTime");
+        const endSelect = document.getElementById("endTime");
+        const form = document.querySelector("#createScheduleModal form");
+
+        const startError = document.getElementById("startTimeError");
+        const endError = document.getElementById("endTimeError");
+
+        // Disable EndTime <= StartTime
+        startSelect.addEventListener("change", function () {
+            const startValue = this.value;
+
+            Array.from(endSelect.options).forEach(option => {
+                if (!option.value) return;
+
+                if (option.value <= startValue) {
+                    option.disabled = true;
+                    option.style.color = "red";
+                    option.style.backgroundColor = "#ffe5e5";
+                } else {
+                    option.disabled = false;
+                    option.style.color = "";
+                    option.style.backgroundColor = "";
+                }
+            });
+
+            endSelect.value = "";
+            clearErrors();
+        });
+
+        // Clear lỗi khi người dùng chọn lại
+        endSelect.addEventListener("change", clearErrors);
+
+        function clearErrors() {
+            startError.textContent = "";
+            endError.textContent = "";
+            startSelect.classList.remove("is-invalid");
+            endSelect.classList.remove("is-invalid");
+        }
+
+        // Validate khi submit
+        form.addEventListener("submit", function (e) {
+
+            clearErrors();
+            let isValid = true;
+
+            if (!startSelect.value) {
+                startError.textContent = "Vui lòng chọn giờ bắt đầu.";
+                startSelect.classList.add("is-invalid");
+                isValid = false;
+            }
+
+            if (!endSelect.value) {
+                endError.textContent = "Vui lòng chọn giờ kết thúc.";
+                endSelect.classList.add("is-invalid");
+                isValid = false;
+            }
+
+            if (startSelect.value && endSelect.value && endSelect.value <= startSelect.value) {
+                endError.textContent = "Giờ kết thúc phải lớn hơn giờ bắt đầu.";
+                endSelect.classList.add("is-invalid");
+                isValid = false;
+            }
+
+            if (!isValid) {
+                e.preventDefault();
+            }
+        });
+
+    });
+</script>
+
+@section FooterFiles {
+    @* <script src="~/js/customs/assets/apps/blog-create.js"></script> *@
+
+    <script src="~/plugins/table/datatable/datatables.js"></script>
+    <script src="~/plugins/table/datatable/extensions/col-reorder/col-reorder.datatables.min.js"></script>
+    <script src="~/plugins/table/datatable/extensions/fixed-columns/fixed-columns.datatables.min.js"></script>
+
+    @* <script src="~/plugins/tomSelect/tom-select.base.js"></script>
+    <script src="~/plugins/tomSelect/custom-tom-select.js"></script> *@
+    @* <script src="~/js/profile/create.js"></script> *@
+}

@@ -1,0 +1,1129 @@
+﻿@using BLL.DTOs
+@using BLL.DTOs.Enum
+@using BLL.Response
+@using ClientWeb.Helper.Extensions
+@using Newtonsoft.Json
+@model ClassResponse
+
+@{
+    ViewData["Title"] = "Lớp học";
+    Layout = "~/Views/Shared/_LayoutProject.cshtml";
+}
+
+@section HeaderStyles {
+    <link href="~/plugins/table/datatable/datatables.css" rel="stylesheet" />
+    <link href="~/plugins/table/datatable/extensions/col-reorder/col-reorder.datatables.min.css" rel="stylesheet" />
+    <link href="~/plugins/table/datatable/extensions/fixed-columns/fixed-columns.datatables.min.css" rel="stylesheet" />
+    <link href="~/css/customs/plugins/light/table/datatable/dt-global_style.css" rel="stylesheet" />
+    <link href="~/css/customs/plugins/light/table/datatable/custom_dt_custom.css" rel="stylesheet" />
+
+    <link href="/css/customs/assets/light/elements/custom-pagination.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="/css/customs/assets/light/apps/blog-post.css">
+
+
+    <link href="~/plugins/filepond/filepond.min.css" rel="stylesheet" />
+    <link href="~/plugins/filepond/FilePondPluginImagePreview.min.css" rel="stylesheet" />
+    <link href="~/plugins/tagify/tagify.css" rel="stylesheet" />
+    <link href="~/css/customs/plugins/light/editors/quill/quill.snow.css" rel="stylesheet" />
+    <link href="~/css/customs/plugins/light/tagify/custom-tagify.css" rel="stylesheet" />
+    <link href="~/css/customs/plugins/light/filepond/custom-filepond.css" rel="stylesheet" />
+
+    <link href="~/css/customs/assets/light/apps/blog-create.css" rel="stylesheet" />
+    <style>
+        .featured-image{
+            background-size: cover;
+            height: 650px;
+            border-radius:20px;
+            overflow:hidden;
+        }
+
+        .class-info-wrapper {
+            margin-top: 40px;
+        }
+
+        .class-section {
+            margin-bottom: 35px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border-left: 4px solid #4361ee;
+            padding-left: 10px;
+        }
+
+        .class-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+            gap: 20px;
+        }
+
+        .info-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .info-label {
+            display: block;
+            font-size: 13px;
+            color: #888;
+        }
+
+        .info-value {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .class-description {
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+            .class-description p {
+                margin-bottom: 10px;
+            }
+
+        .class-extra {
+            padding-left: 18px;
+        }
+
+            .class-extra li {
+                margin-bottom: 8px;
+                line-height: 1.6;
+            }
+
+        .empty-description {
+            color: #999;
+            font-style: italic;
+        }
+
+
+        /* Enrollment */
+        .enroll-box {
+            border: 1px solid #e0e6ed;
+            border-radius: 10px;
+            padding: 25px;
+            background: #fff;
+            margin-top: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+
+        .enroll-header h4 {
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .enroll-message {
+            margin: 20px 0;
+            color: #555;
+        }
+
+        .enroll-price {
+            display: flex;
+            justify-content: space-between;
+            background: #f8f9fa;
+            padding: 12px 15px;
+            border-radius: 6px;
+        }
+
+        .price-label {
+            font-weight: 500;
+        }
+
+        .price-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #e7515a;
+        }
+
+        .enroll-action {
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        .btn-enroll {
+            padding: 10px 20px;
+            font-weight: 600;
+        }
+
+        /* css for rating */
+        .review-box {
+            margin-top: 25px;
+            padding: 20px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+
+        .review-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .review-guide {
+            background: #f1f5ff;
+            border-left: 4px solid #3b82f6;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+
+            .review-guide ul {
+                margin: 5px 0 0 18px;
+            }
+
+        .rating-text {
+            margin-top: 8px;
+            font-weight: 500;
+            color: #555;
+            font-weight:bold;
+        }
+
+        .star-rating {
+            font-size: 30px;
+            color: #ddd;
+            cursor: pointer;
+        }
+
+        .star {
+            margin-right: 5px;
+        }
+
+            .star.active {
+                color: #ffc107;
+            }
+
+        .review-comment {
+            margin-top: 15px;
+        }
+
+        .review-action {
+            margin-top: 15px;
+        }
+
+        #attendanceModal .modal-body {
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        #attendanceModal table {
+            width: 100%;
+        }
+
+        #attendanceModal thead th {
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 2;
+        }
+    </style>
+}
+
+@{
+    var userJson = Context.Session.GetString("UserLogin");
+    var user = new User();
+
+    if (!string.IsNullOrEmpty(userJson))
+    {
+        user = JsonConvert.DeserializeObject<User>(userJson);
+    }
+
+
+    string backgroundImage;
+
+    if (Model.ClassImage != null)
+    {
+        var base64 = Convert.ToBase64String(Model.ClassImage);
+        backgroundImage = $"data:image/jpeg;base64,{base64}";
+    }
+    else
+    {
+        backgroundImage = Url.Content("~/images/lightbox-2.jpeg");
+    }
+
+    var students = ViewBag.Students;
+    var teacherReviews = ViewBag.TeacherReviews;
+
+    // Đánh giá chung trong lớp học
+    var reviews = ViewBag.TeacherReviews as List<TeacherReview>;
+
+    double avgRating = 0;
+    int totalReviews = 0;
+
+    if (reviews != null && reviews.Any())
+    {
+        totalReviews = reviews.Count;
+        avgRating = reviews.Average(r => r.Rating);
+    }
+
+    var enrollment = ViewBag.Enrollment;
+    var studentObj = ViewBag.StudentObj;
+    var teaReviewOfStudent = ViewBag.TeaReview;
+}
+
+
+
+<div class="layout-px-spacing">
+
+    <div class="middle-content container-xxl p-0">
+
+        <div class="row layout-top-spacing">
+
+            <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+
+
+                <div class="single-post-content">
+
+                    <div class="featured-image" style="background: url('@backgroundImage') no-repeat center; background-size: cover;">
+
+                        <div class="featured-image-overlay"></div>
+
+                        <div class="post-header">
+
+                            <div class="post-title">
+                                <h1 class="mb-0">@Model.Name</h1>
+                            </div>
+
+                            <div class="post-meta-info d-flex justify-content-between">
+
+                                <div class="media">
+                                    <img src="~/images/profile-12.jpeg" alt="profile">
+                                    <div class="media-body">
+                                        <h5>@Model.TeacherName</h5>
+                                        <div class="teacher-rating">
+                                            <span style="font-weight:600; color:#ffcece">@avgRating.ToString("0.0")</span>
+
+                                            <span style="color:#ffc107; font-size:18px;">
+                                                @{
+                                                    int fullStars = (int)Math.Floor(avgRating);
+                                                    bool halfStar = avgRating - fullStars >= 0.5;
+
+                                                    for (int i = 0; i < fullStars; i++)
+                                                    {
+                                                        <span>★</span>
+                                                    }
+
+                                                    if (halfStar)
+                                                    {
+                                                        <span>☆</span>
+                                                    }
+
+                                                    for (int i = fullStars + (halfStar ? 1 : 0); i < 5; i++)
+                                                    {
+                                                        <span style="color:#ddd;">★</span>
+                                                    }
+                                                }
+                                            </span>
+
+                                            <span style="color:#ffcece">(@totalReviews đánh giá)</span>
+                                        </div>
+                                        <p>Ngày dạy: @Model.StartDate.ToString("dd/MM/yyyy") - @Model.EndDate.ToString("dd/MM/yyyy")</p>
+                                    </div>
+                                </div>
+
+                                <div class="align-self-center">
+                                    <button class="btn btn-success btn-icon btn-share btn-rounded">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-share-2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                                    </button>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="post-content">
+
+                        <div class="class-info-wrapper">
+
+                            <!-- Thông tin tổng quan -->
+                            <div class="class-section">
+                                <h3 class="section-title">Thông tin lớp học</h3>
+
+                                <div class="class-info-grid">
+
+                                    <div class="info-item">
+                                        <span class="info-label">Tên lớp học</span>
+                                        <span class="info-value">@Model.Name</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Khóa học</span>
+                                        <span class="info-value">@Model.CourseName</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Giảng viên</span>
+                                        <span class="info-value">@Model.TeacherName</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Số lượng học viên tối đa</span>
+                                        <span class="info-value">@Model.MaxStudents học viên</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Ngày bắt đầu</span>
+                                        <span class="info-value">@Model.StartDate.ToString("dd/MM/yyyy")</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Ngày kết thúc</span>
+                                        <span class="info-value">@Model.EndDate.ToString("dd/MM/yyyy")</span>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <span class="info-label">Học phí</span>
+                                        <span class="info-value">@Model.CoursePrice.ToString("N0") VNĐ</span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <!-- Mô tả lớp học -->
+                            <div class="class-section">
+
+                                <h3 class="section-title">Mô tả lớp học</h3>
+
+                                <div class="class-description">
+
+                                    @if (!string.IsNullOrEmpty(Model.Description))
+                                    {
+                                        @Html.Raw(Model.Description)
+                                    }
+                                    else
+                                    {
+                                        <div class="empty-description">
+                                            Lớp học này chưa có mô tả chi tiết.
+                                        </div>
+                                    }
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Thông tin bổ sung -->
+                            <div class="class-section">
+
+                                <h3 class="section-title">Thông tin bổ sung</h3>
+
+                                <ul class="class-extra">
+
+                                    <li>
+                                        Khóa học <b>@Model.CourseName</b> được thiết kế nhằm cung cấp kiến thức và kỹ năng cần thiết cho học viên.
+                                    </li>
+
+                                    <li>
+                                        Lớp học do giảng viên <b>@Model.TeacherName</b> trực tiếp giảng dạy.
+                                    </li>
+
+                                    <li>
+                                        Lớp học kéo dài từ
+                                        <b>@Model.StartDate.ToString("dd/MM/yyyy")</b>
+                                        đến
+                                        <b>@Model.EndDate.ToString("dd/MM/yyyy")</b>.
+                                    </li>
+
+                                    <li>
+                                        Số lượng học viên tối đa cho lớp học này là
+                                        <b>@Model.MaxStudents</b> học viên.
+                                    </li>
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    @if(user != null)
+                    {
+                        if(user.RoleId == (int)ERoleName.Teacher)
+                        {
+                            <div class="post-info">
+
+                                <hr>
+
+                                <!-- DATATABLE -->
+                                <div class="row layout-top-spacing">
+                                    <div class="col-xl-12 col-lg-12 col-sm-12">
+                                        <div class="statbox widget box box-shadow">
+                                            <div class="widget-header">
+                                                <div class="row">
+                                                    <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                                        <h4>Học viên trong lớp</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="widget-content widget-content-area">
+                                                <table id="student-table" class="table style-3 dt-table-hover" style="width: 100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th style="width: 5%">STT</th>
+                                                            <th>Mã học viên</th>
+                                                            <th>Tên học viên</th>
+                                                            <th>Giới tính</th>
+                                                            <th>Ngày đăng ký</th>
+                                                            <th>Trạng thái đăng ký</th>
+                                                            <th>Chi tiết điểm danh</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @{
+                                                            int sttStd = 1;
+                                                        }
+                                                        @if (students != null)
+                                                        {
+
+                                                            @foreach (var student in students)
+                                                            {
+                                                                <tr>
+                                                                    <td>@sttStd</td>
+                                                                    <td>@student.StudentId</td>
+                                                                    <td>@student.Fullname</td>
+                                                                    <td>@(((EGender)student.Gender).GetDisplayName())</td>
+                                                                    <td>@student.EnrollDate.ToString("dd/MM/yyyy")</td>
+                                                                    <td>@(((EEnrollStatus)student.EnrollStatus).GetDisplayName())</td>
+                                                                    <td>
+                                                                        <a href="javascript:void(0)" class="view-attendance" data-id="@student.StudentId" style="color:blue">
+                                                                            Xem chi tiết
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+
+                                                                sttStd++;
+                                                            }
+                                                        }
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal fade" id="attendanceModal" tabindex="-1">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+
+                                                <div class="modal-header">
+                                                    @if(studentObj != null){
+                                                        <h5 class="modal-title">Chi tiết điểm danh học viên @studentObj.FullName</h5>
+                                                    }else{
+                                                        <h5 class="modal-title">Chi tiết điểm danh học viên</h5>
+                                                    }
+
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal">X</button>
+                                                </div>
+
+                                                <div class="modal-body">
+
+                                                    <div class="table-responsive">
+
+                                                        <table class="table table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Thứ</th>
+                                                                    <th>Thời gian</th>
+                                                                    <th>Ngày học</th>
+                                                                    <th>Phòng</th>
+                                                                    <th>Trạng thái</th>
+                                                                </tr>
+                                                            </thead>
+
+                                                            <tbody id="attendance-body">
+                                                            </tbody>
+
+                                                        </table>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- /DATATABLE -->
+
+                                <hr>
+
+                                <!-- DATATABLE -->
+                                <div class="row layout-top-spacing">
+                                    <div class="col-xl-12 col-lg-12 col-sm-12">
+                                        <div class="statbox widget box box-shadow">
+                                            <div class="widget-header">
+                                                <div class="row">
+                                                    <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                                        <h4>Đánh giá học viên giành cho bạn</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="widget-content widget-content-area">
+                                                <table id="teacher-table" class="table style-3 dt-table-hover" style="width: 100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th style="width: 5%">STT</th>
+                                                            <th>Mã đánh giá</th>
+                                                            <th>Đánh giá</th>
+                                                            <th>Thời gian tạo</th>
+                                                            <th class="no-content" style="width: 5%">Chi tiết</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @{
+                                                            int stt = 1;
+                                                        }
+                                                        @if (teacherReviews != null)
+                                                        {
+
+                                                            @foreach (var review in teacherReviews)
+                                                            {
+                                                                <tr>
+                                                                    <td>@stt</td>
+                                                                    <td>@review.Id</td>
+                                                                    <td>
+                                                                        @{
+                                                                            string ratingText = "";
+                                                                            string ratingClass = "";
+
+                                                                            switch (review.Rating)
+                                                                            {
+                                                                                case 1:
+                                                                                    ratingText = "Rất tệ";
+                                                                                    ratingClass = "badge bg-danger";
+                                                                                    break;
+                                                                                case 2:
+                                                                                    ratingText = "Tệ";
+                                                                                    ratingClass = "badge bg-warning";
+                                                                                    break;
+                                                                                case 3:
+                                                                                    ratingText = "Bình thường";
+                                                                                    ratingClass = "badge bg-secondary";
+                                                                                    break;
+                                                                                case 4:
+                                                                                    ratingText = "Tốt";
+                                                                                    ratingClass = "badge bg-info";
+                                                                                    break;
+                                                                                case 5:
+                                                                                    ratingText = "Rất tốt";
+                                                                                    ratingClass = "badge bg-success";
+                                                                                    break;
+                                                                            }
+                                                                        }
+
+                                                                        <span class="@ratingClass">@ratingText (@review.Rating⭐)</span>
+                                                                    </td>
+                                                                    <td>@review.CreatedAt.ToString("dd/MM/yyyy | hh:mm:ss tt")</td>
+
+                                                                    <td class="text-center">
+                                                                        <a href="javascript:void(0)"
+                                                                           class="text-primary view-comment"
+                                                                           data-comment="@review.Comment">
+                                                                            Xem chi tiết
+                                                                        </a>
+                                                                    </td>
+
+                                                                </tr>
+
+                                                                stt++;
+                                                            }
+                                                        }
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- /DATATABLE -->
+                            </div>
+                        }
+                        else if (user.RoleId == (int)ERoleName.Student)
+                        {
+                            if (enrollment == null)
+                            {
+                                <div class="enroll-box">
+
+                                    <div class="enroll-header">
+                                        <h4>Đăng ký lớp học</h4>
+                                    </div>
+
+                                    <div class="enroll-content">
+
+                                        <p class="enroll-message">
+                                            Bạn chưa đăng ký lớp học này. Hãy đăng ký ngay để tham gia lớp học cùng giảng viên
+                                            <b>@Model.TeacherName</b>.
+                                        </p>
+
+                                        <div class="enroll-price">
+                                            <span class="price-label">Tổng học phí</span>
+                                            <span class="price-value">@Model.CoursePrice.ToString("N0") VNĐ</span>
+                                        </div>
+
+                                        <div class="enroll-action">
+                                            <form method="post"
+                                                  action="@Url.Action("Create","Enrollment")"
+                                                  class="enroll-form">
+
+                                                <input type="hidden" name="ClassId" value="@Model.Id" />
+                                                <input type="hidden" name="StudentId" value="@studentObj.Id" />
+
+                                                <button type="submit" class="btn btn-primary btn-enroll">
+                                                    Đăng ký lớp học
+                                                </button>
+
+                                            </form>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            }
+                            else
+                            {
+                                string message = "";
+                                string buttonText = "";
+                                bool showButton = false;
+
+                                string badgeText = "";
+                                string badgeClass = "";
+                                string actionName = "";
+
+
+                                if (enrollment.Status == EEnrollStatus.InActive)
+                                {
+                                    badgeText = "Chờ xác nhận";
+                                    badgeClass = "badge bg-warning";
+
+                                    message = "Bạn đã đăng ký lớp học này. Hãy liên hệ với trung tâm qua số điện thoại 1900 0000 để được cập nhật thông tin.";
+
+                                    buttonText = "Hủy đăng ký";
+                                    actionName = "Cancel";
+                                    showButton = true;
+                                }
+                                else if (enrollment.Status == EEnrollStatus.Active)
+                                {
+                                    badgeText = "Đã đăng ký";
+                                    badgeClass = "badge bg-success";
+
+                                    message = "Lớp học đã được đăng ký thành công. Bạn vui lòng chú ý thời khóa biểu để tham gia lớp học đúng thời gian.";
+                                }
+                                else if (enrollment.Status == EEnrollStatus.Cancel)
+                                {
+                                    badgeText = "Đã hủy";
+                                    badgeClass = "badge bg-danger";
+
+                                    message = "Bạn đã hủy đăng ký lớp học này. Hãy đăng ký lại nếu bạn muốn tiếp tục tham gia.";
+
+                                    buttonText = "Đăng ký lại";
+                                    actionName = "ReEnroll";
+                                    showButton = true;
+                                }
+
+                                <div class="enroll-box">
+
+                                    <div class="enroll-header d-flex justify-content-between align-items-center">
+                                        <h4>Thông tin đăng ký lớp học</h4>
+                                        <span class="@badgeClass">@badgeText</span>
+                                    </div>
+
+                                    <div class="enroll-content">
+
+                                        <p class="enroll-message">
+                                            @message
+                                        </p>
+
+                                        <div class="enroll-price">
+                                            <span class="price-label">Tổng học phí</span>
+                                            <span class="price-value">@Model.CoursePrice.ToString("N0") VNĐ</span>
+                                        </div>
+
+                                        @if (showButton)
+                                        {
+                                            <div class="enroll-action">
+
+                                                <a href="javascript:void(0)"
+                                                   data-url="@Url.Action(actionName, "Enrollment", new { id = enrollment.Id })"
+                                                   class="btn btn-primary btn-enroll confirm-action">
+
+                                                    @buttonText
+
+                                                </a>
+
+                                            </div>
+                                        }
+
+                                    </div>
+
+                                </div>
+
+                                @if (enrollment.Status == EEnrollStatus.Active && Model.StartDate < DateTime.Now)
+                                {
+                                    <div class="review-box">
+
+                                        <h5 class="review-title">Đánh giá lớp học</h5>
+
+                                        <!-- Hướng dẫn -->
+                                        <div class="review-guide">
+                                            <p><b>Hướng dẫn đánh giá:</b></p>
+                                            <ul>
+                                                <li>Chọn số <b>sao</b> để đánh giá chất lượng giảng dạy của giáo viên.</li>
+                                                <li>Viết nhận xét ngắn gọn về trải nghiệm của bạn trong lớp học.</li>
+                                                <li>Nhận xét của bạn sẽ giúp trung tâm cải thiện chất lượng đào tạo.</li>
+                                            </ul>
+                                        </div>
+
+                                        <form method="post"
+                                              action="@Url.Action(teaReviewOfStudent == null ? "Insert" : "Update", "TeacherReview")">
+
+                                            <input type="hidden" name="ClassId" value="@Model.Id" />
+                                            <input type="hidden" name="StudentId" value="@studentObj.Id" />
+                                            <input type="hidden" name="TeacherId" value="@Model.TeacherId" />
+
+                                            @if (teaReviewOfStudent != null)
+                                            {
+                                                <input type="hidden" name="Id" value="@teaReviewOfStudent.Id" />
+                                            }
+
+                                            <input type="hidden" id="ratingValue" name="Rating"
+                                                   value="@(teaReviewOfStudent?.Rating ?? 0)" />
+
+                                            <!-- Rating star -->
+                                            <div class="star-rating">
+                                                @for (int i = 1; i <= 5; i++)
+                                                {
+                                                    <span class="star @(teaReviewOfStudent != null && teaReviewOfStudent.Rating >= i ? "active" : "")"
+                                                          data-value="@i">★</span>
+                                                }
+                                            </div>
+
+                                            <div id="ratingText" class="rating-text">
+                                                @(teaReviewOfStudent?.Rating switch
+                                                {
+                                                    1 => "Rất tệ",
+                                                    2 => "Không hài lòng",
+                                                    3 => "Bình thường",
+                                                    4 => "Tốt",
+                                                    5 => "Rất tốt",
+                                                    _ => "Hãy chọn số sao để đánh giá"
+                                                })
+                                            </div>
+
+                                            <!-- Comment -->
+                                            <div class="review-comment">
+                                                <textarea name="Comment"
+                                          placeholder="Hãy chia sẻ cảm nhận của bạn về lớp học..."
+                                          rows="4"
+                                          class="form-control">@(teaReviewOfStudent?.Comment ?? "")</textarea>
+                                            </div>
+
+                                            <div class="review-action">
+                                                <button type="submit" class="btn btn-primary">
+                                                    @(teaReviewOfStudent == null ? "Gửi đánh giá" : "Cập nhật đánh giá")
+                                                </button>
+                                            </div>
+
+                                        </form>
+
+                                    </div>
+                                }
+                            }
+                        }
+                    }
+                    
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <script src="~/plugins/table/datatable/datatables.js"></script>
+    <script src="~/plugins/table/datatable/extensions/col-reorder/col-reorder.datatables.min.js"></script>
+    <script src="~/plugins/table/datatable/extensions/fixed-columns/fixed-columns.datatables.min.js"></script>
+
+    <script src="~/plugins/editors/quill/quill.js"></script>
+    <script src="~/plugins/filepond/filepond.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginFileValidateType.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginImageExifOrientation.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginImagePreview.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginImageCrop.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginImageResize.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginImageTransform.min.js"></script>
+    <script src="~/plugins/filepond/filepondPluginFileValidateSize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="~/plugins/tagify/tagify.min.js"></script>
+    <script src="~/js/customs/assets/apps/blog-create.js"></script>
+
+
+    <script src="/js/teacher/teacher.js"></script>
+
+    <script>
+        function getStatus(status) {
+            switch(status){
+                case 1: return "Có mặt";
+                case 2: return "Vắng";
+                case 3: return "Đi muộn";
+                case 4: return "Chưa điểm danh";
+                default: return "Chưa điểm danh";
+            }
+        }
+
+        function getDayOfWeek(day) {
+            switch (day) {
+                case 0: return "Chủ nhật";
+                case 1: return "Thứ 2";
+                case 2: return "Thứ 3";
+                case 3: return "Thứ 4";
+                case 4: return "Thứ 5";
+                case 5: return "Thứ 6";
+                case 6: return "Thứ 7";
+                default: return day;
+            }
+        }
+
+
+        $(document).on("click", ".view-attendance", function () {
+
+            var studentId = $(this).data("id");
+            var classId = @Model.Id;
+
+            $("#attendance-body").html("<tr><td colspan='5'>Loading...</td></tr>");
+
+            $.ajax({
+                url: "/Attendance/GetAttendance",
+                type: "GET",
+                data: { studentId: studentId, classId: classId },
+                success: function (data) {
+
+                    if (data.length === 0) {
+                        $("#attendance-body").html("<tr><td colspan='5'>Không có dữ liệu</td></tr>");
+                        $("#attendanceModal").modal("show");
+                        return;
+                    }
+
+                    var lessons = [];
+
+                    var startDate = new Date(data[0].startDate);
+                    var endDate = new Date(data[0].endDate);
+                    var today = new Date();
+
+                    if (today < endDate) {
+                        endDate = today;
+                    }
+
+                    for (var d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+
+                        // duyệt từng schedule
+                        data.forEach(function (schedule) {
+
+                            if (d.getDay() === schedule.dayOfWeek) {
+
+                                var record = data.find(x =>
+                                    x.scheduleId === schedule.scheduleId &&
+                                    x.attendanceDate &&
+                                    new Date(x.attendanceDate).toDateString() === d.toDateString()
+                                );
+
+                                var status = record ? record.status : 4;
+
+                                lessons.push({
+                                    date: new Date(d),
+                                    day: schedule.dayOfWeek,
+                                    time: schedule.startTime + " - " + schedule.endTime,
+                                    room: schedule.room,
+                                    status: status
+                                });
+
+                            }
+
+                        });
+
+                    }
+
+                    // sắp xếp gần nhất → xa nhất
+                    lessons.sort((a, b) => b.date - a.date);
+
+                    var html = "";
+
+                    lessons.forEach(function (item) {
+
+                        var dateText = item.date.toLocaleDateString("vi-VN");
+
+                        html += `
+                        <tr>
+                            <td>${getDayOfWeek(item.day)}</td>
+                            <td>${item.time}</td>
+                            <td>${dateText}</td>
+                            <td>${item.room}</td>
+                            <td>${getStatus(item.status)}</td>
+                        </tr>
+                        `;
+                    });
+
+                    $("#attendance-body").html(html);
+
+                    $("#attendanceModal").modal("show");
+                }
+            });
+
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const form = document.querySelector('.enroll-form');
+
+            if (form) {
+
+                form.addEventListener('submit', function (e) {
+
+                    e.preventDefault();
+
+                    Swal.fire({
+                        title: 'Xác nhận đăng ký?',
+                        text: "Bạn có chắc muốn đăng ký lớp học này không?",
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Đăng ký',
+                        cancelButtonText: 'Hủy'
+                    }).then((result) => {
+
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+
+                    });
+
+                });
+
+            }
+
+        });
+
+
+        document.querySelectorAll('.confirm-action').forEach(btn => {
+
+            btn.addEventListener('click', function () {
+
+                const url = this.dataset.url;
+
+                Swal.fire({
+                    title: 'Bạn có chắc không?',
+                    text: 'Hành động này sẽ thay đổi trạng thái đăng ký lớp học.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Đồng ý',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+
+                    if (result.isConfirmed) {
+                        window.location.href = url;
+                    }
+
+                });
+
+            });
+
+        });
+
+    </script>
+
+    <script>
+        const ratingMessages = {
+            1: "Rất tệ",
+            2: "Không hài lòng",
+            3: "Bình thường",
+            4: "Tốt",
+            5: "Rất tốt"
+        };
+
+        document.querySelectorAll('.star-rating .star').forEach(star => {
+
+            star.addEventListener('click', function () {
+
+                let rating = this.getAttribute('data-value');
+
+                document.getElementById('ratingValue').value = rating;
+
+                document.querySelectorAll('.star-rating .star').forEach(s => {
+                    s.classList.remove('active');
+                });
+
+                for (let i = 0; i < rating; i++) {
+                    document.querySelectorAll('.star-rating .star')[i].classList.add('active');
+                }
+
+                // hiển thị text
+                document.getElementById("ratingText").innerText = ratingMessages[rating];
+
+            });
+
+        });
+    </script>
+
+    <script>
+        $('#student-table').DataTable(
+            {
+                "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>"
+                    + "<'table-responsive'tr>"
+                    + "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+                "oLanguage": {
+                    "oPaginate": {
+                        "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
+                        "sNext": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>'
+                    },
+                    "sEmptyTable": "Chưa có dữ liệu",
+                    "sInfo": "Đang hiển thị trang _PAGE_ của  _PAGES_",
+                    "sSearch": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>',
+                    "sSearchPlaceholder": "Tìm kiếm...",
+                    "sZeroRecords": "Không có bản ghi nào trùng khớp",
+                    "sLengthMenu": "Kết quả :  _MENU_",
+                },
+                "stripeClasses": [],
+                "lengthMenu": [7, 10, 20, 50],
+                "pageLength": 10,
+                "ordering": false
+            });
+    </script>
+
+    <script>
+        $('#teacher-table').DataTable(
+            {
+                "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>"
+                    + "<'table-responsive'tr>"
+                    + "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+                "oLanguage": {
+                    "oPaginate": {
+                        "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
+                        "sNext": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>'
+                    },
+                    "sEmptyTable": "Chưa có dữ liệu",
+                    "sInfo": "Đang hiển thị trang _PAGE_ của  _PAGES_",
+                    "sSearch": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>',
+                    "sSearchPlaceholder": "Tìm kiếm...",
+                    "sZeroRecords": "Không có bản ghi nào trùng khớp",
+                    "sLengthMenu": "Kết quả :  _MENU_",
+                },
+                "stripeClasses": [],
+                "lengthMenu": [7, 10, 20, 50],
+                "pageLength": 10,
+                "ordering": false
+            });
+    </script>
+}

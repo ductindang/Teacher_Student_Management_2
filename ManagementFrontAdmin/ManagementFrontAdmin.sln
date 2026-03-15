@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36511.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "BLL\BLL.csproj", "{745618E8-5184-4F26-9310-027718FD2F3B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminWeb", "AdminWeb\AdminWeb.csproj", "{45C93E68-F891-43F2-B8C9-C59A74072E29}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{745618E8-5184-4F26-9310-027718FD2F3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{745618E8-5184-4F26-9310-027718FD2F3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{745618E8-5184-4F26-9310-027718FD2F3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{745618E8-5184-4F26-9310-027718FD2F3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45C93E68-F891-43F2-B8C9-C59A74072E29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45C93E68-F891-43F2-B8C9-C59A74072E29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45C93E68-F891-43F2-B8C9-C59A74072E29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45C93E68-F891-43F2-B8C9-C59A74072E29}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {598B6DB1-1A6D-470C-82E0-2D1CDC228FDE}
+	EndGlobalSection
+EndGlobal

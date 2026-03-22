@@ -24,60 +24,70 @@ namespace DAL.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Course>().HasData(
-                new Course { Id = 1, Name = "Lập trình C# cơ bản", Description = "Học lập trình C# từ cơ bản", Duration = 30, Price = 3000000, Status = ECourseStatus.Active },
-                new Course { Id = 2, Name = "Lập trình C# nâng cao", Description = "Các kỹ thuật C# nâng cao", Duration = 45, Price = 5000000, Status = ECourseStatus.Active },
-                new Course { Id = 3, Name = "Phát triển Web ASP.NET Core", Description = "Xây dựng Web API", Duration = 40, Price = 4500000, Status = ECourseStatus.Active },
-                new Course { Id = 4, Name = "Cơ sở dữ liệu SQL Server", Description = "Quản lý và truy vấn dữ liệu", Duration = 25, Price = 2500000, Status = ECourseStatus.Active },
-                new Course { Id = 5, Name = "Clean Architecture trong .NET", Description = "Thiết kế kiến trúc phần mềm", Duration = 20, Price = 4000000, Status = ECourseStatus.InActive }
-            );
+                 new Course { Id = 1, Name = "Lập trình Python cơ bản", Description = "Khóa học nhập môn Python dành cho người mới bắt đầu, bao gồm cú pháp, cấu trúc dữ liệu và lập trình cơ bản.", Duration = 30, Price = 3000000, Status = ECourseStatus.Active },
+
+                 new Course { Id = 2, Name = "Phân tích dữ liệu với Excel", Description = "Sử dụng Excel để xử lý, phân tích dữ liệu và xây dựng báo cáo chuyên nghiệp.", Duration = 35, Price = 3200000, Status = ECourseStatus.Active },
+
+                 new Course { Id = 3, Name = "Thiết kế đồ họa với Photoshop", Description = "Học chỉnh sửa hình ảnh và thiết kế ấn phẩm truyền thông bằng Photoshop.", Duration = 40, Price = 4500000, Status = ECourseStatus.Active },
+
+                 new Course { Id = 4, Name = "Nguyên lý kế toán doanh nghiệp", Description = "Cung cấp kiến thức nền tảng về kế toán, báo cáo tài chính và quản lý chi phí.", Duration = 25, Price = 2800000, Status = ECourseStatus.Active },
+
+                 new Course { Id = 5, Name = "Digital Marketing tổng thể", Description = "Tổng quan về marketing số bao gồm SEO, quảng cáo và xây dựng thương hiệu online.", Duration = 30, Price = 4000000, Status = ECourseStatus.Active }
+             );
 
             modelBuilder.Entity<Teacher>().HasData(
-                new Teacher { Id = 1, UserId = 0, FullName = "Nguyễn Văn An", Degree = "Thạc sĩ Công nghệ thông tin", Experience = 5 },
-                new Teacher { Id = 2, UserId = 0, FullName = "Trần Thị Bích", Degree = "Tiến sĩ Khoa học máy tính", Experience = 8 },
-                new Teacher { Id = 3, UserId = 0, FullName = "Lê Văn Cường", Degree = "Cử nhân Công nghệ thông tin", Experience = 3 },
-                new Teacher { Id = 4, UserId = 0, FullName = "Phạm Thị Dung", Degree = "Thạc sĩ Hệ thống thông tin", Experience = 6 },
-                new Teacher { Id = 5, UserId = 0, FullName = "Hoàng Văn Hiếu", Degree = "Tiến sĩ Công nghệ phần mềm", Experience = 10 }
+                new Teacher { Id = 1, UserId = 0, FullName = "Nguyễn Minh Hoàng", Degree = "Thạc sĩ Khoa học dữ liệu", Experience = 6 },
+
+                new Teacher { Id = 2, UserId = 0, FullName = "Trần Thị Ngọc Lan", Degree = "Thạc sĩ Tài chính - Ngân hàng", Experience = 7 },
+
+                new Teacher { Id = 3, UserId = 0, FullName = "Lê Quang Huy", Degree = "Cử nhân Thiết kế đồ họa", Experience = 4 },
+
+                new Teacher { Id = 4, UserId = 0, FullName = "Phạm Thu Hà", Degree = "Thạc sĩ Marketing", Experience = 8 },
+
+                new Teacher { Id = 5, UserId = 0, FullName = "Đặng Quốc Trung", Degree = "Tiến sĩ Công nghệ thông tin", Experience = 10 }
             );
 
             modelBuilder.Entity<Class>().HasData(
-                new Class { Id = 1, CourseId = 1, TeacherId = 1, Name = "C# cơ bản - Lớp sáng", StartDate = new DateTime(2026, 1, 1), EndDate = new DateTime(2026, 2, 1), MaxStudents = 30, Description = "Lớp học cung cấp kiến thức cơ bản về lập trình C# bao gồm biến, kiểu dữ liệu, vòng lặp, câu lệnh điều kiện và các khái niệm lập trình hướng đối tượng." },
+                new Class { Id = 1, CourseId = 1, TeacherId = 1, Name = "Lập trình Python cơ bản", StartDate = new DateTime(2026, 1, 1), EndDate = new DateTime(2026, 2, 1), MaxStudents = 30, Description = "Khóa học nhập môn Python với các kiến thức về biến, vòng lặp, hàm và xử lý dữ liệu cơ bản." },
 
-                new Class { Id = 2, CourseId = 2, TeacherId = 2, Name = "C# nâng cao - Lớp tối", StartDate = new DateTime(2026, 1, 10), EndDate = new DateTime(2026, 3, 1), MaxStudents = 25, Description = "Khóa học giúp học viên nâng cao kỹ năng lập trình với LINQ, async/await, dependency injection và các design pattern thường dùng." },
+                new Class { Id = 2, CourseId = 2, TeacherId = 2, Name = "Phân tích dữ liệu với Excel", StartDate = new DateTime(2026, 1, 10), EndDate = new DateTime(2026, 2, 20), MaxStudents = 25, Description = "Học cách sử dụng Excel để phân tích dữ liệu, sử dụng hàm, PivotTable và biểu đồ." },
 
-                new Class { Id = 3, CourseId = 3, TeacherId = 3, Name = "Lập trình Web ASP.NET Core", StartDate = new DateTime(2026, 2, 1), EndDate = new DateTime(2026, 3, 15), MaxStudents = 35, Description = "Học xây dựng ứng dụng web hiện đại với ASP.NET Core, MVC, Razor Pages và Web API." },
+                new Class { Id = 3, CourseId = 3, TeacherId = 3, Name = "Thiết kế đồ họa với Photoshop", StartDate = new DateTime(2026, 2, 1), EndDate = new DateTime(2026, 3, 10), MaxStudents = 35, Description = "Hướng dẫn sử dụng Photoshop để chỉnh sửa ảnh và thiết kế banner, poster chuyên nghiệp." },
 
-                new Class { Id = 4, CourseId = 4, TeacherId = 4, Name = "Quản trị SQL Server", StartDate = new DateTime(2026, 1, 5), EndDate = new DateTime(2026, 2, 5), MaxStudents = 40, Description = "Học thiết kế cơ sở dữ liệu, viết truy vấn SQL, sử dụng join, stored procedure và tối ưu truy vấn." },
+                new Class { Id = 4, CourseId = 4, TeacherId = 4, Name = "Nguyên lý kế toán cơ bản", StartDate = new DateTime(2026, 1, 5), EndDate = new DateTime(2026, 2, 5), MaxStudents = 40, Description = "Trang bị kiến thức nền tảng về kế toán, sổ sách và báo cáo tài chính." },
 
-                new Class { Id = 5, CourseId = 5, TeacherId = 5, Name = "Clean Architecture", StartDate = new DateTime(2026, 3, 1), EndDate = new DateTime(2026, 4, 1), MaxStudents = 20, Description = "Giới thiệu nguyên tắc Clean Architecture và cách áp dụng trong các dự án .NET thực tế." },
-                new Class { Id = 6, CourseId = 1, TeacherId = 2, Name = "C# cơ bản - Lớp 2024", StartDate = new DateTime(2024, 1, 1), EndDate = new DateTime(2024, 2, 1), MaxStudents = 30, Description = "Lớp học C# cơ bản đã hoàn thành." },
+                new Class { Id = 5, CourseId = 5, TeacherId = 5, Name = "Digital Marketing tổng thể", StartDate = new DateTime(2026, 3, 1), EndDate = new DateTime(2026, 4, 1), MaxStudents = 20, Description = "Tìm hiểu về SEO, quảng cáo Facebook, Google Ads và xây dựng chiến lược marketing." },
 
-                new Class { Id = 7, CourseId = 3, TeacherId = 3, Name = "ASP.NET Core - Lớp hiện tại", StartDate = new DateTime(2026, 3, 1), EndDate = new DateTime(2026, 4, 15), MaxStudents = 30, Description = "Lớp ASP.NET Core đang diễn ra." },
+                new Class { Id = 6, CourseId = 1, TeacherId = 2, Name = "Python cơ bản - Khóa 2024", StartDate = new DateTime(2024, 1, 1), EndDate = new DateTime(2024, 2, 1), MaxStudents = 30, Description = "Khóa học Python dành cho người mới bắt đầu đã hoàn thành." },
 
-                new Class { Id = 8, CourseId = 5, TeacherId = 4, Name = "Clean Architecture - Lớp tương lai", StartDate = new DateTime(2026, 6, 1), EndDate = new DateTime(2026, 7, 1), MaxStudents = 20, Description = "Lớp Clean Architecture sẽ mở trong tương lai." },
-                new Class { Id = 9, CourseId = 1, TeacherId = 1, Name = "C# cơ bản - Lớp chiều", StartDate = new DateTime(2026, 2, 1), EndDate = new DateTime(2026, 5, 1), MaxStudents = 30, Description = "Lớp học C# cơ bản dành cho ca chiều." },
+                new Class { Id = 7, CourseId = 3, TeacherId = 3, Name = "Thiết kế UI/UX cơ bản", StartDate = new DateTime(2026, 3, 1), EndDate = new DateTime(2026, 4, 15), MaxStudents = 30, Description = "Học cách thiết kế giao diện và trải nghiệm người dùng với Figma." },
 
-                new Class { Id = 10, CourseId = 1, TeacherId = 1, Name = "C# cơ bản - Lớp tối", StartDate = new DateTime(2026, 3, 10), EndDate = new DateTime(2026, 4, 10), MaxStudents = 30, Description = "Lớp học C# cơ bản ca tối cho người đi làm." },
+                new Class { Id = 8, CourseId = 5, TeacherId = 4, Name = "Content Marketing thực chiến", StartDate = new DateTime(2026, 6, 1), EndDate = new DateTime(2026, 7, 1), MaxStudents = 20, Description = "Kỹ năng viết content thu hút và xây dựng thương hiệu trên mạng xã hội." },
 
-                new Class { Id = 11, CourseId = 2, TeacherId = 1, Name = "C# nâng cao - Lớp chuyên đề", StartDate = new DateTime(2026, 4, 1), EndDate = new DateTime(2026, 5, 10), MaxStudents = 25, Description = "Chuyên đề nâng cao về LINQ, async await và performance." },
+                new Class { Id = 9, CourseId = 2, TeacherId = 1, Name = "Excel nâng cao cho doanh nghiệp", StartDate = new DateTime(2026, 2, 1), EndDate = new DateTime(2026, 5, 1), MaxStudents = 30, Description = "Áp dụng Excel trong quản lý dữ liệu và báo cáo doanh nghiệp." },
 
-                new Class { Id = 12, CourseId = 3, TeacherId = 1, Name = "ASP.NET Core API", StartDate = new DateTime(2026, 5, 1), EndDate = new DateTime(2026, 6, 10), MaxStudents = 30, Description = "Xây dựng RESTful API với ASP.NET Core." },
+                new Class { Id = 10, CourseId = 4, TeacherId = 1, Name = "Phân tích tài chính doanh nghiệp", StartDate = new DateTime(2026, 3, 10), EndDate = new DateTime(2026, 4, 10), MaxStudents = 30, Description = "Phân tích báo cáo tài chính và đánh giá hiệu quả kinh doanh." },
 
-                new Class { Id = 13, CourseId = 1, TeacherId = 1, Name = "C# cơ bản - Lớp cuối tuần", StartDate = new DateTime(2026, 6, 15), EndDate = new DateTime(2026, 7, 20), MaxStudents = 35, Description = "Lớp học cuối tuần cho người bận rộn." }
+                new Class { Id = 11, CourseId = 5, TeacherId = 1, Name = "Quảng cáo Facebook Ads chuyên sâu", StartDate = new DateTime(2026, 4, 1), EndDate = new DateTime(2026, 5, 10), MaxStudents = 25, Description = "Thiết lập và tối ưu chiến dịch quảng cáo Facebook hiệu quả." },
+
+                new Class { Id = 12, CourseId = 1, TeacherId = 1, Name = "Lập trình Python cho AI cơ bản", StartDate = new DateTime(2026, 5, 1), EndDate = new DateTime(2026, 6, 10), MaxStudents = 30, Description = "Giới thiệu Python trong trí tuệ nhân tạo và xử lý dữ liệu." },
+
+                new Class { Id = 13, CourseId = 3, TeacherId = 1, Name = "Thiết kế đồ họa - Lớp cuối tuần", StartDate = new DateTime(2026, 6, 15), EndDate = new DateTime(2026, 7, 20), MaxStudents = 35, Description = "Lớp học cuối tuần dành cho người đi làm yêu thích thiết kế." }
             );
 
             modelBuilder.Entity<Student>().HasData(
-                new Student { Id = 1, UserId = 0, FullName = "Nguyễn Minh Đức", Gender = EGender.Male, Address = "Hà Nội", DateOfBirth = new DateTime(2000, 1, 1) },
-                new Student { Id = 2, UserId = 0, FullName = "Trần Ngọc Anh", Gender = EGender.Female, Address = "TP Hồ Chí Minh", DateOfBirth = new DateTime(2001, 2, 2) },
-                new Student { Id = 3, UserId = 0, FullName = "Lê Hoàng Nam", Gender = EGender.Male, Address = "Đà Nẵng", DateOfBirth = new DateTime(1999, 3, 3) },
-                new Student { Id = 4, UserId = 0, FullName = "Phạm Thu Trang", Gender = EGender.Female, Address = "Huế", DateOfBirth = new DateTime(2002, 4, 4) },
-                new Student { Id = 5, UserId = 0, FullName = "Đỗ Văn Phúc", Gender = EGender.Male, Address = "Cần Thơ", DateOfBirth = new DateTime(2000, 5, 5) },
-                new Student { Id = 6, UserId = 0, FullName = "Nguyễn Văn Thiện", Gender = EGender.Male, Address = "Hà Nội", DateOfBirth = new DateTime(2001, 6, 10) },
-                new Student { Id = 7, UserId = 0, FullName = "Trần Thị Bé", Gender = EGender.Female, Address = "Hải Phòng", DateOfBirth = new DateTime(2000, 7, 11) },
-                new Student { Id = 8, UserId = 0, FullName = "Lê Văn Cảnh", Gender = EGender.Male, Address = "Đà Nẵng", DateOfBirth = new DateTime(1998, 8, 12) },
-                new Student { Id = 9, UserId = 0, FullName = "Phạm Thị Dung", Gender = EGender.Female, Address = "Cần Thơ", DateOfBirth = new DateTime(2002, 9, 13) },
-                new Student { Id = 10, UserId = 0, FullName = "Hoàng Văn Ôn", Gender = EGender.Male, Address = "Huế", DateOfBirth = new DateTime(1999, 10, 14) },
-                new Student { Id = 11, UserId = 0, FullName = "Đặng Thị Huệ", Gender = EGender.Female, Address = "Quảng Ninh", DateOfBirth = new DateTime(2003, 11, 15) },
-                new Student { Id = 12, UserId = 0, FullName = "Bùi Văn Giang", Gender = EGender.Male, Address = "Bình Dương", DateOfBirth = new DateTime(2001, 12, 16) }
+                new Student { Id = 1, UserId = 0, FullName = "Phan Quốc Bảo", Gender = EGender.Male, Address = "Hà Nội", DateOfBirth = new DateTime(1998, 2, 14) },
+                new Student { Id = 2, UserId = 0, FullName = "Ngô Thị Mai", Gender = EGender.Female, Address = "TP Hồ Chí Minh", DateOfBirth = new DateTime(2000, 6, 21) },
+                new Student { Id = 3, UserId = 0, FullName = "Trương Gia Huy", Gender = EGender.Male, Address = "Đà Nẵng", DateOfBirth = new DateTime(1997, 9, 5) },
+                new Student { Id = 4, UserId = 0, FullName = "Võ Thị Thanh Tâm", Gender = EGender.Female, Address = "Huế", DateOfBirth = new DateTime(2003, 1, 19) },
+                new Student { Id = 5, UserId = 0, FullName = "Dương Minh Khôi", Gender = EGender.Male, Address = "Cần Thơ", DateOfBirth = new DateTime(1999, 11, 30) },
+                new Student { Id = 6, UserId = 0, FullName = "Lý Văn Tuấn", Gender = EGender.Male, Address = "Hà Nội", DateOfBirth = new DateTime(2002, 4, 8) },
+                new Student { Id = 7, UserId = 0, FullName = "Đinh Thị Hồng", Gender = EGender.Female, Address = "Hải Phòng", DateOfBirth = new DateTime(2001, 7, 25) },
+                new Student { Id = 8, UserId = 0, FullName = "Tạ Quang Vinh", Gender = EGender.Male, Address = "Đà Nẵng", DateOfBirth = new DateTime(1996, 12, 2) },
+                new Student { Id = 9, UserId = 0, FullName = "Mai Thị Ngọc", Gender = EGender.Female, Address = "Cần Thơ", DateOfBirth = new DateTime(2003, 3, 17) },
+                new Student { Id = 10, UserId = 0, FullName = "Phùng Văn Hòa", Gender = EGender.Male, Address = "Huế", DateOfBirth = new DateTime(1998, 8, 9) },
+                new Student { Id = 11, UserId = 0, FullName = "Hồ Thị Lan Anh", Gender = EGender.Female, Address = "Quảng Ninh", DateOfBirth = new DateTime(2004, 5, 12) },
+                new Student { Id = 12, UserId = 0, FullName = "Cao Văn Sơn", Gender = EGender.Male, Address = "Bình Dương", DateOfBirth = new DateTime(2000, 10, 27) }
             );
 
             modelBuilder.Entity<Enrollment>().HasData(

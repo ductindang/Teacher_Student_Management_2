@@ -218,6 +218,348 @@
             background: white;
             z-index: 2;
         }
+
+
+
+        .class-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        /* LEFT */
+        .class-main {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .section-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 22px;
+            border: 1px solid #eee;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        /* highlight list */
+        .highlight-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px 20px;
+        }
+
+        .highlight-item {
+            font-size: 14px;
+            color: #333;
+        }
+
+            .highlight-item::before {
+                content: "✔";
+                color: #28a745;
+                margin-right: 8px;
+            }
+
+        /* description */
+        .class-description {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #444;
+        }
+
+        /* RIGHT */
+        .class-sidebar {
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+        }
+
+        .price-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #eee;
+        }
+
+        .price {
+            font-size: 26px;
+            font-weight: 700;
+            color: #e53935;
+            margin-bottom: 15px;
+        }
+
+        .info-list {
+            margin-top: 10px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            padding: 8px 0;
+            border-bottom: 1px dashed #eee;
+        }
+
+            .info-row span:first-child {
+                color: #777;
+            }
+
+        .enroll-btn {
+            width: 100%;
+            margin-top: 15px;
+            padding: 12px;
+            font-weight: 600;
+            border-radius: 10px;
+        }
+
+
+
+        .section-block {
+            margin-top: 30px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+            .section-header h4 {
+                font-size: 18px;
+                font-weight: 700;
+            }
+
+        .card-table {
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #eee;
+        }
+
+        /* table */
+        .table-modern {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+            .table-modern thead {
+                background: #f8f9fa;
+            }
+
+            .table-modern th {
+                font-size: 13px;
+                font-weight: 600;
+                padding: 12px;
+                color: #555;
+            }
+
+            .table-modern td {
+                padding: 12px;
+                font-size: 14px;
+                border-top: 1px solid #f1f1f1;
+            }
+
+            .table-modern tbody tr:hover {
+                background: #fafafa;
+            }
+
+        /* badge */
+        .badge-modern {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #e6f7ee;
+            color: #1aa053;
+        }
+
+        .badge-warning {
+            background: #fff4e5;
+            color: #f59e0b;
+        }
+
+        .badge-danger {
+            background: #fde8e8;
+            color: #e53935;
+        }
+
+        .badge-gray {
+            background: #eee;
+            color: #555;
+        }
+
+        /* link */
+        .link-action {
+            color: #0d6efd;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+            .link-action:hover {
+                text-decoration: underline;
+            }
+
+        /* modal */
+        .modal-content {
+            border-radius: 16px;
+        }
+
+
+
+        .enroll-card, .review-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 22px;
+            border: 1px solid #eee;
+            margin-top: 20px;
+        }
+
+        .enroll-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .enroll-message {
+            font-size: 14px;
+            color: #555;
+            margin: 12px 0;
+        }
+
+        .price-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 10px;
+        }
+
+        .price-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #e53935;
+        }
+
+        .badge-modern {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #e6f7ee;
+            color: #1aa053;
+        }
+
+        .badge-warning {
+            background: #fff4e5;
+            color: #f59e0b;
+        }
+
+        .badge-danger {
+            background: #fde8e8;
+            color: #e53935;
+        }
+
+        .btn-enroll {
+            width: 100%;
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        /* rating */
+        .star-rating {
+            font-size: 26px;
+            color: #ddd;
+            cursor: pointer;
+        }
+
+            .star-rating .star.active {
+                color: #ffc107;
+            }
+
+        .rating-text {
+            margin-top: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        textarea {
+            border-radius: 10px !important;
+        }
+
+
+
+
+        .modal-content {
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            border-bottom: 1px solid #eee;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        /* table */
+        .table-attendance-detail {
+            width: 100%;
+        }
+
+            .table-attendance-detail th {
+                background: #f8f9fa;
+                font-size: 13px;
+                color: #666;
+                padding: 10px;
+            }
+
+            .table-attendance-detail td {
+                padding: 12px;
+                border-top: 1px solid #f1f1f1;
+                font-size: 14px;
+            }
+
+            .table-attendance-detail tr:hover {
+                background: #fafafa;
+            }
+
+        /* badge */
+        .badge-status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-present {
+            background: #e6f7ee;
+            color: #1aa053;
+        }
+
+        .status-absent {
+            background: #fde8e8;
+            color: #e53935;
+        }
+
+        .status-late {
+            background: #fff4e5;
+            color: #f59e0b;
+        }
     </style>
 }
 
@@ -240,7 +582,7 @@
     }
     else
     {
-        backgroundImage = Url.Content("~/images/lightbox-2.jpeg");
+        backgroundImage = Url.Content("~/images/lightbox-5.jpeg");
     }
 
     var students = ViewBag.Students;
@@ -289,7 +631,7 @@
                             <div class="post-meta-info d-flex justify-content-between">
 
                                 <div class="media">
-                                    <img src="~/images/profile-12.jpeg" alt="profile">
+                                    <img src="~/images/th4.png" alt="profile">
                                     <div class="media-body">
                                         <h5>@Model.TeacherName</h5>
                                         <div class="teacher-rating">
@@ -335,106 +677,94 @@
 
                     </div>
 
-                    <div class="post-content">
+                    <div class="class-layout">
 
-                        <div class="class-info-wrapper">
+                        <!-- LEFT -->
+                        <div class="class-main">
 
-                            <!-- Thông tin tổng quan -->
-                            <div class="class-section">
-                                <h3 class="section-title">Thông tin lớp học</h3>
-
-                                <div class="class-info-grid">
-
-                                    <div class="info-item">
-                                        <span class="info-label">Tên lớp học</span>
-                                        <span class="info-value">@Model.Name</span>
-                                    </div>
-
-                                    <div class="info-item">
-                                        <span class="info-label">Khóa học</span>
-                                        <span class="info-value">@Model.CourseName</span>
-                                    </div>
-
-                                    <div class="info-item">
-                                        <span class="info-label">Giảng viên</span>
-                                        <span class="info-value">@Model.TeacherName</span>
-                                    </div>
-
-                                    <div class="info-item">
-                                        <span class="info-label">Số lượng học viên tối đa</span>
-                                        <span class="info-value">@Model.MaxStudents học viên</span>
-                                    </div>
-
-                                    <div class="info-item">
-                                        <span class="info-label">Ngày bắt đầu</span>
-                                        <span class="info-value">@Model.StartDate.ToString("dd/MM/yyyy")</span>
-                                    </div>
-
-                                    <div class="info-item">
-                                        <span class="info-label">Ngày kết thúc</span>
-                                        <span class="info-value">@Model.EndDate.ToString("dd/MM/yyyy")</span>
-                                    </div>
-
-                                    <div class="info-item">
-                                        <span class="info-label">Học phí</span>
-                                        <span class="info-value">@Model.CoursePrice.ToString("N0") VNĐ</span>
-                                    </div>
-
-                                </div>
-                            </div>
-
-
-                            <!-- Mô tả lớp học -->
-                            <div class="class-section">
-
-                                <h3 class="section-title">Mô tả lớp học</h3>
+                            <!-- GIỚI THIỆU -->
+                            <div class="section-card">
+                                <div class="section-title">📘 Giới thiệu khóa học</div>
 
                                 <div class="class-description">
-
                                     @if (!string.IsNullOrEmpty(Model.Description))
                                     {
                                         @Html.Raw(Model.Description)
                                     }
                                     else
                                     {
-                                        <div class="empty-description">
-                                            Lớp học này chưa có mô tả chi tiết.
-                                        </div>
+                                        <i>Chưa có mô tả cho khóa học này.</i>
                                     }
-
                                 </div>
-
                             </div>
 
+                            <!-- BẠN SẼ HỌC ĐƯỢC -->
+                            <div class="section-card">
+                                <div class="section-title">🎯 Bạn sẽ học được gì?</div>
 
-                            <!-- Thông tin bổ sung -->
-                            <div class="class-section">
+                                <div class="highlight-list">
+                                    <div class="highlight-item">Nắm vững kiến thức cơ bản</div>
+                                    <div class="highlight-item">Áp dụng vào thực tế</div>
+                                    <div class="highlight-item">Học cùng giảng viên chuyên môn</div>
+                                    <div class="highlight-item">Có lộ trình rõ ràng</div>
+                                </div>
+                            </div>
 
-                                <h3 class="section-title">Thông tin bổ sung</h3>
+                            <!-- THÔNG TIN THÊM -->
+                            <div class="section-card">
+                                <div class="section-title">📌 Thông tin lớp học</div>
 
-                                <ul class="class-extra">
+                                <div class="highlight-list">
+                                    <div class="highlight-item">Giảng viên: @Model.TeacherName</div>
+                                    <div class="highlight-item">Khóa học: @Model.CourseName</div>
+                                    <div class="highlight-item">Số lượng: @Model.MaxStudents học viên</div>
+                                    <div class="highlight-item">
+                                        Thời gian:
+                                        @Model.StartDate.ToString("dd/MM")
+                                        - @Model.EndDate.ToString("dd/MM")
+                                    </div>
+                                </div>
+                            </div>
 
-                                    <li>
-                                        Khóa học <b>@Model.CourseName</b> được thiết kế nhằm cung cấp kiến thức và kỹ năng cần thiết cho học viên.
-                                    </li>
+                        </div>
 
-                                    <li>
-                                        Lớp học do giảng viên <b>@Model.TeacherName</b> trực tiếp giảng dạy.
-                                    </li>
 
-                                    <li>
-                                        Lớp học kéo dài từ
-                                        <b>@Model.StartDate.ToString("dd/MM/yyyy")</b>
-                                        đến
-                                        <b>@Model.EndDate.ToString("dd/MM/yyyy")</b>.
-                                    </li>
+                        <!-- RIGHT -->
+                        <div class="class-sidebar">
 
-                                    <li>
-                                        Số lượng học viên tối đa cho lớp học này là
-                                        <b>@Model.MaxStudents</b> học viên.
-                                    </li>
+                            <div class="price-card">
 
-                                </ul>
+                                <div class="price">
+                                    @Model.CoursePrice.ToString("N0") VNĐ
+                                </div>
+
+                                @* <button class="btn btn-success enroll-btn">
+                                    🚀 Đăng ký ngay
+                                </button> *@
+
+                                <div class="info-list">
+
+                                    <div class="info-row">
+                                        <span>Khai giảng</span>
+                                        <span>@Model.StartDate.ToString("dd/MM/yyyy")</span>
+                                    </div>
+
+                                    <div class="info-row">
+                                        <span>Kết thúc</span>
+                                        <span>@Model.EndDate.ToString("dd/MM/yyyy")</span>
+                                    </div>
+
+                                    <div class="info-row">
+                                        <span>Học viên tối đa</span>
+                                        <span>@Model.MaxStudents</span>
+                                    </div>
+
+                                    <div class="info-row">
+                                        <span>Giảng viên</span>
+                                        <span>@Model.TeacherName</span>
+                                    </div>
+
+                                </div>
 
                             </div>
 
@@ -453,98 +783,117 @@
                                 <!-- DATATABLE -->
                                 <div class="row layout-top-spacing">
                                     <div class="col-xl-12 col-lg-12 col-sm-12">
-                                        <div class="statbox widget box box-shadow">
-                                            <div class="widget-header">
-                                                <div class="row">
-                                                    <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                                                        <h4>Học viên trong lớp</h4>
-                                                    </div>
-                                                </div>
+                                        <div class="section-block">
+
+                                            <div class="section-header">
+                                                <h4>👨‍🎓 Học viên trong lớp</h4>
                                             </div>
-                                            <div class="widget-content widget-content-area">
-                                                <table id="student-table" class="table style-3 dt-table-hover" style="width: 100%">
+
+                                            <div class="card-table">
+
+                                                <table class="table-modern">
+
                                                     <thead>
                                                         <tr>
-                                                            <th style="width: 5%">STT</th>
-                                                            <th>Mã học viên</th>
-                                                            <th>Tên học viên</th>
+                                                            <th>#</th>
+                                                            <th>Mã HV</th>
+                                                            <th>Tên</th>
                                                             <th>Giới tính</th>
                                                             <th>Ngày đăng ký</th>
-                                                            <th>Trạng thái đăng ký</th>
-                                                            <th>Chi tiết điểm danh</th>
+                                                            <th>Trạng thái</th>
+                                                            <th></th>
                                                         </tr>
                                                     </thead>
+
                                                     <tbody>
                                                         @{
                                                             int sttStd = 1;
                                                         }
-                                                        @if (students != null)
+
+                                                        @foreach (var student in students)
                                                         {
+                                                            <tr>
+                                                                <td>@sttStd</td>
+                                                                <td>@student.StudentId</td>
+                                                                <td>@student.Fullname</td>
+                                                                <td>@(((EGender)student.Gender).GetDisplayName())</td>
+                                                                <td>@student.EnrollDate.ToString("dd/MM/yyyy")</td>
 
-                                                            @foreach (var student in students)
-                                                            {
-                                                                <tr>
-                                                                    <td>@sttStd</td>
-                                                                    <td>@student.StudentId</td>
-                                                                    <td>@student.Fullname</td>
-                                                                    <td>@(((EGender)student.Gender).GetDisplayName())</td>
-                                                                    <td>@student.EnrollDate.ToString("dd/MM/yyyy")</td>
-                                                                    <td>@(((EEnrollStatus)student.EnrollStatus).GetDisplayName())</td>
-                                                                    <td>
-                                                                        <a href="javascript:void(0)" class="view-attendance" data-id="@student.StudentId" style="color:blue">
-                                                                            Xem chi tiết
-                                                                        </a>
-                                                                    </td>
-                                                                </tr>
+                                                                <td>
+                                                                    <span class="badge-modern badge-success">
+                                                                        @(((EEnrollStatus)student.EnrollStatus).GetDisplayName())
+                                                                    </span>
+                                                                </td>
 
-                                                                sttStd++;
-                                                            }
+                                                                <td>
+                                                                    <span class="link-action view-attendance"
+                                                                          data-id="@student.StudentId">
+                                                                        Xem
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+
+                                                            sttStd++;
                                                         }
 
                                                     </tbody>
+
                                                 </table>
+
                                             </div>
+
                                         </div>
                                     </div>
                                     <div class="modal fade" id="attendanceModal" tabindex="-1">
-                                        <div class="modal-dialog modal-lg">
+                                        <div class="modal-dialog modal-lg modal-dialog-centered">
+
                                             <div class="modal-content">
 
+                                                <!-- HEADER -->
                                                 <div class="modal-header">
-                                                    @if(studentObj != null){
-                                                        <h5 class="modal-title">Chi tiết điểm danh học viên @studentObj.FullName</h5>
-                                                    }else{
-                                                        <h5 class="modal-title">Chi tiết điểm danh học viên</h5>
-                                                    }
+
+                                                    <div>
+                                                        <div class="modal-title">
+                                                            📊 Chi tiết điểm danh
+                                                        </div>
+
+                                                        <div style="font-size:13px; color:#777;">
+                                                            @if (studentObj != null)
+                                                            {
+                                                                <span>Học viên: <b>@studentObj.FullName</b></span>
+                                                            }
+                                                        </div>
+                                                    </div>
 
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal">X</button>
+
                                                 </div>
 
+                                                <!-- BODY -->
                                                 <div class="modal-body">
 
-                                                    <div class="table-responsive">
+                                                    <table class="table-attendance-detail">
 
-                                                        <table class="table table-bordered">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Thứ</th>
-                                                                    <th>Thời gian</th>
-                                                                    <th>Ngày học</th>
-                                                                    <th>Phòng</th>
-                                                                    <th>Trạng thái</th>
-                                                                </tr>
-                                                            </thead>
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Thứ</th>
+                                                                <th>Thời gian</th>
+                                                                <th>Ngày học</th>
+                                                                <th>Phòng</th>
+                                                                <th>Trạng thái</th>
+                                                            </tr>
+                                                        </thead>
 
-                                                            <tbody id="attendance-body">
-                                                            </tbody>
+                                                        <tbody id="attendance-body">
+                                                            <!-- JS render -->
+                                                        </tbody>
 
-                                                        </table>
-
-                                                    </div>
+                                                    </table>
 
                                                 </div>
 
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -556,88 +905,75 @@
                                 <!-- DATATABLE -->
                                 <div class="row layout-top-spacing">
                                     <div class="col-xl-12 col-lg-12 col-sm-12">
-                                        <div class="statbox widget box box-shadow">
-                                            <div class="widget-header">
-                                                <div class="row">
-                                                    <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                                                        <h4>Đánh giá học viên giành cho bạn</h4>
-                                                    </div>
-                                                </div>
+                                        <div class="section-block">
+
+                                            <div class="section-header">
+                                                <h4>⭐ Đánh giá học viên</h4>
                                             </div>
-                                            <div class="widget-content widget-content-area">
-                                                <table id="teacher-table" class="table style-3 dt-table-hover" style="width: 100%">
+
+                                            <div class="card-table">
+
+                                                <table id="teacher-table" class="table-modern">
+
                                                     <thead>
                                                         <tr>
-                                                            <th style="width: 5%">STT</th>
-                                                            <th>Mã đánh giá</th>
+                                                            <th>#</th>
+                                                            <th>Mã</th>
                                                             <th>Đánh giá</th>
-                                                            <th>Thời gian tạo</th>
-                                                            <th class="no-content" style="width: 5%">Chi tiết</th>
+                                                            <th>Thời gian</th>
+                                                            <th></th>
                                                         </tr>
                                                     </thead>
+
                                                     <tbody>
                                                         @{
                                                             int stt = 1;
                                                         }
-                                                        @if (teacherReviews != null)
+
+                                                        @foreach (var review in teacherReviews)
                                                         {
+                                                            string cls = "badge-gray";
+                                                            string text = "";
 
-                                                            @foreach (var review in teacherReviews)
+                                                            switch (review.Rating)
                                                             {
-                                                                <tr>
-                                                                    <td>@stt</td>
-                                                                    <td>@review.Id</td>
-                                                                    <td>
-                                                                        @{
-                                                                            string ratingText = "";
-                                                                            string ratingClass = "";
-
-                                                                            switch (review.Rating)
-                                                                            {
-                                                                                case 1:
-                                                                                    ratingText = "Rất tệ";
-                                                                                    ratingClass = "badge bg-danger";
-                                                                                    break;
-                                                                                case 2:
-                                                                                    ratingText = "Tệ";
-                                                                                    ratingClass = "badge bg-warning";
-                                                                                    break;
-                                                                                case 3:
-                                                                                    ratingText = "Bình thường";
-                                                                                    ratingClass = "badge bg-secondary";
-                                                                                    break;
-                                                                                case 4:
-                                                                                    ratingText = "Tốt";
-                                                                                    ratingClass = "badge bg-info";
-                                                                                    break;
-                                                                                case 5:
-                                                                                    ratingText = "Rất tốt";
-                                                                                    ratingClass = "badge bg-success";
-                                                                                    break;
-                                                                            }
-                                                                        }
-
-                                                                        <span class="@ratingClass">@ratingText (@review.Rating⭐)</span>
-                                                                    </td>
-                                                                    <td>@review.CreatedAt.ToString("dd/MM/yyyy | hh:mm:ss tt")</td>
-
-                                                                    <td class="text-center">
-                                                                        <a href="javascript:void(0)"
-                                                                           class="text-primary view-comment"
-                                                                           data-comment="@review.Comment">
-                                                                            Xem chi tiết
-                                                                        </a>
-                                                                    </td>
-
-                                                                </tr>
-
-                                                                stt++;
+                                                                case 1: cls = "badge-danger"; text = "Rất tệ"; break;
+                                                                case 2: cls = "badge-warning"; text = "Tệ"; break;
+                                                                case 3: cls = "badge-gray"; text = "Bình thường"; break;
+                                                                case 4: cls = "badge-success"; text = "Tốt"; break;
+                                                                case 5: cls = "badge-success"; text = "Rất tốt"; break;
                                                             }
+
+                                                            <tr>
+                                                                <td>@stt</td>
+                                                                <td>@review.Id</td>
+
+                                                                <td>
+                                                                    <span class="badge-modern @cls">
+                                                                        @text (@review.Rating ⭐)
+                                                                    </span>
+                                                                </td>
+
+                                                                <td>@review.CreatedAt.ToString("dd/MM/yyyy")</td>
+
+                                                                <td>
+                                                                    <a href="javascript:void(0)"
+                                                                          class="link-action view-comment"
+                                                                          data-comment="@review.Comment">
+                                                                        Xem
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+
+                                                            stt++;
                                                         }
 
                                                     </tbody>
+
                                                 </table>
+
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -647,193 +983,133 @@
                         }
                         else if (user.RoleId == (int)ERoleName.Student)
                         {
-                            if (enrollment == null)
+                            @if (enrollment == null)
                             {
-                                <div class="enroll-box">
+                                <div class="enroll-card">
 
-                                    <div class="enroll-header">
-                                        <h4>Đăng ký lớp học</h4>
+                                    <div class="enroll-title">🚀 Đăng ký lớp học</div>
+
+                                    <div class="enroll-message">
+                                        Bạn chưa tham gia lớp học với giảng viên <b>@Model.TeacherName</b>.
                                     </div>
 
-                                    <div class="enroll-content">
-
-                                        <p class="enroll-message">
-                                            Bạn chưa đăng ký lớp học này. Hãy đăng ký ngay để tham gia lớp học cùng giảng viên
-                                            <b>@Model.TeacherName</b>.
-                                        </p>
-
-                                        <div class="enroll-price">
-                                            <span class="price-label">Tổng học phí</span>
-                                            <span class="price-value">@Model.CoursePrice.ToString("N0") VNĐ</span>
-                                        </div>
-
-                                        <div class="enroll-action">
-                                            <form method="post"
-                                                  action="@Url.Action("Create","Enrollment")"
-                                                  class="enroll-form">
-
-                                                <input type="hidden" name="ClassId" value="@Model.Id" />
-                                                <input type="hidden" name="StudentId" value="@studentObj.Id" />
-
-                                                <button type="submit" class="btn btn-primary btn-enroll">
-                                                    Đăng ký lớp học
-                                                </button>
-
-                                            </form>
-                                        </div>
-
+                                    <div class="price-box">
+                                        <div>Học phí</div>
+                                        <div class="price-value">@Model.CoursePrice.ToString("N0") VNĐ</div>
                                     </div>
+
+                                    <form method="post" action="@Url.Action("Create","Enrollment")" class="enroll-form">
+                                        <input type="hidden" name="ClassId" value="@Model.Id" />
+                                        <input type="hidden" name="StudentId" value="@studentObj.Id" />
+
+                                        <button class="btn btn-success btn-enroll">
+                                            Đăng ký ngay
+                                        </button>
+                                    </form>
 
                                 </div>
                             }
                             else
                             {
-                                string message = "";
-                                string buttonText = "";
-                                bool showButton = false;
-
-                                string badgeText = "";
                                 string badgeClass = "";
-                                string actionName = "";
-
+                                string badgeText = "";
+                                string message = "";
+                                string btnText = "";
+                                string action = "";
+                                bool showBtn = false;
 
                                 if (enrollment.Status == EEnrollStatus.InActive)
                                 {
+                                    badgeClass = "badge-warning";
                                     badgeText = "Chờ xác nhận";
-                                    badgeClass = "badge bg-warning";
-
-                                    message = "Bạn đã đăng ký lớp học này. Hãy liên hệ với trung tâm qua số điện thoại 1900 0000 để được cập nhật thông tin.";
-
-                                    buttonText = "Hủy đăng ký";
-                                    actionName = "Cancel";
-                                    showButton = true;
+                                    message = "Đơn đăng ký đang chờ duyệt.";
+                                    btnText = "Hủy đăng ký";
+                                    action = "Cancel";
+                                    showBtn = true;
                                 }
                                 else if (enrollment.Status == EEnrollStatus.Active)
                                 {
+                                    badgeClass = "badge-success";
                                     badgeText = "Đã đăng ký";
-                                    badgeClass = "badge bg-success";
-
-                                    message = "Lớp học đã được đăng ký thành công. Bạn vui lòng chú ý thời khóa biểu để tham gia lớp học đúng thời gian.";
+                                    message = "Bạn đã đăng ký thành công lớp học.";
                                 }
-                                else if (enrollment.Status == EEnrollStatus.Cancel)
+                                else
                                 {
+                                    badgeClass = "badge-danger";
                                     badgeText = "Đã hủy";
-                                    badgeClass = "badge bg-danger";
-
-                                    message = "Bạn đã hủy đăng ký lớp học này. Hãy đăng ký lại nếu bạn muốn tiếp tục tham gia.";
-
-                                    buttonText = "Đăng ký lại";
-                                    actionName = "ReEnroll";
-                                    showButton = true;
+                                    message = "Bạn đã hủy lớp học.";
+                                    btnText = "Đăng ký lại";
+                                    action = "ReEnroll";
+                                    showBtn = true;
                                 }
 
-                                <div class="enroll-box">
+                                <div class="enroll-card">
 
-                                    <div class="enroll-header d-flex justify-content-between align-items-center">
-                                        <h4>Thông tin đăng ký lớp học</h4>
-                                        <span class="@badgeClass">@badgeText</span>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="enroll-title">📋 Trạng thái đăng ký</div>
+                                        <span class="badge-modern @badgeClass">@badgeText</span>
                                     </div>
 
-                                    <div class="enroll-content">
+                                    <div class="enroll-message">@message</div>
 
-                                        <p class="enroll-message">
-                                            @message
-                                        </p>
-
-                                        <div class="enroll-price">
-                                            <span class="price-label">Tổng học phí</span>
-                                            <span class="price-value">@Model.CoursePrice.ToString("N0") VNĐ</span>
-                                        </div>
-
-                                        @if (showButton)
-                                        {
-                                            <div class="enroll-action">
-
-                                                <a href="javascript:void(0)"
-                                                   data-url="@Url.Action(actionName, "Enrollment", new { id = enrollment.Id })"
-                                                   class="btn btn-primary btn-enroll confirm-action">
-
-                                                    @buttonText
-
-                                                </a>
-
-                                            </div>
-                                        }
-
+                                    <div class="price-box">
+                                        <div>Học phí</div>
+                                        <div class="price-value">@Model.CoursePrice.ToString("N0") VNĐ</div>
                                     </div>
+
+                                    @if (showBtn)
+                                    {
+                                        <a href="javascript:void(0)"
+                                           data-url="@Url.Action(action, "Enrollment", new { id = enrollment.Id })"
+                                           class="btn btn-primary btn-enroll confirm-action">
+                                            @btnText
+                                        </a>
+                                    }
 
                                 </div>
+                            }
 
-                                @if (enrollment.Status == EEnrollStatus.Active && Model.StartDate < DateTime.Now)
-                                {
-                                    <div class="review-box">
+                            @if (enrollment?.Status == EEnrollStatus.Active && Model.StartDate < DateTime.Now)
+                            {
+                                <div class="review-card">
 
-                                        <h5 class="review-title">Đánh giá lớp học</h5>
+                                    <div class="enroll-title">⭐ Đánh giá lớp học</div>
 
-                                        <!-- Hướng dẫn -->
-                                        <div class="review-guide">
-                                            <p><b>Hướng dẫn đánh giá:</b></p>
-                                            <ul>
-                                                <li>Chọn số <b>sao</b> để đánh giá chất lượng giảng dạy của giáo viên.</li>
-                                                <li>Viết nhận xét ngắn gọn về trải nghiệm của bạn trong lớp học.</li>
-                                                <li>Nhận xét của bạn sẽ giúp trung tâm cải thiện chất lượng đào tạo.</li>
-                                            </ul>
+                                    <form method="post"
+                                          action="@Url.Action(teaReviewOfStudent == null ? "Insert" : "Update", "TeacherReview")">
+
+                                        <input type="hidden" name="ClassId" value="@Model.Id" />
+                                        <input type="hidden" name="StudentId" value="@studentObj.Id" />
+                                        <input type="hidden" name="TeacherId" value="@Model.TeacherId" />
+                                        <input type="hidden" id="ratingValue" name="Rating"
+                                               value="@(teaReviewOfStudent?.Rating ?? 0)" />
+
+                                        <!-- STAR -->
+                                        <div class="star-rating">
+                                            @for (int i = 1; i <= 5; i++)
+                                            {
+                                                <span class="star @(teaReviewOfStudent?.Rating >= i ? "active" : "")"
+                                                      data-value="@i">★</span>
+                                            }
                                         </div>
 
-                                        <form method="post"
-                                              action="@Url.Action(teaReviewOfStudent == null ? "Insert" : "Update", "TeacherReview")">
+                                        <div id="ratingText" class="rating-text">
+                                            Hãy chọn số sao
+                                        </div>
 
-                                            <input type="hidden" name="ClassId" value="@Model.Id" />
-                                            <input type="hidden" name="StudentId" value="@studentObj.Id" />
-                                            <input type="hidden" name="TeacherId" value="@Model.TeacherId" />
+                                        <div class="mt-3">
+                                            <textarea name="Comment"
+                                          class="form-control"
+                                          placeholder="Chia sẻ cảm nhận của bạn...">@teaReviewOfStudent?.Comment</textarea>
+                                        </div>
 
-                                            @if (teaReviewOfStudent != null)
-                                            {
-                                                <input type="hidden" name="Id" value="@teaReviewOfStudent.Id" />
-                                            }
+                                        <button class="btn btn-success btn-enroll mt-3">
+                                            @(teaReviewOfStudent == null ? "Gửi đánh giá" : "Cập nhật")
+                                        </button>
 
-                                            <input type="hidden" id="ratingValue" name="Rating"
-                                                   value="@(teaReviewOfStudent?.Rating ?? 0)" />
+                                    </form>
 
-                                            <!-- Rating star -->
-                                            <div class="star-rating">
-                                                @for (int i = 1; i <= 5; i++)
-                                                {
-                                                    <span class="star @(teaReviewOfStudent != null && teaReviewOfStudent.Rating >= i ? "active" : "")"
-                                                          data-value="@i">★</span>
-                                                }
-                                            </div>
-
-                                            <div id="ratingText" class="rating-text">
-                                                @(teaReviewOfStudent?.Rating switch
-                                                {
-                                                    1 => "Rất tệ",
-                                                    2 => "Không hài lòng",
-                                                    3 => "Bình thường",
-                                                    4 => "Tốt",
-                                                    5 => "Rất tốt",
-                                                    _ => "Hãy chọn số sao để đánh giá"
-                                                })
-                                            </div>
-
-                                            <!-- Comment -->
-                                            <div class="review-comment">
-                                                <textarea name="Comment"
-                                          placeholder="Hãy chia sẻ cảm nhận của bạn về lớp học..."
-                                          rows="4"
-                                          class="form-control">@(teaReviewOfStudent?.Comment ?? "")</textarea>
-                                            </div>
-
-                                            <div class="review-action">
-                                                <button type="submit" class="btn btn-primary">
-                                                    @(teaReviewOfStudent == null ? "Gửi đánh giá" : "Cập nhật đánh giá")
-                                                </button>
-                                            </div>
-
-                                        </form>
-
-                                    </div>
-                                }
+                                </div>
                             }
                         }
                     }
@@ -873,16 +1149,22 @@
     <script src="/js/teacher/teacher.js"></script>
 
     <script>
-        function getStatus(status) {
-            switch(status){
-                case 1: return "Có mặt";
-                case 2: return "Vắng";
-                case 3: return "Đi muộn";
-                case 4: return "Chưa điểm danh";
-                default: return "Chưa điểm danh";
+                // ===== STATUS BADGE =====
+        function getStatusBadge(status) {
+            switch (status) {
+                case 1:
+                    return `<span class="badge-status status-present">✔ Có mặt</span>`;
+                case 2:
+                    return `<span class="badge-status status-absent">✖ Vắng</span>`;
+                case 3:
+                    return `<span class="badge-status status-late">⏰ Đi muộn</span>`;
+                case 4:
+                default:
+                    return `<span class="badge-status" style="background:#eee;color:#666">Chưa điểm danh</span>`;
             }
         }
 
+        // ===== DAY TEXT =====
         function getDayOfWeek(day) {
             switch (day) {
                 case 0: return "Chủ nhật";
@@ -897,21 +1179,37 @@
         }
 
 
+        // ===== CLICK VIEW ATTENDANCE =====
         $(document).on("click", ".view-attendance", function () {
 
             var studentId = $(this).data("id");
             var classId = @Model.Id;
 
-            $("#attendance-body").html("<tr><td colspan='5'>Loading...</td></tr>");
+            // loading UI
+            $("#attendance-body").html(`
+                <tr>
+                    <td colspan="5" style="text-align:center; padding:20px;">
+                        ⏳ Đang tải dữ liệu...
+                    </td>
+                </tr>
+            `);
 
             $.ajax({
                 url: "/Attendance/GetAttendance",
                 type: "GET",
                 data: { studentId: studentId, classId: classId },
+
                 success: function (data) {
 
-                    if (data.length === 0) {
-                        $("#attendance-body").html("<tr><td colspan='5'>Không có dữ liệu</td></tr>");
+                    if (!data || data.length === 0) {
+                        $("#attendance-body").html(`
+                            <tr>
+                                <td colspan="5" style="text-align:center; padding:20px; color:#888;">
+                                    📭 Không có dữ liệu
+                                </td>
+                            </tr>
+                        `);
+
                         $("#attendanceModal").modal("show");
                         return;
                     }
@@ -926,9 +1224,9 @@
                         endDate = today;
                     }
 
+                    // ===== BUILD LESSON LIST =====
                     for (var d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
 
-                        // duyệt từng schedule
                         data.forEach(function (schedule) {
 
                             if (d.getDay() === schedule.dayOfWeek) {
@@ -948,14 +1246,12 @@
                                     room: schedule.room,
                                     status: status
                                 });
-
                             }
 
                         });
-
                     }
 
-                    // sắp xếp gần nhất → xa nhất
+                    // sort newest → oldest
                     lessons.sort((a, b) => b.date - a.date);
 
                     var html = "";
@@ -964,13 +1260,17 @@
 
                         var dateText = item.date.toLocaleDateString("vi-VN");
 
+                        let rowClass = "";
+                        if (item.status === 2) rowClass = "row-absent";
+                        if (item.status === 3) rowClass = "row-late";
+
                         html += `
-                        <tr>
+                        <tr class="${rowClass}">
                             <td>${getDayOfWeek(item.day)}</td>
                             <td>${item.time}</td>
                             <td>${dateText}</td>
                             <td>${item.room}</td>
-                            <td>${getStatus(item.status)}</td>
+                            <td>${getStatusBadge(item.status)}</td>
                         </tr>
                         `;
                     });
@@ -978,9 +1278,18 @@
                     $("#attendance-body").html(html);
 
                     $("#attendanceModal").modal("show");
+                },
+
+                error: function () {
+                    $("#attendance-body").html(`
+                        <tr>
+                            <td colspan="5" style="text-align:center; padding:20px; color:red;">
+                                ❌ Lỗi tải dữ liệu
+                            </td>
+                        </tr>
+                    `);
                 }
             });
-
         });
 
         document.addEventListener("DOMContentLoaded", function () {

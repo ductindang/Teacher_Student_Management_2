@@ -24,53 +24,62 @@
     <link rel="stylesheet" href="~/plugins/tomSelect/tom-select.default.min.css" />
 
     <style>
-        .ts-control {
-            padding: 12px;
-        }
-
+        /* ===== GLOBAL ===== */
         .dashboard {
-            max-width: 1440px;
+            max-width: 1400px;
             margin: auto;
-            padding: 20px;
-            font-family: 'Segoe UI', sans-serif;
+            padding: 30px;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f6f8ff, #eef1ff);
+            min-height: 100vh;
         }
 
-        /* Greeting */
+        /* ===== GREETING ===== */
         .greetingDiv {
-            color: black;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(14px);
+            border-radius: 20px;
+            padding: 25px 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
+
         .teacherGreeting {
-            font-size: 22px;
-            font-weight: bold;
-            margin-bottom: 8px;
+            font-size: 26px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #6651e4, #8f7bff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .makeFlexGreeting {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 16px;
+            gap: 10px;
+            margin-top: 6px;
+            font-size: 14px;
+            color: #666;
         }
 
         .motivation-quote {
             margin-top: 15px;
             font-style: italic;
-            color: black;
-            font-size: 16px;
+            font-size: 15px;
+            color: #444;
             display: flex;
             justify-content: space-between;
         }
 
-        /* Alert Card */
+        /* ===== ALERT CARD ===== */
         .lowAvailabilityAlertCard {
             display: flex;
             align-items: center;
             gap: 20px;
-            background: #fff4f4;
-            border: 1px solid #ffcaca;
-            padding: 20px;
-            border-radius: 12px;
-            margin-top: 25px;
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #6651e4, #8f7bff);
+            color: white;
+            box-shadow: 0 15px 35px rgba(102,81,228,0.25);
         }
 
         .alertContent {
@@ -81,126 +90,151 @@
         }
 
         .slotInfo h3 {
-            margin-top: 6px;
-            font-size: 16px;
-            color: #d32f2f;
+            margin-top: 5px;
+            font-size: 18px;
+            font-weight: 600;
         }
 
+        .alertText {
+            opacity: 0.9;
+        }
+
+        /* BUTTON */
         .primaryBtn {
-            background: #6651e4;
-            color: white;
+            background: white;
+            color: #6651e4;
             border: none;
             padding: 10px 18px;
-            border-radius: 8px;
+            border-radius: 10px;
+            font-weight: 600;
             cursor: pointer;
-            transition: 0.2s ease;
+            transition: 0.25s;
         }
 
             .primaryBtn:hover {
-                background: #4d3ac7;
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(0,0,0,0.15);
             }
 
-        /* Empty state */
-        .emptyState {
-            margin-top: 40px;
-            padding: 40px;
-            text-align: center;
-            background: #f5f4fa;
-            border-radius: 12px;
-        }
-
-
+        /* ===== CLASS LIST ===== */
         .classList {
             margin-top: 40px;
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
             gap: 20px;
         }
 
+        /* CARD */
         .classCard {
-            background: white;
-            border-radius: 14px;
-            padding: 24px 32px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.05);
-            border-left: 6px solid #6651e4;
-            transition: 0.2s ease;
+            position: relative;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            overflow: hidden;
         }
 
-            .classCard:hover {
-                transform: translateY(-3px);
-                box-shadow: 0 10px 30px rgba(102,81,228,0.12);
+            /* gradient border effect */
+            .classCard::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                border-radius: 20px;
+                padding: 1px;
+                background: linear-gradient(120deg, #6651e4, transparent);
+                -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+                -webkit-mask-composite: xor;
+                mask-composite: exclude;
             }
 
-        /* Left side */
+            /* hover */
+            .classCard:hover {
+                transform: translateY(-6px) scale(1.01);
+                box-shadow: 0 15px 40px rgba(102,81,228,0.15);
+            }
 
-        .classTitle {
-            font-size: 20px;
-            font-weight: 700;
-            color: #2b2b2b;
-            margin-bottom: 4px;
-        }
-
-        .classCourse {
-            font-size: 15px;
-            font-weight: 600;
-            color: #6651e4;
-            margin-bottom: 10px;
-        }
-
-        .classInfo {
-            font-size: 14px;
-            color: #555;
-            font-weight: 500;
-            line-height: 1.6;
-        }
-
-        /* Right side */
-
-        .classTime {
-            background: #f4f2ff;
-            padding: 14px 18px;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 600;
-            color: #3f3d56;
-            line-height: 1.7;
-            min-width: 220px;
-        }
-
-        /* Spacing tweak */
-
+        /* LEFT */
         .classLeft {
             display: flex;
             flex-direction: column;
             gap: 6px;
         }
 
+        .classTitle {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2b2b2b;
+        }
+
+        .classCourse {
+            font-size: 14px;
+            font-weight: 600;
+            color: #6651e4;
+        }
+
+        .classInfo {
+            font-size: 13px;
+            color: #666;
+        }
+
+        /* RIGHT */
         .classRight {
             text-align: right;
         }
 
-        /* Responsive */
-
-        @@media (max-width: 768px) {
-            .classCard
-
-        {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 15px;
-        }
-
-        .classRight {
-            text-align: left;
-            width: 100%;
-        }
-
         .classTime {
-            width: 100%;
+            background: linear-gradient(135deg, #f1efff, #e7e4ff);
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #3f3d56;
+            line-height: 1.6;
         }
+
+        /* ===== EMPTY ===== */
+        .emptyState {
+            margin-top: 50px;
+            padding: 50px;
+            text-align: center;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+        }
+
+            .emptyState h3 {
+                font-size: 22px;
+                color: #6651e4;
+            }
+
+        /* ===== RESPONSIVE ===== */
+        @@media (max-width: 768px) {
+            .classList
+
+            {
+                grid-template-columns: 1fr;
+            }
+
+            .classCard {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .classRight {
+                width: 100%;
+                text-align: left;
+            }
+
+            .classTime {
+                width: 100%;
+            }
 
         }
     </style>
@@ -235,18 +269,18 @@
     <!-- Greeting -->
     <div class="greetingDiv">
         <div class="teacherGreeting">
-            Xin chào 
-            @if(teacher != null)
+            Chào mừng trở lại,
+            @if (teacher != null)
             {
-                <span>giáo viên @teacher.FullName 👋</span>
+                <span>Giảng viên @teacher.FullName ✨</span>
             }
             else if (student != null)
             {
-                <span>học viên @student.FullName 👋</span>
+                <span>Học viên @student.FullName ✨</span>
             }
             else
             {
-                <span>@(user?.Username ?? "") 👋</span>
+                <span>@(user?.Username ?? "") ✨</span>
             }
         </div>
 
@@ -256,21 +290,21 @@
                 <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0" />
             </svg>
             <div class="timeDetails">
-                Thời gian được hiển thị tại Asia/Saigon +07 (+07:00)
+                Múi giờ hệ thống: (GMT+7) - Việt Nam
             </div>
         </div>
         @if (teacher != null)
         {
             <div class="motivation-quote">
-                <p class="quote-text">Để trờ thành một người giáo viên đúng nghĩa, bạn phải luôn là một người học trò.</p>
-                <p class="quote-author">- Søren Kierkegaard</p>
+                <p class="quote-text">Một người thầy giỏi không ngừng học hỏi mỗi ngày.</p>
+                <p class="quote-author">— Inspirational Thought</p>
             </div>
         }
         else
         {
             <div class="motivation-quote">
-                <p class="quote-text">Để trờ thành một người học viên đúng nghĩa, bạn phải luôn là một người biết lắng nghe lời dạy bảo.</p>
-                <p class="quote-author">- Søren Kierkegaard</p>
+                <p class="quote-text">Học tập là hành trình dài, không phải đích đến.</p>
+                <p class="quote-author">— Inspirational Thought</p>
             </div>
         }
 
@@ -284,16 +318,16 @@
 
         <div class="alertContent">
             <div class="slotInfo">
-                Lịch trình ngày hôm nay
-                <h3>Hãy quản lý lịch của chính bạn</h3>
+                Hoạt động hôm nay
+                <h3>Theo dõi và kiểm soát lịch dạy/học của bạn</h3>
             </div>
 
             <div class="alertAction">
                 <div class="alertText">
-                    Xem chi tiết thời khóa biểu trong tuần
+                    Xem toàn bộ lịch trong tuần
                 </div>
                 <div style="margin-top: 20px">
-                    <a class="primaryBtn" asp-controller="Schedule" asp-action="Index">Lịch trong tuần</a>
+                    <a class="primaryBtn" asp-controller="Schedule" asp-action="Index">Xem lịch chi tiết</a>
                 </div>
             </div>
         </div>
@@ -312,13 +346,11 @@
                             <div class="classCourse">@item.CourseName</div>
 
                             <div class="classInfo">
-                                📅 @item.StartDate.ToString("dd/MM/yyyy")
-                                -
-                                @item.EndDate.ToString("dd/MM/yyyy")
+                                📆 Thời gian: @item.StartDate.ToString("dd/MM/yyyy") - @item.EndDate.ToString("dd/MM/yyyy")
                             </div>
 
                             <div class="classInfo">
-                                👥 Tối đa: @item.MaxStudents học viên
+                                👨‍🎓 Sĩ số tối đa: @item.MaxStudents
                             </div>
                         </div>
 

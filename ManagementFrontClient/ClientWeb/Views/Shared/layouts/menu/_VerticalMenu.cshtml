@@ -1,15 +1,12 @@
 ﻿@using BLL.DTOs
 @using Newtonsoft.Json
 <style>
-    .page-logo{
-        display: flex;
-        flex-direction: column;
-        text-align: center;
-        font-weight: bold;
-        margin-bottom: 15px;
-        font-size: 25px;
-    }
+    
+
+
 </style>
+
+
 
 @{
     var userJson = Context.Session.GetString("UserLogin");
@@ -21,13 +18,13 @@
     }
 }
 
-<div class="sidebar-wrapper sidebar-theme pt-0">
+<div class="sidebar-wrapper sidebar-theme pt-0" style="display: none">
     <nav id="sidebar">
         <ul class="list-unstyled menu-categories" id="accordionExample">
             <li class="menu @(ViewBag.Page == "home" ? "active" : "")">
                 <a href="@Url.Action("Index", "Dashboard")">
                     <div class="page-logo">
-                        <img style="width: stretch" src="/images/Student-Management-Logo.jpg" alt="Logo" />
+                        <img style="width: stretch" src="/images/education-logo-template-free.jpg" alt="Logo" />
                         <span>Management</span>
                     </div>
                 </a>

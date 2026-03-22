@@ -25,7 +25,7 @@ function checkSignIn() {
             $('.overlay').fadeIn(500);
 
             // Show success message with animation
-            $('#successNotification').text("Login success!, wait a second").css({
+            $('#successNotification').text("Đăng nhập thành công!, chờ một lúc").css({
                 backgroundColor: '#5aff4d',
                 right: '-300px',
                 display: 'block'
@@ -51,7 +51,7 @@ function checkSignIn() {
             // Show dark overlay
             $('.overlay').fadeIn(500);
 
-            $('#successNotification').text('Login failed: ' + xhr.responseText).css({
+            $('#successNotification').text('Đăng nhập thất bại: ' + xhr.responseText).css({
                 backgroundColor: '#ff573e',
                 right: '-300px',
                 display: 'block'

@@ -1,124 +1,218 @@
 ﻿@using AdminWeb.Helper.Extensions
 @using BLL.Response
 
+@model IEnumerable<EnrollmentResponse>
+
 @{
-    ViewData["Title"] = "Enrollment management";
+    ViewData["Title"] = "Quản lý đăng ký";
     Layout = "~/Views/Shared/_LayoutProject.cshtml";
 }
 
-@model IEnumerable<EnrollmentResponse>
-
 @section Styles {
+
     <link href="~/plugins/table/datatable/datatables.css" rel="stylesheet" />
     <link href="~/plugins/table/datatable/extensions/col-reorder/col-reorder.datatables.min.css" rel="stylesheet" />
     <link href="~/plugins/table/datatable/extensions/fixed-columns/fixed-columns.datatables.min.css" rel="stylesheet" />
     <link href="~/css/customs/plugins/light/table/datatable/dt-global_style.css" rel="stylesheet" />
     <link href="~/css/customs/plugins/light/table/datatable/custom_dt_custom.css" rel="stylesheet" />
 
+    <style>
+
+        li {
+            list-style: none;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+            .page-header h2 {
+                font-weight: 600;
+            }
+
+        .add-btn {
+            background: #2563eb;
+            border: none;
+            padding: 8px 18px;
+            color: white;
+            border-radius: 6px;
+        }
+
+        .enroll-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+        }
+
+        .enroll-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .enroll-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #8b5cf6;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
+
+    </style>
 
 }
 
-<div>
-    <!-- BREADCRUMB -->
-    <div class="page-meta">
-        <nav class="breadcrumb-style-one" aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Dịch vụ</a></li>
-                <li class="breadcrumb-item active" aria-current="page">
-                    Quản lý đăng ký
-                </li>
-            </ol>
-        </nav>
-    </div>
-    <!-- /BREADCRUMB -->
-    <!-- DATATABLE -->
-    <div class="row layout-top-spacing">
-        <div class="col-xl-12 col-lg-12 col-sm-12">
-            <div class="statbox widget box box-shadow">
-                <div class="widget-header">
-                    <div class="row">
-                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                            <h4>Quản lý đăng ký</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="widget-content widget-content-area">
-                    <div class="layout-top-spacing ps-3 pe-3 col-12 mb-3">
-                        <a href="@Url.Action("Create", "Enrollment")" class="btn btn-primary">Thêm mới</a>
-                    </div>
-                    <table id="enrollment-table" class="table style-3 dt-table-hover" style="width: 100%">
-                        <thead>
-                            <tr>
-                                <th style="width: 5%">STT</th>
-                                <th>Mã đăng ký</th>
-                                <th>Học viên</th>
-                                <th>Lớp học</th>
-                                <th>Ngày đăng ký</th>
-                                <th>Trạng thái</th>
-                                <th class="no-content" style="width: 5%">Thao tác</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @{
-                                int stt = 1;
-                            }
-                            @if (Model != null)
-                            {
+<div class="container-xxl">
 
-                                @foreach (var enroll in Model)
-                                {
-                                    <tr>
-                                        <td>@stt</td>
-                                        <td>@enroll.Id</td>
-                                        <td>@enroll.StudentName</td>
-                                        <td>@enroll.ClassName</td>
-                                        <td>@enroll.EnrollDate</td>
-                                        <td>@enroll.Status.GetDisplayName()</td>
+    <!-- HEADER -->
 
-                                        <td class="table-controls d-flex justify-content-center align-items-center pt-2">
-                                            <li>
-                                                <a href="@Url.Action("Edit", "Enrollment", new { id = enroll.Id })"
-                                                   class="bs-tooltip edit" data-bs-toggle="tooltip"
-                                                   data-bs-placement="top">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                         stroke-width="2" stroke-linecap="round"
-                                                         stroke-linejoin="round"
-                                                         class="feather feather-edit-2 p-1 br-6 mb-1">
-                                                        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                                                        </path>
-                                                    </svg>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#" data-enrollment-id="@enroll.Id"
-                                                   class="bs-tooltip delete" data-bs-toggle="tooltip"
-                                                   data-bs-placement="top">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                         stroke-width="2" stroke-linecap="round"
-                                                         stroke-linejoin="round"
-                                                         class="feather feather-trash p-1 br-6 mb-1">
-                                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                                    </svg>
-                                                </a>
-                                            </li>
-                                        </td>
-                                    </tr>
+    <div class="page-header">
 
-                                    stt++;
-                                }
-                            }
+        <h2>Quản lý đăng ký</h2>
 
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+        <a href="@Url.Action("Create", "Enrollment")" class="add-btn">
+            + Thêm đăng ký
+        </a>
+
     </div>
 
-    <!-- /DATATABLE -->
+    <!-- CARD -->
+
+    <div class="enroll-card">
+
+        <table id="enrollment-table" class="table table-hover">
+
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Học viên</th>
+                    <th>Lớp học</th>
+                    <th>Ngày đăng ký</th>
+                    <th>Trạng thái</th>
+                    <th class="no-content" style="width:5%">Thao tác</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @{
+                    int stt = 1;
+                }
+
+                @if (Model != null)
+                {
+                    foreach (var enroll in Model)
+                    {
+
+                        <tr>
+
+                            <td>@stt</td>
+
+                            <td>
+
+                                <div class="enroll-info">
+
+                                    <div class="enroll-avatar">
+                                        @enroll.StudentName.Substring(0, 1).ToUpper()
+                                    </div>
+
+                                    <div>
+                                        <div>@enroll.StudentName</div>
+                                        <small>ID: @enroll.Id</small>
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                            <td>@enroll.ClassName</td>
+
+                            <td>@enroll.EnrollDate</td>
+
+                            <td>@enroll.Status.GetDisplayName()</td>
+
+                            <td class="table-controls d-flex justify-content-center align-items-center pt-2">
+
+                                <li>
+
+                                    <a href="@Url.Action("Edit", "Enrollment", new { id = enroll.Id })"
+                                       class="bs-tooltip edit"
+                                       data-bs-toggle="tooltip"
+                                       data-bs-placement="top">
+
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             width="24" height="24"
+                                             viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="2"
+                                             stroke-linecap="round"
+                                             stroke-linejoin="round"
+                                             class="feather feather-edit-2 p-1 br-6 mb-1">
+
+                                            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+
+                                        </svg>
+
+                                    </a>
+
+                                </li>
+
+                                <li>
+
+                                    <a href="#" data-enrollment-id="@enroll.Id"
+                                       class="bs-tooltip delete"
+                                       data-bs-toggle="tooltip"
+                                       data-bs-placement="top">
+
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             width="24" height="24"
+                                             viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="2"
+                                             stroke-linecap="round"
+                                             stroke-linejoin="round"
+                                             class="feather feather-trash p-1 br-6 mb-1">
+
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+
+                                        </svg>
+
+                                    </a>
+
+                                </li>
+
+                            </td>
+
+                        </tr>
+
+                        stt++;
+
+                    }
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
 </div>
 
 <!-- Scripts riêng cho lớp con -->

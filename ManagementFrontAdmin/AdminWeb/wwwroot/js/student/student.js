@@ -66,6 +66,24 @@ function formatDateVN(dateString) {
 // Update account of the student
 $('#btnUpdateAccount').on('click', function () {
 
+    let hasError = false;
+
+    $('span.text-danger').each(function () {
+        if ($(this).text().trim() !== '') {
+            console.log('[' + $(this).text() + ']');
+            hasError = true;
+            return false; // break loop
+        }
+    });
+
+    if (hasError) {
+        Snackbar.show({
+            text: 'Vui lòng kiểm tra lại dữ liệu',
+            backgroundColor: '#e7515a'
+        });
+        return;
+    }
+
     const formData = $('#edit-user-form').serialize();
 
     $.ajax({

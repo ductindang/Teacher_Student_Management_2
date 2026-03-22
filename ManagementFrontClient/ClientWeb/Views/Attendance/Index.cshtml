@@ -115,6 +115,191 @@
             background-color: #fff3cd;
             color: #856404;
         }
+
+
+
+
+
+
+        .class-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        /* LEFT */
+        .class-main {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .section-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 22px;
+            border: 1px solid #eee;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        /* highlight list */
+        .highlight-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px 20px;
+        }
+
+        .highlight-item {
+            font-size: 14px;
+            color: #333;
+        }
+
+            .highlight-item::before {
+                content: "✔";
+                color: #28a745;
+                margin-right: 8px;
+            }
+
+        /* description */
+        .class-description {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #444;
+        }
+
+        /* RIGHT */
+        .class-sidebar {
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+        }
+
+        .price-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #eee;
+        }
+
+        .price {
+            font-size: 26px;
+            font-weight: 700;
+            color: #e53935;
+            margin-bottom: 15px;
+        }
+
+        .info-list {
+            margin-top: 10px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            padding: 8px 0;
+            border-bottom: 1px dashed #eee;
+        }
+
+            .info-row span:first-child {
+                color: #777;
+            }
+
+
+
+        .attendance-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #eee;
+            margin-top: 25px;
+        }
+
+        .attendance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .attendance-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        /* stats */
+        .attendance-stats {
+            display: flex;
+            gap: 10px;
+        }
+
+        .stat-box {
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .stat-present {
+            background: #e6f7ee;
+            color: #1aa053;
+        }
+
+        .stat-absent {
+            background: #fde8e8;
+            color: #e53935;
+        }
+
+        .stat-late {
+            background: #fff4e5;
+            color: #f59e0b;
+        }
+
+        /* table */
+        .table-attendance {
+            width: 100%;
+        }
+
+            .table-attendance th {
+                font-size: 13px;
+                color: #666;
+                padding: 10px;
+                background: #f8f9fa;
+            }
+
+            .table-attendance td {
+                padding: 12px;
+                border-top: 1px solid #f1f1f1;
+            }
+
+            .table-attendance tr:hover {
+                background: #fafafa;
+            }
+
+        /* select */
+        .attendance-status {
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        /* button */
+        .save-btn {
+            background: #28a745;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 10px;
+            color: #fff;
+            font-weight: 600;
+        }
+
+            .save-btn:hover {
+                background: #218838;
+            }
     </style>
 }
 
@@ -138,7 +323,7 @@
     }
     else
     {
-        backgroundImage = Url.Content("~/images/lightbox-2.jpeg");
+        backgroundImage = Url.Content("~/images/lightbox-5.jpeg");
     }
 
     // var students = ViewBag.Students;
@@ -181,7 +366,7 @@
                             <div class="post-meta-info d-flex justify-content-between">
 
                                 <div class="media">
-                                    <img src="~/images/profile-12.jpeg" alt="profile">
+                                    <img src="~/images/th4.png" alt="profile">
                                     <div class="media-body">
                                         <h5>@classDetails.TeacherName</h5>
                                         <div class="teacher-rating">
@@ -227,106 +412,94 @@
 
                     </div>
 
-                    <div class="post-content">
+                    <div class="class-layout">
 
-                        <div class="class-info-wrapper">
+                        <!-- LEFT -->
+                        <div class="class-main">
 
-                            <!-- Thông tin tổng quan -->
-                            <div class="class-section">
-                                <h3 class="section-title">Thông tin lớp học</h3>
-
-                                <div class="class-info-grid">
-
-                                    <div class="info-item">
-                                        <span class="info-label">Tên lớp học</span>
-                                        <span class="info-value">@classDetails.Name</span>
-                                    </div>
-
-                                    <div class="info-item">
-                                        <span class="info-label">Khóa học</span>
-                                        <span class="info-value">@classDetails.CourseName</span>
-                                    </div>
-
-                                    <div class="info-item">
-                                        <span class="info-label">Giảng viên</span>
-                                        <span class="info-value">@classDetails.TeacherName</span>
-                                    </div>
-
-                                    <div class="info-item">
-                                        <span class="info-label">Số lượng học viên tối đa</span>
-                                        <span class="info-value">@classDetails.MaxStudents học viên</span>
-                                    </div>
-
-                                    <div class="info-item">
-                                        <span class="info-label">Ngày bắt đầu</span>
-                                        <span class="info-value">@classDetails.StartDate.ToString("dd/MM/yyyy")</span>
-                                    </div>
-
-                                    <div class="info-item">
-                                        <span class="info-label">Ngày kết thúc</span>
-                                        <span class="info-value">@classDetails.EndDate.ToString("dd/MM/yyyy")</span>
-                                    </div>
-
-                                    <div class="info-item">
-                                        <span class="info-label">Học phí</span>
-                                        <span class="info-value">@classDetails.CoursePrice.ToString("N0") VNĐ</span>
-                                    </div>
-
-                                </div>
-                            </div>
-
-
-                            <!-- Mô tả lớp học -->
-                            <div class="class-section">
-
-                                <h3 class="section-title">Mô tả lớp học</h3>
+                            <!-- GIỚI THIỆU -->
+                            <div class="section-card">
+                                <div class="section-title">📘 Giới thiệu khóa học</div>
 
                                 <div class="class-description">
-
                                     @if (!string.IsNullOrEmpty(classDetails.Description))
                                     {
                                         @Html.Raw(classDetails.Description)
                                     }
                                     else
                                     {
-                                        <div class="empty-description">
-                                            Lớp học này chưa có mô tả chi tiết.
-                                        </div>
+                                        <i>Chưa có mô tả cho khóa học này.</i>
                                     }
-
                                 </div>
-
                             </div>
 
+                            <!-- BẠN SẼ HỌC ĐƯỢC -->
+                            <div class="section-card">
+                                <div class="section-title">🎯 Bạn sẽ học được gì?</div>
 
-                            <!-- Thông tin bổ sung -->
-                            <div class="class-section">
+                                <div class="highlight-list">
+                                    <div class="highlight-item">Nắm vững kiến thức cơ bản</div>
+                                    <div class="highlight-item">Áp dụng vào thực tế</div>
+                                    <div class="highlight-item">Học cùng giảng viên chuyên môn</div>
+                                    <div class="highlight-item">Có lộ trình rõ ràng</div>
+                                </div>
+                            </div>
 
-                                <h3 class="section-title">Thông tin bổ sung</h3>
+                            <!-- THÔNG TIN THÊM -->
+                            <div class="section-card">
+                                <div class="section-title">📌 Thông tin lớp học</div>
 
-                                <ul class="class-extra">
+                                <div class="highlight-list">
+                                    <div class="highlight-item">Giảng viên: @classDetails.TeacherName</div>
+                                    <div class="highlight-item">Khóa học: @classDetails.CourseName</div>
+                                    <div class="highlight-item">Số lượng: @classDetails.MaxStudents học viên</div>
+                                    <div class="highlight-item">
+                                        Thời gian:
+                                        @classDetails.StartDate.ToString("dd/MM")
+                                        - @classDetails.EndDate.ToString("dd/MM")
+                                    </div>
+                                </div>
+                            </div>
 
-                                    <li>
-                                        Khóa học <b>@classDetails.CourseName</b> được thiết kế nhằm cung cấp kiến thức và kỹ năng cần thiết cho học viên.
-                                    </li>
+                        </div>
 
-                                    <li>
-                                        Lớp học do giảng viên <b>@classDetails.TeacherName</b> trực tiếp giảng dạy.
-                                    </li>
 
-                                    <li>
-                                        Lớp học kéo dài từ
-                                        <b>@classDetails.StartDate.ToString("dd/MM/yyyy")</b>
-                                        đến
-                                        <b>@classDetails.EndDate.ToString("dd/MM/yyyy")</b>.
-                                    </li>
+                        <!-- RIGHT -->
+                        <div class="class-sidebar">
 
-                                    <li>
-                                        Số lượng học viên tối đa cho lớp học này là
-                                        <b>@classDetails.MaxStudents</b> học viên.
-                                    </li>
+                            <div class="price-card">
 
-                                </ul>
+                                <div class="price">
+                                    @classDetails.CoursePrice.ToString("N0") VNĐ
+                                </div>
+
+                                @* <button class="btn btn-success enroll-btn">
+                                    🚀 Đăng ký ngay
+                                </button> *@
+
+                                <div class="info-list">
+
+                                    <div class="info-row">
+                                        <span>Khai giảng</span>
+                                        <span>@classDetails.StartDate.ToString("dd/MM/yyyy")</span>
+                                    </div>
+
+                                    <div class="info-row">
+                                        <span>Kết thúc</span>
+                                        <span>@classDetails.EndDate.ToString("dd/MM/yyyy")</span>
+                                    </div>
+
+                                    <div class="info-row">
+                                        <span>Học viên tối đa</span>
+                                        <span>@classDetails.MaxStudents</span>
+                                    </div>
+
+                                    <div class="info-row">
+                                        <span>Giảng viên</span>
+                                        <span>@classDetails.TeacherName</span>
+                                    </div>
+
+                                </div>
 
                             </div>
 
@@ -338,91 +511,89 @@
                     {
                         if(user.RoleId == (int)ERoleName.Teacher)
                         {
-                            <div class="post-info">
+                            <div class="attendance-card">
 
-                                <hr>
+                                <!-- HEADER -->
+                                <div class="attendance-header">
 
-                                <!-- DATATABLE -->
-                                <div class="row layout-top-spacing">
-                                    <div class="col-xl-12 col-lg-12 col-sm-12">
-                                        <div class="statbox widget box box-shadow">
-                                            <div class="widget-header">
-                                                <div class="row">
-                                                    <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                                                        <h4>Học viên trong lớp</h4>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="widget-content widget-content-area">
-                                                <div style="margin-bottom:15px">
-                                                    <button class="btn btn-primary" id="saveAttendanceBtn" style="margin: 20px 10px 3px 20px;">
-                                                        Lưu điểm danh
-                                                    </button>
-                                                </div>
-                                                <table id="student-table" class="table style-3 dt-table-hover" style="width: 100%">
-                                                    <thead>
-                                                        <tr>
-                                                            <th style="width: 5%">STT</th>
-                                                            <th>Mã học viên</th>
-                                                            <th>Tên học viên</th>
-                                                            <th>Giới tính</th>
-                                                            <th>Điểm danh</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @{
-                                                            int sttStd = 1;
-                                                        }
-                                                        @if (Model != null)
-                                                        {
-
-                                                            @foreach (var student in Model)
-                                                            {
-                                                                <tr>
-                                                                    <td>@sttStd</td>
-                                                                    <td>@student.StudentId</td>
-                                                                    <td>@student.FullName</td>
-                                                                    <td>@(((EGender)student.Gender).GetDisplayName())</td>
-                                                                    <td>
-                                                                        <select class="attendance-status form-select"
-                                                                                data-student-id="@student.StudentId">
-
-                                                                            <option value="0" selected="@(student.Status == null)">Chọn</option>
-
-                                                                            <option value="1" class="status-present"
-                                                                                    selected="@(student.Status == EAttendanceStatus.Present)">
-                                                                                Có mặt
-                                                                            </option>
-
-                                                                            <option value="2" class="status-absent"
-                                                                                    selected="@(student.Status == EAttendanceStatus.Absent)">
-                                                                                Vắng
-                                                                            </option>
-
-                                                                            <option value="3" class="status-late"
-                                                                                    selected="@(student.Status == EAttendanceStatus.Late)">
-                                                                                Đi trễ
-                                                                            </option>
-
-                                                                        </select>
-                                                                    </td>
-                                                                </tr>
-
-                                                                sttStd++;
-                                                            }
-                                                        }
-
-                                                    </tbody>
-                                                    
-                                                </table>
-                                            </div>
-                                        </div>
+                                    <div class="attendance-title">
+                                        📋 Điểm danh lớp học
                                     </div>
+
+                                    <div class="attendance-stats">
+                                        <div class="stat-box stat-present">✔ Có mặt</div>
+                                        <div class="stat-box stat-absent">✖ Vắng</div>
+                                        <div class="stat-box stat-late">⏰ Trễ</div>
+                                    </div>
+
                                 </div>
 
-                                <!-- /DATATABLE -->
+                                <!-- ACTION -->
+                                <div style="margin-bottom:15px; text-align:right;">
+                                    <button id="saveAttendanceBtn" class="save-btn">
+                                        💾 Lưu điểm danh
+                                    </button>
+                                </div>
 
-                                <hr>
+                                <!-- TABLE -->
+                                <table id="student-table" class="table-attendance">
+
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Mã HV</th>
+                                            <th>Học viên</th>
+                                            <th>Giới tính</th>
+                                            <th>Trạng thái</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @{
+                                            int sttStd = 1;
+                                        }
+
+                                        @foreach (var student in Model)
+                                        {
+                                            <tr>
+                                                <td>@sttStd</td>
+                                                <td>@student.StudentId</td>
+                                                <td>@student.FullName</td>
+                                                <td>@(((EGender)student.Gender).GetDisplayName())</td>
+
+                                                <td>
+                                                    <select class="attendance-status form-select"
+                                                            data-student-id="@student.StudentId">
+
+                                                        <option value="0" selected="@(student.Status == null)">
+                                                            -- Chọn --
+                                                        </option>
+
+                                                        <option value="1"
+                                                                selected="@(student.Status == EAttendanceStatus.Present)">
+                                                            ✔ Có mặt
+                                                        </option>
+
+                                                        <option value="2"
+                                                                selected="@(student.Status == EAttendanceStatus.Absent)">
+                                                            ✖ Vắng
+                                                        </option>
+
+                                                        <option value="3"
+                                                                selected="@(student.Status == EAttendanceStatus.Late)">
+                                                            ⏰ Đi trễ
+                                                        </option>
+
+                                                    </select>
+                                                </td>
+                                            </tr>
+
+                                            sttStd++;
+                                        }
+
+                                    </tbody>
+
+                                </table>
 
                             </div>
                         }

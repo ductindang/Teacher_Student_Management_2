@@ -1,91 +1,140 @@
-﻿
-@{
-	ViewData["Title"] = "Admin - Dashboard";
-	Layout = "~/Views/Shared/_LayoutProject.cshtml";
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "~/Views/Shared/_LayoutProject.cshtml";
 }
+
 @section Styles {
     <style>
-        body {
-            background-size: cover;
-            font-family: Arial, sans-serif;
-            color: #fff;
+
+        .dashboard-wrapper {
+            padding: 40px 30px;
         }
 
-        .middle-content {
-            position: relative;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 50px 0;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .widget-card-four {
-            position: relative;
-            background: rgba(255, 255, 255, 0.8);
+        /* HERO */
+        .dashboard-hero {
+            background: linear-gradient(135deg,#4f46e5,#6366f1);
+            color: white;
             padding: 40px;
-            border-radius: 8px;
+            border-radius: 12px;
+            margin-bottom: 30px;
         }
 
-            .widget-card-four h1 {
-                font-size: 40px;
-                font-weight: bold;
-                margin-bottom: 20px;
+            .dashboard-hero h1 {
+                font-size: 32px;
+                font-weight: 700;
+                margin-bottom: 10px;
             }
 
-            .widget-card-four p {
-                font-size: 18px;
-                line-height: 1.6;
-                color: #555;
+            .dashboard-hero p {
+                opacity: 0.9;
             }
 
-        .image-stack {
-            position: relative;
-            width: 100%;
-            height: 400px;
-            max-width: 600px;
-            margin: 0 auto;
+        /* STATISTICS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+            gap: 20px;
+            margin-bottom: 30px;
         }
 
-            .image-stack img {
-                position: absolute;
-                inset: 0;
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: 0.2s;
+        }
+
+            .stat-card:hover {
+                transform: translateY(-4px);
+            }
+
+        .stat-title {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-top: 5px;
+        }
+
+        /* INFO SECTION */
+        .dashboard-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+            .info-card h3 {
+                margin-bottom: 15px;
+            }
+
+            .info-card img {
                 width: 100%;
-                height: 100%;
-                object-fit: cover;
-                border-radius: 10px;
-                box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+                border-radius: 8px;
+                margin-top: 10px;
             }
 
-                .image-stack img:nth-child(1) {
-                    opacity: 0.6;
-                }
-
-                .image-stack img:nth-child(2) {
-                    opacity: 0.7;
-                }
-
-                .image-stack img:nth-child(3) {
-                    opacity: 0.8;
-                }
     </style>
 }
 
-<div class="middle-content container-xxl p-0 mt-5">
-    <div class="row layout-top-spacing justify-content-center">
-        <div class="col-xl-8 col-lg-10 col-md-12 col-sm-12 col-12 layout-spacing">
-            <div class="widget widget-card-four text-center">
-                <h1>CHÀO MỪNG BẠN ĐẾN VỚI TRANG WEB QUẢN LÝ HỌC VIÊN</h1>
-                <p>
-                    Chúng tôi cung cấp dịch vụ quản lý giáo viên và học viên trực tuyến,
-                    giúp bạn dễ dàng và nhanh chóng quản lý thời gian và nhân sự.
-                </p>
+<div class="dashboard-wrapper container-xxl">
 
-                <div class="image-stack mt-4">
-                    <img src="~/images/Student-Management-System.jpg" />
-                    <img src="~/images/Student-Management-System.jpg" />
-                    <img src="~/images/Student-Management-System.jpg" />
-                </div>
-            </div>
-        </div>
+    <!-- HERO -->
+    <div class="dashboard-hero">
+        <h1>Chào mừng đến với hệ thống quản lý học viên</h1>
+        <p>
+            Quản lý giáo viên, học viên và khóa học một cách nhanh chóng và hiệu quả.
+        </p>
     </div>
+
+    <!-- STATISTICS -->
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <div class="stat-title">Tổng học viên</div>
+            <div class="stat-value">120</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-title">Tổng giáo viên</div>
+            <div class="stat-value">18</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-title">Khóa học</div>
+            <div class="stat-value">35</div>
+        </div>
+
+    </div>
+
+    <!-- INFO -->
+    <div class="dashboard-info">
+
+        <div class="info-card">
+            <h3>Quản lý học viên</h3>
+            <p>
+                Hệ thống cho phép bạn theo dõi thông tin học viên,
+                quản lý đăng ký khóa học và theo dõi tiến độ học tập.
+            </p>
+        </div>
+
+        <div class="info-card">
+            <h3>Hệ thống đào tạo</h3>
+
+            <img src="~/images/education-dashboard.jpg" />
+
+        </div>
+
+    </div>
+
 </div>

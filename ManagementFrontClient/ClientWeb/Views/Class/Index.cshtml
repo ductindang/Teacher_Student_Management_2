@@ -11,84 +11,271 @@
         width: 100%;
         height: 220px;
         object-fit: cover;
+        transition: transform 0.4s ease;
     }
 
     .card.style-2 {
         height: 100%;
+        border-radius: 16px;
+        overflow: hidden;
+        border: none;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        position: relative;
     }
+
+        .card.style-2:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+            .card.style-2:hover .fixed-img {
+                transform: scale(1.05);
+            }
 
         .card.style-2 .card-body {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            padding: 16px;
         }
+
+    .card-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+        min-height: 40px;
+    }
+
+    .media {
+        align-items: center;
+    }
+
+        .media img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+    .media-heading {
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .media-text {
+        font-size: 12px;
+        color: #888;
+    }
+
+    .class-overlay {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: rgba(0,0,0,0.6);
+        color: #fff;
+        padding: 4px 10px;
+        font-size: 12px;
+        border-radius: 20px;
+    }
+
+    .section-desc {
+        background: #f8f9fa;
+        padding: 15px 20px;
+        border-radius: 12px;
+        font-size: 14px;
+        color: #555;
+    }
+
+
+
+    .card.style-2 {
+        display: flex !important;
+        flex-direction: row !important; /* ép nằm ngang */
+        align-items: center !important;
+        justify-content: space-between;
+        border-radius: 16px;
+        background: #fff;
+        border: 1px solid #eee;
+        padding: 16px 20px;
+        transition: 0.25s;
+    }
+
+        .card.style-2:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+
+    .fixed-img {
+        width: 80px;
+        height: 80px;
+        object-fit: contain;
+        margin-right: 15px;
+        flex-shrink: 0;
+    }
+
+    .card-body {
+        flex: 1;
+        padding: 0 !important;
+        text-align: left !important; /* fix bị center */
+    }
+
+    .card-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .media {
+        display: flex;
+        align-items: center;
+    }
+
+        .media img {
+            width: 24px;
+            height: 24px;
+            margin-right: 6px;
+        }
+
+    .media-heading {
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .media-text {
+        font-size: 12px;
+        color: #777;
+    }
+
+    .status-badge {
+        display: inline-block;
+        background: #007bff;
+        color: #fff;
+        font-size: 11px;
+        padding: 3px 10px;
+        border-radius: 20px;
+        margin-bottom: 4px;
+    }
+
+    .date-box {
+        text-align: right;
+        font-size: 13px;
+        color: #555;
+        min-width: 70px;
+        flex-shrink: 0;
+    }
+
+    .arrow {
+        font-size: 11px;
+        color: #aaa;
+    }
 </style>
 
 <div class="middle-content container-xxl p-0">
     <div id="tabsSimple" class="col-xl-12 col-12 layout-spacing">
+
         <div class="statbox widget box box-shadow" style="margin-top: 30px">
             <div class="widget-content widget-content-area">
 
                 <div class="simple-pill">
 
-                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="pills-home-icon-tab" data-bs-toggle="pill" data-bs-target="#pills-home-icon" type="button" role="tab" aria-controls="pills-home-icon" aria-selected="true">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                                Đang diễn ra
+                    <!-- Tabs -->
+                    <ul class="nav nav-pills mb-4 justify-content-center" id="pills-tab" role="tablist">
+                        <li class="nav-item">
+                            <button class="nav-link active" id="pills-home-icon-tab"
+                                    data-bs-toggle="pill"
+                                    data-bs-target="#pills-home-icon">
+                                🔥 Đang diễn ra
                             </button>
                         </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="pills-profile-icon-tab" data-bs-toggle="pill" data-bs-target="#pills-profile-icon" type="button" role="tab" aria-controls="pills-profile-icon" aria-selected="false">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                                Sắp tới
+
+                        <li class="nav-item">
+                            <button class="nav-link" id="pills-profile-icon-tab"
+                                    data-bs-toggle="pill"
+                                    data-bs-target="#pills-profile-icon">
+                                ⏳ Sắp tới
                             </button>
                         </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="pills-contact-icon-tab" data-bs-toggle="pill" data-bs-target="#pills-contact-icon" type="button" role="tab" aria-controls="pills-contact-icon" aria-selected="false">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-phone"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                                Đã kết thúc
+
+                        <li class="nav-item">
+                            <button class="nav-link" id="pills-contact-icon-tab"
+                                    data-bs-toggle="pill"
+                                    data-bs-target="#pills-contact-icon">
+                                ✅ Đã kết thúc
                             </button>
                         </li>
                     </ul>
+
+                    <!-- Content -->
                     <div class="tab-content" id="pills-tabContent">
-                        <div class="tab-pane fade show active" id="pills-home-icon" role="tabpanel" aria-labelledby="pills-home-icon-tab" tabindex="0">
-                            <p class="mt-3">Các lớp học mà bạn đang tham gia sẽ được hiển thị và cập nhật bên dưới, 
-                                giúp bạn quản lý lớp học dễ hơn. Nếu có vấn đề gì thắc mắc xin liên hệ qua quản trị
-                                viên: số điện thoại - 1900 0000</p>
+
+                        <!-- ĐANG DIỄN RA -->
+                        <div class="tab-pane fade show active" id="pills-home-icon">
+
+                            <div class="section-desc mb-4">
+                                📚 Các lớp bạn đang học được hiển thị tại đây. Theo dõi tiến độ và tham gia đầy đủ để đạt kết quả tốt nhất!
+                            </div>
+
                             <div class="row">
 
                                 @if (Model != null && Model.Any())
                                 {
                                     @foreach (var item in Model)
                                     {
-                                        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-6 mb-4">
-                                            <a asp-controller="Class" asp-action="Details" asp-route-id="@item.Id" class="card style-2 mb-md-0 mb-4">
+                                        <div class="col-12 mb-3">
+
+                                            <a asp-controller="Class"
+                                               asp-action="Details"
+                                               asp-route-id="@item.Id"
+                                               class="card style-2">
+
+                                                <!-- badge -->
+                                                <div class="class-overlay">
+                                                    Đang học
+                                                </div>
+
+                                                <!-- image -->
                                                 @if (item.ClassImage != null)
                                                 {
                                                     var base64 = Convert.ToBase64String(item.ClassImage);
                                                     var imgSrc = $"data:image/jpeg;base64,{base64}";
 
-                                                    <img src="@imgSrc"
-                                                            class="card-img-top fixed-img"
-                                                            alt="...">
+                                                    <img src="@imgSrc" class="card-img-top fixed-img" />
                                                 }
                                                 else
                                                 {
-                                                    <img src="images/Student-Management-Logo.jpg"
-                                                         class="card-img-top fixed-img"
-                                                         alt="...">
+                                                    <img src="images/education-logo-template-free.jpg"
+                                                         class="card-img-top fixed-img" />
                                                 }
 
-                                                <div class="card-body px-0 pb-0">
-                                                    <h5 class="card-title mb-3">@item.Name</h5>
-                                                    <div class="media mt-4 mb-0 pt-1">
-                                                        <img src="images/Student-Management-Logo.jpg" class="card-media-image me-3" alt="">
-                                                        <div class="media-body">
-                                                            <h4 class="media-heading mb-1">@item.CourseName</h4>
-                                                            <p class="media-text">@item.StartDate.ToString("dd/MM/yyyy") - @item.EndDate.ToString("dd/MM/yyyy")</p>
+                                                <!-- body -->
+                                                <div class="card-body">
+                                                    <div class="status-badge">Class</div>
+                                                    <h5 class="card-title">
+                                                        @item.Name
+                                                    </h5>
+
+                                                    <div class="media">
+                                                        <img src="images/education-logo-template-free.jpg" />
+
+                                                        <div>
+                                                            <div class="media-heading">
+                                                                @item.CourseName
+                                                            </div>
+
+                                                            <div class="media-text">
+                                                                📅 @item.StartDate.ToString("dd/MM/yyyy")
+                                                            </div>
                                                         </div>
                                                     </div>
+
+                                                </div>
+
+
+                                                <!-- DATE RIGHT -->
+                                                <div class="date-box">
+                                                    <div>@item.StartDate.ToString("dd/MM")</div>
+                                                    <div class="arrow">→</div>
+                                                    <div>@item.EndDate.ToString("dd/MM")</div>
                                                 </div>
                                             </a>
                                         </div>
@@ -97,21 +284,25 @@
 
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="pills-profile-icon" role="tabpanel" aria-labelledby="pills-profile-icon-tab" tabindex="0">
-                            <p class="mt-3">
-                                Các lớp học sắp tới sẽ được hiển thị và cập nhật bên dưới, hãy nhanh chóng đăng ký để 
-                                cùng tham gia với chúng tôi. Nếu có vấn đề gì thắc mắc xin liên hệ qua quản trị
-                                viên: số điện thoại - 1900 0000
-                            </p>
+
+                        <!-- SẮP TỚI -->
+                        <div class="tab-pane fade" id="pills-profile-icon">
+                            <div class="section-desc mb-4">
+                                🚀 Các lớp sắp khai giảng. Đăng ký ngay để không bỏ lỡ!
+                            </div>
+
                             <div id="upcomingClassContainer"></div>
                         </div>
-                        <div class="tab-pane fade" id="pills-contact-icon" role="tabpanel" aria-labelledby="pills-contact-icon-tab" tabindex="0">
-                            <p>
-                                Các lớp học bạn đã hoàn thành sẽ được hiển thị và cập nhật bên dưới, hãy xem lại về lớp học này. 
-                                Nếu có vấn đề gì thắc mắc xin liên hệ qua quản trị viên: số điện thoại - 1900 0000
-                            </p>
+
+                        <!-- ĐÃ KẾT THÚC -->
+                        <div class="tab-pane fade" id="pills-contact-icon">
+                            <div class="section-desc mb-4">
+                                🎓 Lịch sử lớp học đã hoàn thành của bạn.
+                            </div>
+
                             <div id="finishedClassContainer"></div>
                         </div>
+
                     </div>
 
                 </div>

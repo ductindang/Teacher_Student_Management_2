@@ -18,324 +18,273 @@
     var teacherReviews = ViewBag.TeacherReviews;
     var teacherAccount = ViewBag.TeacherAccount;
 }
-<style>
-    .edit-area {
-        padding: 25px;
-    }
-    .edit-account {
-        padding: 25px;
-    }
-
-    .form-control[readonly]:not(.flatpickr-input) {
-        color: #64cf64;
-    }
-
-</style>
 
 @model Teacher
+<style>
+    body {
+        background: #f1f5f9;
+    }
 
-<div>
+    .form-wrapper {
+        max-width: 1100px;
+        margin: 30px auto;
+    }
+
+    .form-card {
+        background: #fff;
+        border-radius: 16px;
+        padding: 25px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        margin-bottom: 20px;
+    }
+
+    .form-title {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .btn-back {
+        background: transparent;
+        border: 1px solid #cbd5e1;
+        padding: 6px 14px;
+        border-radius: 6px;
+        text-decoration: none;
+        color: #334155;
+    }
+
+        .btn-back:hover {
+            background: #f1f5f9;
+        }
+
+    .form-control {
+        border-radius: 10px;
+        padding: 10px 12px;
+        border: 1px solid #e2e8f0;
+    }
+
+        .form-control:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px rgba(99,102,241,0.1);
+        }
+
+    .submit-btn {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        border: none;
+        padding: 10px 20px;
+        border-radius: 10px;
+        color: #fff;
+        font-weight: 500;
+    }
+</style>
+<div class="form-wrapper">
+
     <!-- BREADCRUMB -->
-    <div class="page-meta">
-        <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+    <div class="mb-3">
+        <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Người dùng</a></li>
-                <li class="breadcrumb-item" aria-current="page"><a href="@Url.Action("Index", "Teacher")">Quản lý giáo viên</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Chỉnh sửa giáo viên</li>
+                <li class="breadcrumb-item">
+                    <a href="@Url.Action("Index", "Teacher")">Quản lý giáo viên</a>
+                </li>
+                <li class="breadcrumb-item active">Chỉnh sửa</li>
             </ol>
         </nav>
     </div>
-    <!-- /BREADCRUMB -->
 
-    <div class="layout-top-spacing col-12">
-        <a href="@Url.Action("Index", "Teacher")" class="btn">
-            Trở lại
-        </a>
-    </div>
+    <!-- FORM TEACHER -->
+    <div class="form-card">
 
-    <div class="row layout-top-spacing">
-        <div id="user-management" class="col-lg-12 layout-spacing">
-            <div class="statbox widget box box-shadow">
-                <div class="widget-header">
-                    <div class="row">
-                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                            <h4>Chỉnh sửa</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="widget-content widget-content-area edit-area">
-                    <div class="col-12">
-                        <form asp-action="Edit" method="POST" id="general-settings">
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group mb-4">
-                                        <label for="fullname">Tên giáo viên <strong class="text-danger">*</strong></label>
-                                        <input asp-for="FullName"
-                                               type="text"
-                                               id="fullname"
-                                               class="form-control @(ViewData.ModelState["FullName"]?.Errors.Count > 0 ? "is-invalid" : "")"
-                                               placeholder="Tên giáo viên">
-                                        <span asp-validation-for="FullName" class="invalid-feedback" role="alert"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group mb-4">
-                                        <label for="experience">Số năm kinh nghiệm <strong class="text-danger">*</strong></label>
-                                        <input asp-for="Experience"
-                                               type="number"
-                                               min="1"
-                                               id="experience"
-                                               class="form-control @(ViewData.ModelState["Experience"]?.Errors.Count > 0 ? "is-invalid" : "")"
-                                               placeholder="Nhập số năm kinh nghiệm">
-                                        <span asp-validation-for="Experience" class="invalid-feedback"></span>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="row">
-                                <div class="form-group mb-4">
-                                    <label for="degree">Bằng cấp <strong class="text-danger">*</strong></label>
-                                    <input asp-for="Degree"
-                                           type="text"
-                                           id="degree"
-                                           class="form-control @(ViewData.ModelState["Degree"]?.Errors.Count > 0 ? "is-invalid" : "")"
-                                           placeholder="Bằng cấp của giáo viên">
-                                    <span asp-validation-for="Degree" class="invalid-feedback" role="alert"></span>
-                                </div>
-                            </div>
-
-
-                            <button type="submit" class="btn btn-primary">Hoàn tất</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+        <div class="form-title">
+            <span>Chỉnh sửa giáo viên</span>
+            <a href="@Url.Action("Index", "Teacher")" class="btn-back">
+                ← Quay lại
+            </a>
         </div>
+
+        <form asp-action="Edit" method="POST">
+
+            <input type="hidden" asp-for="Id" />
+
+            <div class="row">
+
+                <div class="col-md-6 mb-4">
+                    <label>Tên giáo viên *</label>
+                    <input asp-for="FullName"
+                           class="form-control @(ViewData.ModelState["FullName"]?.Errors.Count > 0 ? "is-invalid" : "")">
+                    <span asp-validation-for="FullName" class="invalid-feedback"></span>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <label>Số năm kinh nghiệm *</label>
+                    <input asp-for="Experience"
+                           type="number"
+                           min="1"
+                           class="form-control @(ViewData.ModelState["Experience"]?.Errors.Count > 0 ? "is-invalid" : "")">
+                    <span asp-validation-for="Experience" class="invalid-feedback"></span>
+                </div>
+
+            </div>
+
+            <div class="mb-4">
+                <label>Bằng cấp *</label>
+                <input asp-for="Degree"
+                       class="form-control @(ViewData.ModelState["Degree"]?.Errors.Count > 0 ? "is-invalid" : "")">
+                <span asp-validation-for="Degree" class="invalid-feedback"></span>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                Cập nhật
+            </button>
+
+        </form>
     </div>
+
+    <!-- ACCOUNT -->
+    @if (teacherAccount != null)
+    {
+        <div class="form-card">
+
+            <div class="form-title">
+                <span>Chỉnh sửa tài khoản</span>
+            </div>
+
+            <form id="edit-user-form">
+                <input type="hidden" name="Id" value="@teacherAccount.Id" />
+
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <label for="Username">Username</label>
+                        <input id="Username" name="Username" value="@teacherAccount.Username" class="form-control" readonly />
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <label>Mật khẩu *</label>
+                        <input id="password" name="PasswordHash" class="form-control" placeholder="Nhập mật khẩu mới (nếu có)" oninput="validatePassword()" />
+                        <span id="password-error" class="text-danger mb-5"></span>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <label>Email *</label>
+                        <input id="email" name="Email" value="@teacherAccount.Email" class="form-control" onblur="checkEmailExist()" readonly/>
+                        <span id="email-error" class="text-danger mb-5"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <label for="createdAt">Ngày tạo</label>
+                        <input id="createdAt" name="CreatedAt" value="@teacherAccount.CreatedAt.ToString("dd/MM/yyyy HH:mm")" class="form-control" readonly />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <label>Số điện thoại *</label>
+                        <input id="phone-number" value="@teacherAccount.Phone" name="Phone" class="form-control" placeholder="Nhập số điện thoại" oninput="validatePhoneNumber()" />
+                        <span id="phone-number-error" class="text-danger mb-5"></span>
+
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <label>Trạng thái</label>
+                        <select name="Status"
+                                class="form-control"
+                                asp-items="Html.GetEnumSelectList<EAccountStatus>()">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <input type="hidden" name="RoleId" value="@teacherAccount.RoleId" />
+                    <label>Quyền truy cập</label>
+                    <input class="form-control"
+                           value="@(((ERoleName)teacherAccount.RoleId).GetDisplayName())"
+                           readonly />
+                </div>
+
+                <button type="button" id="btnUpdateAccount" class="submit-btn">
+                    Cập nhật tài khoản
+                </button>
+            </form>
+        </div>
+    }
+    else
+    {
+        <div class="form-card text-center">
+            <p>Giáo viên chưa có tài khoản.</p>
+            <button id="btnShowCreateAccount" class="submit-btn">
+                Tạo tài khoản
+            </button>
+        </div>
+
+        <input type="hidden" id="TeacherId" value="@Model.Id" />
+
+        <div id="create-account-section" style="display:none" class="form-card">
+
+            <div class="form-title">
+                <span>Tạo tài khoản</span>
+            </div>
+
+            <form id="create-user-form">
+
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <label>Username *</label>
+                        <input name="Username" class="form-control" placeholder="Nhập username"/>
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <label>Mật khẩu *</label>
+                        <input id="password" name="PasswordHash" class="form-control" placeholder="Nhập mật khẩu" oninput="validatePassword()" />
+                        <span id="password-error" class="text-danger mb-5"></span>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <label>Email *</label>
+                        <input id="email" name="Email" placeholder="Nhập email" class="form-control" onblur="checkEmailExist()" />
+                        <span id="email-error" class="text-danger mb-5"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <label>Ngày tạo</label>
+                        <input value="@DateTime.UtcNow" class="form-control" readonly />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <label>Số điện thoại *</label>
+                        <input id="phone-number" name="Phone" class="form-control" placeholder="Nhập số điện thoại" oninput="validatePhoneNumber()" />
+                        <span id="phone-number-error" class="text-danger mb-5"></span>
+
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <label>Trạng thái</label>
+                        <select name="Status"
+                                class="form-control"
+                                asp-items="Html.GetEnumSelectList<EAccountStatus>()">
+                        </select>
+                    </div>
+                </div>
+                <input type="hidden" id="roleId" name="RoleId" value="@((int)ERoleName.Teacher)" />
+
+                <button type="button" id="btnCreateAccount" class="submit-btn">
+                    Tạo tài khoản
+                </button>
+            </form>
+        </div>
+    }
 
 </div>
-
-@if(teacherAccount != null)
-{
-    <div>
-        <div class="row layout-top-spacing">
-            <div id="user-management" class="col-lg-12 layout-spacing">
-                <div class="statbox widget box box-shadow">
-                    <div class="widget-header">
-                        <div class="row">
-                            <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                                <h4>Chỉnh sửa tài khoản</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="widget-content widget-content-area edit-account" >
-                        <div class="col-12">
-                            <form id="edit-user-form">
-                                <input type="hidden" name="Id" value="@teacherAccount.Id" />
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-4">
-                                            <label for="Username">Username <strong class="text-danger">*</strong></label>
-                                            <input type="text" id="Username" name="Username" value="@teacherAccount.Username" class="form-control" readonly/>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-4">
-                                            <label for="PasswordHash">Mật khẩu <strong class="text-danger">*</strong></label>
-                                            <input type="text" id="Password" name="PasswordHash" placeholder="Nhập mật khẩu mới (nếu có)" class="form-control" />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-4">
-                                            <label for="email">Email <strong class="text-danger">*</strong></label>
-                                            <input type="text" id="Email" name="Email" value="@teacherAccount.Email" class="form-control" readonly/>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-4">
-                                            <label for="createdAt">Ngày tạo <strong class="text-danger">*</strong></label>
-                                        <input type="text" id="createdAt" name="CreatedAt" value="@teacherAccount.CreatedAt.ToString("dd/MM/yyyy HH:mm")" class="form-control" readonly/>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-4">
-                                            <label for="phone">Số điện thoại <strong class="text-danger">*</strong></label>
-                                            <input type="text" id="Phone" name="Phone" value="@teacherAccount.Phone" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-4">
-                                            <label for="status">Trạng thái <strong class="text-danger">*</strong></label>
-                                        <select name="Status"
-                                                class="form-control"
-                                                asp-items="Html.GetEnumSelectList<EAccountStatus>()">
-                                        </select>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <input type="hidden" name="RoleId" value="@teacherAccount.RoleId" />
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-4">
-                                            <label>Quyền truy cập <strong class="text-danger">*</strong></label>
-                                            <input type="text"
-                                                   class="form-control"
-                                                   value="@(((ERoleName)teacherAccount.RoleId).GetDisplayName())"
-                                                   readonly />
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <button type="button" id="btnUpdateAccount" class="btn btn-primary">Hoàn tất</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-}
-else
-{
-    <div id="no-account-section">
-        <div class="row layout-top-spacing">
-            <div id="user-management" class="col-lg-12 layout-spacing">
-                <div class="statbox widget box box-shadow">
-                    <div class="widget-header">
-                        <div class="row">
-                            <div class="layout-top-spacing ps-3 pe-3 col-12 mb-3">
-                                <span>
-                                    Người dùng này chưa có tài khoản đăng nhập, hãy tạo ngay.
-                                </span>
-                                <br /><br />
-                                <button id="btnShowCreateAccount" class="btn btn-primary">
-                                    Thêm mới tài khoản
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <input type="hidden" id="TeacherId" value="@Model.Id" />
-
-    <div id="create-account-section" style="display:none">
-        <div class="row layout-top-spacing">
-            <div id="user-management" class="col-lg-12 layout-spacing">
-                <div class="statbox widget box box-shadow">
-                    <div class="widget-header">
-                        <div class="row">
-                            <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                                <h4>Tạo tài khoản</h4>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="widget-content widget-content-area edit-account">
-                        <div class="col-12">
-                            <form id="create-user-form">
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-4">
-                                            <label for="Username">Username <strong class="text-danger">*</strong></label>
-                                            <input type="text" id="Username" name="Username" placeholder="Nhập username" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-4">
-                                            <label for="PasswordHash">Mật khẩu <strong class="text-danger">*</strong></label>
-                                            <input type="text" id="password" name="PasswordHash" placeholder="Nhập mật khẩu" oninput="validatePassword()" class="form-control" />
-                                            <span id="password-error" class="text-danger mb-5"></span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-4">
-                                            <label for="email">Email <strong class="text-danger">*</strong></label>
-                                            <input type="text" id="email" name="Email" class="form-control" placeholder="Nhập email" onblur="checkEmailExist()" />
-                                            <span id="email-error" class="text-danger mb-5"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-4">
-                                            <label for="createdAt">Ngày tạo <strong class="text-danger">*</strong></label>
-                                            <input type="text" id="createdAt" name="CreatedAt" value="@DateTime.UtcNow" class="form-control" readonly />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-4">
-                                            <label for="phone">Số điện thoại <strong class="text-danger">*</strong></label>
-                                            <input type="text" id="phone-number" name="Phone" placeholder="Nhập số điện thoại" oninput="validatePhoneNumber()" class="form-control" />
-                                            <span id="phone-number-error" class="text-danger mb-5"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-4">
-                                            <label for="status">Trạng thái <strong class="text-danger">*</strong></label>
-                                            <select name="Status"
-                                                    class="form-control"
-                                                    asp-items="Html.GetEnumSelectList<EAccountStatus>()">
-                                            </select>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <input type="hidden" name="RoleId" value="@( (int)ERoleName.Teacher )" />
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-4">
-                                            <label for="role">Quyền truy cập <strong class="text-danger">*</strong></label>
-                                            <input type="text" class="form-control" value="@ERoleName.Teacher.GetDisplayName()" readonly />
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex gap-2 mt-3">
-                                    <button type="button"
-                                            id="btnCreateAccount"
-                                            class="btn btn-primary">
-                                        Hoàn tất
-                                    </button>
-
-                                    <button type="button"
-                                            id="btnCancelCreateAccount"
-                                            class="btn btn-outline-secondary">
-                                        Hủy
-                                    </button>
-                                </div>
-
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-}
 
 <div>
     <!-- DATATABLE -->
@@ -350,9 +299,6 @@ else
                     </div>
                 </div>
                 <div class="widget-content widget-content-area">
-                    <div class="layout-top-spacing ps-3 pe-3 col-12 mb-3">
-                        <a href="@Url.Action("Create", "Teacher")" class="btn btn-primary">Thêm mới</a>
-                    </div>
                     <table id="teacher-table" class="table style-3 dt-table-hover" style="width: 100%">
                         <thead>
                             <tr>

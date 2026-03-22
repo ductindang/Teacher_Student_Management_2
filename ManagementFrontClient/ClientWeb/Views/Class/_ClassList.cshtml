@@ -1,62 +1,146 @@
 ﻿@using BLL.Response
 @model IEnumerable<ClassDetailResponse>
 <style>
-    .empty-box {
-        width: 100%;
-        padding: 40px 20px;
-        border: 2px dashed #d3d3d3;
-        border-radius: 10px;
-        text-align: center;
-        color: #6c757d;
-        font-size: 16px;
-        background: #fafafa;
-        margin-top: 20px;
+    .card.style-2 {
+        display: flex !important;
+        flex-direction: row !important; /* ép nằm ngang */
+        align-items: center !important;
+        justify-content: space-between;
+        border-radius: 16px;
+        background: #fff;
+        border: 1px solid #eee;
+        padding: 16px 20px;
+        transition: 0.25s;
     }
 
-        .empty-box span {
-            display: block;
-            font-size: 14px;
-            margin-top: 5px;
+        .card.style-2:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
         }
+
+    .fixed-img {
+        width: 80px;
+        height: 80px;
+        object-fit: contain;
+        margin-right: 15px;
+        flex-shrink: 0;
+    }
+
+    .card-body {
+        flex: 1;
+        padding: 0 !important;
+        text-align: left !important; /* fix bị center */
+    }
+
+    .card-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .media {
+        display: flex;
+        align-items: center;
+    }
+
+        .media img {
+            width: 24px;
+            height: 24px;
+            margin-right: 6px;
+        }
+
+    .media-heading {
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .media-text {
+        font-size: 12px;
+        color: #777;
+    }
+
+    .status-badge {
+        display: inline-block;
+        background: #007bff;
+        color: #fff;
+        font-size: 11px;
+        padding: 3px 10px;
+        border-radius: 20px;
+        margin-bottom: 4px;
+    }
+
+    .date-box {
+        text-align: right;
+        font-size: 13px;
+        color: #555;
+        min-width: 70px;
+        flex-shrink: 0;
+    }
+
+    .arrow {
+        font-size: 11px;
+        color: #aaa;
+    }
 </style>
 
 <div class="row">
+
     @if (Model != null && Model.Any())
     {
         foreach (var item in Model)
         {
-            <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-6 mb-4">
-                <a asp-controller="Class" asp-action="Details" asp-route-id="@item.Id" class="card style-2 mb-md-0 mb-4">
+            <div class="col-12 mb-3">
 
+                <a asp-controller="Class"
+                   asp-action="Details"
+                   asp-route-id="@item.Id"
+                   class="card style-2">
+
+                    <!-- IMAGE -->
                     @if (item.ClassImage != null)
                     {
                         var base64 = Convert.ToBase64String(item.ClassImage);
                         var imgSrc = $"data:image/jpeg;base64,{base64}";
 
-                        <div class="mb-3">
-                            <img src="@imgSrc" class="card-img-top fixed-img" />
-                        </div>
+                        <img src="@imgSrc" class="fixed-img" />
                     }
                     else
                     {
-                        <img src="images/Student-Management-Logo.jpg" class="card-img-top fixed-img" />
+                        <img src="images/education-logo-template-free.jpg" class="fixed-img" />
                     }
 
-                    <div class="card-body px-0 pb-0">
-                        <h5 class="card-title mb-3">@item.Name</h5>
+                    <!-- CONTENT -->
+                    <div class="card-body">
 
-                        <div class="media mt-4 mb-0 pt-1">
-                            <img src="images/Student-Management-Logo.jpg" class="card-media-image me-3">
+                        <div class="status-badge">Class</div>
 
-                            <div class="media-body">
-                                <h4 class="media-heading mb-1">@item.CourseName</h4>
-                                <p class="media-text">
-                                    @item.StartDate.ToString("dd/MM/yyyy") - @item.EndDate.ToString("dd/MM/yyyy")
-                                </p>
+                        <h5 class="card-title">
+                            @item.Name
+                        </h5>
+
+                        <div class="media">
+                            <img src="images/education-logo-template-free.jpg">
+
+                            <div>
+                                <div class="media-heading">
+                                    @item.CourseName
+                                </div>
+
+                                <div class="media-text">
+                                    📅 @item.StartDate.ToString("dd/MM/yyyy")
+                                </div>
                             </div>
                         </div>
 
                     </div>
+
+                    <!-- DATE RIGHT -->
+                    <div class="date-box">
+                        <div>@item.StartDate.ToString("dd/MM")</div>
+                        <div class="arrow">→</div>
+                        <div>@item.EndDate.ToString("dd/MM")</div>
+                    </div>
+
                 </a>
             </div>
         }
@@ -65,8 +149,10 @@
     {
         <div class="col-12">
             <div class="empty-box">
-                Hiện tại không có lớp học nào
+                🚫 Chưa có lớp học
+                <span>Thử quay lại sau nhé</span>
             </div>
         </div>
     }
+
 </div>

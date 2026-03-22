@@ -51,6 +51,89 @@
         text-align: center;
         font-size: 18px;
     }
+
+
+
+    .card.style-2 {
+        display: flex !important;
+        flex-direction: row !important; /* ép nằm ngang */
+        align-items: center !important;
+        justify-content: space-between;
+        border-radius: 16px;
+        background: #fff;
+        border: 1px solid #eee;
+        padding: 16px 20px;
+        transition: 0.25s;
+    }
+
+        .card.style-2:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+
+    .fixed-img {
+        width: 80px;
+        height: 80px;
+        object-fit: contain;
+        margin-right: 15px;
+        flex-shrink: 0;
+    }
+
+    .card-body {
+        flex: 1;
+        padding: 0 !important;
+        text-align: left !important; /* fix bị center */
+    }
+
+    .card-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .media {
+        display: flex;
+        align-items: center;
+    }
+
+        .media img {
+            width: 24px;
+            height: 24px;
+            margin-right: 6px;
+        }
+
+    .media-heading {
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .media-text {
+        font-size: 12px;
+        color: #777;
+    }
+
+    .status-badge {
+        display: inline-block;
+        background: #007bff;
+        color: #fff;
+        font-size: 11px;
+        padding: 3px 10px;
+        border-radius: 20px;
+        margin-bottom: 4px;
+    }
+
+    .date-box {
+        text-align: right;
+        font-size: 13px;
+        color: #555;
+        min-width: 70px;
+        flex-shrink: 0;
+    }
+
+    .arrow {
+        font-size: 11px;
+        color: #aaa;
+    }
 </style>
 
 <div class="middle-content container-xxl p-0">
@@ -71,10 +154,10 @@
                     <div class="tab-content" id="pills-tabContent">
                         <div class="tab-pane fade show active" id="pills-home-icon" role="tabpanel" aria-labelledby="pills-home-icon-tab" tabindex="0">
                             <p class="mt-3">
-                                Những đánh giá của các bạn chính là <strong>sự hỗ trợ tốt nhất</strong> cho chúng tôi, 
-                                mong bạn giành thời gian ít phút để đánh giá các lớp học và đội ngũ giáo viên, chúng 
-                                tôi sẽ cải thiện dựa vào những đánh giá của bạn. Cảm ơn bạn rất nhiều, chúc bạn có 
-                                những trải nghiệm tuyệt vời với những bài học vui vẻ...
+                                Những đánh giá của bạn sẽ giúp chúng tôi ngày càng hoàn thiện hơn.
+                                Nếu có thể, bạn hãy dành ít phút chia sẻ cảm nhận về lớp học và giáo viên nhé.
+                                Mỗi góp ý của bạn đều rất quý giá đối với chúng tôi. Cảm ơn bạn rất nhiều
+                                và chúc bạn luôn có những giờ học thật vui và bổ ích!
                             </p>
                             <div class="row">
 
@@ -86,8 +169,8 @@
                                     {
                                         @foreach (var item in reviewed)
                                         {
-                                            <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-6 mb-4">
-                                                <a asp-controller="Class" asp-action="Details" asp-route-id="@item.Id" class="card style-2 mb-md-0 mb-4">
+                                            <div class="col-12 mb-3">
+                                                <a asp-controller="Class" asp-action="Details" asp-route-id="@item.Id" class="card style-2">
                                                     @if (item.ClassImage != null)
                                                     {
                                                         var base64 = Convert.ToBase64String(item.ClassImage);
@@ -99,18 +182,39 @@
                                                     }
                                                     else
                                                     {
-                                                        <img src="images/Student-Management-Logo.jpg" class="card-img-top fixed-img" alt="...">
+                                                        <img src="images/education-logo-template-free.jpg" class="card-img-top fixed-img" alt="...">
                                                     }
 
-                                                    <div class="card-body px-0 pb-0">
-                                                        <h5 class="card-title mb-3">@item.ClassName</h5>
-                                                        <div class="media mt-4 mb-0 pt-1">
-                                                            <img src="images/Student-Management-Logo.jpg" class="card-media-image me-3" alt="">
-                                                            <div class="media-body">
-                                                                <h4 class="media-heading mb-1">@item.CourseName</h4>
-                                                                <p class="media-text">@item.StartDate.ToString("dd/MM/yyyy") - @item.EndDate.ToString("dd/MM/yyyy")</p>
+                                                    <!-- CONTENT -->
+                                                    <div class="card-body">
+
+                                                        <div class="status-badge">Class</div>
+
+                                                        <h5 class="card-title">
+                                                            @item.ClassName
+                                                        </h5>
+
+                                                        <div class="media">
+                                                            <img src="images/education-logo-template-free.jpg">
+
+                                                            <div>
+                                                                <div class="media-heading">
+                                                                    @item.CourseName
+                                                                </div>
+
+                                                                <div class="media-text">
+                                                                    📅 @item.StartDate.ToString("dd/MM/yyyy")
+                                                                </div>
                                                             </div>
                                                         </div>
+
+                                                    </div>
+
+                                                    <!-- DATE RIGHT -->
+                                                    <div class="date-box">
+                                                        <div>@item.StartDate.ToString("dd/MM")</div>
+                                                        <div class="arrow">→</div>
+                                                        <div>@item.EndDate.ToString("dd/MM")</div>
                                                     </div>
                                                 </a>
                                             </div>
@@ -133,34 +237,54 @@
                                     {
                                         @foreach (var item in notReviewed)
                                         {
-                                            <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-6 mb-4">
-                                                <a asp-controller="Class" asp-action="Details" asp-route-id="@item.Id" class="card style-2 mb-md-0 mb-4">
+                                            <div class="col-12 mb-3">
+                                                <a asp-controller="Class" asp-action="Details" asp-route-id="@item.Id" class="card style-2">
                                                     @if (item.ClassImage != null)
                                                     {
                                                         var base64 = Convert.ToBase64String(item.ClassImage);
                                                         var imgSrc = $"data:image/jpeg;base64,{base64}";
 
                                                         <div class="mb-3">
-                                                            <img id="previewImage"
-                                                                 src="@imgSrc"
+                                                            <img src="@imgSrc"
                                                                  class="card-img-top fixed-img"
                                                                  alt="..." />
                                                         </div>
                                                     }
                                                     else
                                                     {
-                                                        <img src="images/Student-Management-Logo.jpg" class="card-img-top" alt="...">
+                                                        <img src="images/education-logo-template-free.jpg" class="card-img-top fixed-img" alt="...">
                                                     }
 
-                                                    <div class="card-body px-0 pb-0">
-                                                        <h5 class="card-title mb-3">@item.ClassName</h5>
-                                                        <div class="media mt-4 mb-0 pt-1">
-                                                            <img src="images/Student-Management-Logo.jpg" class="card-media-image me-3" alt="">
-                                                            <div class="media-body">
-                                                                <h4 class="media-heading mb-1">@item.CourseName</h4>
-                                                                <p class="media-text">@item.StartDate.ToString("dd/MM/yyyy") - @item.EndDate.ToString("dd/MM/yyyy")</p>
+                                                    <!-- CONTENT -->
+                                                    <div class="card-body">
+
+                                                        <div class="status-badge">Class</div>
+
+                                                        <h5 class="card-title">
+                                                            @item.ClassName
+                                                        </h5>
+
+                                                        <div class="media">
+                                                            <img src="images/education-logo-template-free.jpg">
+
+                                                            <div>
+                                                                <div class="media-heading">
+                                                                    @item.CourseName
+                                                                </div>
+
+                                                                <div class="media-text">
+                                                                    📅 @item.StartDate.ToString("dd/MM/yyyy")
+                                                                </div>
                                                             </div>
                                                         </div>
+
+                                                    </div>
+
+                                                    <!-- DATE RIGHT -->
+                                                    <div class="date-box">
+                                                        <div>@item.StartDate.ToString("dd/MM")</div>
+                                                        <div class="arrow">→</div>
+                                                        <div>@item.EndDate.ToString("dd/MM")</div>
                                                     </div>
                                                 </a>
                                             </div>

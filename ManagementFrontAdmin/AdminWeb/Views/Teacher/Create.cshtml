@@ -23,96 +23,137 @@
     <link rel="stylesheet" href="~/plugins/tomSelect/tom-select.default.min.css" />
 
     <style>
-        #datatable thead th {
-            font-weight: bold;
-            background-color: #f8f9fa;
-            color: #333;
+
+        body {
+            background: #f1f5f9;
         }
 
-        #datatable tbody td {
-            vertical-align: middle;
+        .form-wrapper {
+            max-width: 900px;
+            margin: 40px auto;
         }
 
-        .table-container {
-            overflow-x: auto;
+        .form-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
         }
 
-        .widget-content-area {
-            padding: 20px !important;
+        .form-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
+
+        .btn-back {
+            background: transparent;
+            border: 1px solid #cbd5e1;
+            padding: 6px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: #334155;
+            transition: 0.2s;
+        }
+
+            .btn-back:hover {
+                background: #f1f5f9;
+            }
+
+        .form-group label {
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            padding: 10px 12px;
+            border: 1px solid #e2e8f0;
+            transition: 0.2s;
+        }
+
+            .form-control:focus {
+                border-color: #6366f1;
+                box-shadow: 0 0 0 2px rgba(99,102,241,0.1);
+            }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+
+            .submit-btn:hover {
+                opacity: 0.9;
+            }
+
     </style>
 }
 
-<div class="middle-content container-xxl p-0">
+<div class="form-wrapper">
 
-    <div class="d-flex justify-content-between mt-4 mb-2">
-        <h5 class="text-bold">
-            THÊM MỚI GIÁO VIÊN
-        </h5>
+    <div class="form-card">
 
-        <a asp-action="Index" asp-controller="Teacher" class="btn">
-            Trở lại
-        </a>
-    </div>
+        <!-- HEADER -->
+        <div class="form-title">
+            <span>Thêm giáo viên mới</span>
+            <a asp-action="Index" asp-controller="Teacher" class="btn-back">
+                ← Quay lại
+            </a>
+        </div>
 
-    <div class="row mb-4 layout-spacing">
-        <div class="col-xxl-8 col-xl-12">
-            <div class="statbox widget box box-shadow">
-                <div class="widget-header">
-                    <div class="row">
-                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                            <h4>Thông tin giáo viên</h4>
-                        </div>
+        <!-- FORM -->
+        <form asp-action="Create" method="post">
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="form-group mb-4">
+                        <label>Tên giáo viên *</label>
+                        <input asp-for="FullName"
+                               class="form-control @(ViewData.ModelState["FullName"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                               placeholder="Nhập tên...">
+                        <span asp-validation-for="FullName" class="invalid-feedback"></span>
                     </div>
                 </div>
 
-                <form asp-action="Create" method="post" id="general-settings">
-                    <div class="widget-content widget-content-area blog-create-section">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group mb-4">
-                                    <label for="fullname">Tên giáo viên <strong class="text-danger">*</strong></label>
-                                    <input asp-for="FullName"
-                                           type="text"
-                                           id="fullname"
-                                           class="form-control @(ViewData.ModelState["FullName"]?.Errors.Count > 0 ? "is-invalid" : "")"
-                                           placeholder="Tên giáo viên">
-                                    <span asp-validation-for="FullName" class="invalid-feedback" role="alert"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group mb-4">
-                                    <label for="experience">Số năm kinh nghiệm <strong class="text-danger">*</strong></label>
-                                    <input asp-for="Experience"
-                                           type="number"
-                                           min="1"
-                                           id="experience"
-                                           class="form-control @(ViewData.ModelState["Experience"]?.Errors.Count > 0 ? "is-invalid" : "")"
-                                           placeholder="Nhập số năm kinh nghiệm">
-                                    <span asp-validation-for="Experience" class="invalid-feedback"></span>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="row">
-                            <div class="form-group mb-4">
-                                <label for="degree">Bằng cấp <strong class="text-danger">*</strong></label>
-                                <input asp-for="Degree"
-                                       type="text"
-                                       id="degree"
-                                       class="form-control @(ViewData.ModelState["Degree"]?.Errors.Count > 0 ? "is-invalid" : "")"
-                                       placeholder="Bằng cấp của giáo viên">
-                                <span asp-validation-for="Degree" class="invalid-feedback" role="alert"></span>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">Hoàn tất</button>
+                <div class="col-md-6">
+                    <div class="form-group mb-4">
+                        <label>Kinh nghiệm (năm) *</label>
+                        <input asp-for="Experience"
+                               type="number"
+                               min="1"
+                               class="form-control @(ViewData.ModelState["Experience"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                               placeholder="VD: 3">
+                        <span asp-validation-for="Experience" class="invalid-feedback"></span>
                     </div>
-                </form>
+                </div>
 
             </div>
-        </div>
+
+            <div class="form-group mb-4">
+                <label>Bằng cấp *</label>
+                <input asp-for="Degree"
+                       class="form-control @(ViewData.ModelState["Degree"]?.Errors.Count > 0 ? "is-invalid" : "")"
+                       placeholder="VD: Thạc sĩ CNTT">
+                <span asp-validation-for="Degree" class="invalid-feedback"></span>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                Lưu thông tin
+            </button>
+
+        </form>
+
     </div>
+
 </div>
 
 @section FooterFiles {

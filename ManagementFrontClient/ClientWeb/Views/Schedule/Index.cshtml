@@ -6,89 +6,156 @@
 }
 
 <style>
-    .layout-px-spacing{
+    .layout-px-spacing {
         width: 100%;
         margin-top: 30px;
     }
+
+    .schedule {
+        padding: 20px;
+        background: linear-gradient(135deg, #f6f8ff, #eef1ff);
+        border-radius: 20px;
+    }
+
+    /* ===== WEEK NAV ===== */
     .week-nav {
-        margin: 20px 0;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-weight: 600;
-        background-color: beige;
+        padding: 15px 20px;
+        border-radius: 16px;
+        background: rgba(255,255,255,0.7);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        margin-bottom: 20px;
     }
 
         .week-nav a {
             text-decoration: none;
-            color: #6651e4;
-        }
-
-    .schedule-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 13px;
-    }
-
-        .schedule-table th,
-        .schedule-table td {
-            border: 1px solid #eaeaea;
-            text-align: center;
-            height: 45px;
-            vertical-align: top;
-        }
-
-        .schedule-table th {
+            padding: 8px 14px;
+            border-radius: 10px;
             background: #6651e4;
             color: white;
-            font-weight: 600;
+            font-size: 13px;
+            transition: 0.2s;
         }
 
-    .time-col {
-        background: #fafafa;
-        font-weight: 600;
-        width: 80px;
+            .week-nav a:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(102,81,228,0.3);
+            }
+
+        .week-nav strong {
+            font-size: 16px;
+            color: #333;
+        }
+
+    /* ===== TABLE ===== */
+    .schedule-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 8px;
     }
 
-    .class-block {
-        background: #6651e4;
-        color: white;
-        border-radius: 6px;
-        padding: 4px;
+        .schedule-table th {
+            padding: 10px;
+            border-radius: 12px;
+            background: #6651e4;
+            color: white;
+            font-size: 13px;
+        }
+
+        .schedule-table td {
+            background: rgba(255,255,255,0.8);
+            border-radius: 12px;
+            height: 55px;
+            position: relative;
+            vertical-align: top;
+            transition: 0.2s;
+        }
+
+            .schedule-table td:hover {
+                background: #f3f1ff;
+            }
+
+    /* ===== TIME COLUMN ===== */
+    .time-col {
+        background: transparent !important;
+        font-weight: 600;
+        color: #666;
         font-size: 12px;
     }
+
+    /* ===== CLASS BLOCK ===== */
+    .class-block {
+        position: relative; /* đổi từ absolute */
+        margin: 4px;
+        border-radius: 10px;
+        padding: 6px;
+        font-size: 11px;
+        background: linear-gradient(135deg, #6651e4, #8f7bff);
+        color: white;
+        box-shadow: 0 6px 15px rgba(102,81,228,0.25);
+    }
+
+        .class-block:hover {
+            transform: scale(1.03);
+        }
+
+        .class-block strong {
+            font-size: 12px;
+        }
+
+    /* ===== RESPONSIVE ===== */
+    @@media (max-width: 768px) {
+        .schedule-table
+
+        {
+            font-size: 11px;
+        }
+
+        .week-nav {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+    }
 </style>
+
 <div class="schedule">
+
+    <!-- NAV -->
     <div class="week-nav">
-        <a href="?weekStart=@weekStart.AddDays(-7).ToString("yyyy-MM-dd")">⬅ Tuần trước</a>
+        <a href="?weekStart=@weekStart.AddDays(-7).ToString("yyyy-MM-dd")">← Trước</a>
 
         <strong>
-            @weekStart.ToString("dd/MM/yyyy")
+            Tuần: @weekStart.ToString("dd/MM")
             -
-            @weekStart.AddDays(6).ToString("dd/MM/yyyy")
+            @weekStart.AddDays(6).ToString("dd/MM")
         </strong>
 
-        <a href="?weekStart=@weekStart.AddDays(7).ToString("yyyy-MM-dd")">Tuần sau ➡</a>
+        <a href="?weekStart=@weekStart.AddDays(7).ToString("yyyy-MM-dd")">Sau →</a>
     </div>
 
-
+    <!-- TABLE -->
     <table class="schedule-table">
         <thead>
             <tr>
-                <th>Giờ</th>
+                <th>Time</th>
                 @for (int i = 0; i < 7; i++)
                 {
                     <th>
                         @{
                             var date = weekStart.AddDays(i);
                         }
-                        @date.ToString("ddd dd/MM")
+                        @date.ToString("ddd") <br />
+                        <small>@date.ToString("dd/MM")</small>
                     </th>
                 }
             </tr>
         </thead>
-        <tbody>
 
+        <tbody>
             @for (int hour = 7; hour < 19; hour++)
             {
                 for (int minute = 0; minute < 60; minute += 30)
@@ -105,11 +172,11 @@
                             var currentDate = weekStart.AddDays(day);
 
                             var schedule = Model.FirstOrDefault(s =>
-                                currentDate.Date >= s.StartDate.Date &&
-                                currentDate.Date <= s.EndDate.Date &&
-                                (int)s.DayOfWeek == (int)currentDate.DayOfWeek &&
-                                s.StartTime <= currentTime &&
-                                s.EndTime > currentTime
+                            currentDate.Date >= s.StartDate.Date &&
+                            currentDate.Date <= s.EndDate.Date &&
+                            (int)s.DayOfWeek == (int)currentDate.DayOfWeek &&
+                            s.StartTime <= currentTime &&
+                            s.EndTime > currentTime
                             );
 
                             <td>
@@ -117,8 +184,8 @@
                                 {
                                     <div class="class-block">
                                         <strong>@schedule.Name</strong><br />
-                                        @schedule.Room<br />
-                                        @schedule.StartTime?.ToString(@"hh\:mm")
+                                        📍 @schedule.Room <br />
+                                        🕒 @schedule.StartTime?.ToString(@"hh\:mm")
                                         -
                                         @schedule.EndTime?.ToString(@"hh\:mm")
                                     </div>
@@ -128,8 +195,6 @@
                     </tr>
                 }
             }
-
         </tbody>
     </table>
 </div>
-

@@ -17,107 +17,135 @@
 
 }
 
-<div>
-	<!-- BREADCRUMB -->
-	<div class="page-meta">
-		<nav class="breadcrumb-style-one" aria-label="breadcrumb">
-			<ol class="breadcrumb">
-				<li class="breadcrumb-item"><a href="#">Dịch vụ</a></li>
-				<li class="breadcrumb-item active" aria-current="page">
-					Quản lý người dùng
-				</li>
-			</ol>
-		</nav>
-	</div>
-	<!-- /BREADCRUMB -->
-	<!-- DATATABLE -->
-	<div class="row layout-top-spacing">
-		<div class="col-xl-12 col-lg-12 col-sm-12">
-			<div class="statbox widget box box-shadow">
-				<div class="widget-header">
-					<div class="row">
-						<div class="col-xl-12 col-md-12 col-sm-12 col-12">
-							<h4>Quản lý người dùng</h4>
-						</div>
-					</div>
-				</div>
-				<div class="widget-content widget-content-area">
-					@* <div class="layout-top-spacing ps-3 pe-3 col-12 mb-3">
-						<a href="@Url.Action("Create", "User")" class="btn btn-primary">Thêm mới</a>
-					</div> *@
-					<table id="user-table" class="table style-3 dt-table-hover" style="width: 100%">
-						<thead>
-							<tr>
-								<th style="width: 5%">STT</th>
-								<th>Mã người dùng</th>
-								<th>Username</th>
-								<th>Email</th>
-								<th>Số điện thoại</th>
-								<th>Ngày tạo</th>
-								@* <th class="no-content" style="width: 5%">Thao tác</th> *@
-							</tr>
-						</thead>
-						<tbody>
-							@{
-								int stt = 1;
-							}
-							@if (Model != null)
-							{
-								@foreach (var user in Model)
-								{
-									<tr>
-										<td>@stt</td>
-										<td>@user.Id</td>
-										<td>@user.Username</td>
-										<td>@user.Email</td>
-										<td>@user.Phone</td>
-										<td>@user.CreatedAt</td>
+<style>
 
+    li {
+        list-style: none;
+    }
 
-										@* <td class="table-controls d-flex justify-content-center align-items-center pt-2">
-											<li>
-												<a href="@Url.Action("Edit", "User", new { id = user.Id })"
-												   class="bs-tooltip edit" data-bs-toggle="tooltip"
-												   data-bs-placement="top">
-													<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-														 viewBox="0 0 24 24" fill="none" stroke="currentColor"
-														 stroke-width="2" stroke-linecap="round"
-														 stroke-linejoin="round"
-														 class="feather feather-edit-2 p-1 br-6 mb-1">
-														<path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-														</path>
-													</svg>
-												</a>
-											</li>
-											<li>
-												<a href="#" data-user-id="@user.Id"
-												   class="bs-tooltip delete" data-bs-toggle="tooltip"
-												   data-bs-placement="top">
-													<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-														 viewBox="0 0 24 24" fill="none" stroke="currentColor"
-														 stroke-width="2" stroke-linecap="round"
-														 stroke-linejoin="round"
-														 class="feather feather-trash p-1 br-6 mb-1">
-														<polyline points="3 6 5 6 21 6"></polyline>
-														<path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-													</svg>
-												</a>
-											</li>
-										</td> *@
-									</tr>
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        margin-top: 20px; 
+    }
 
-									stt++;
-								}
-							}
+        .page-header h2 {
+            font-weight: 600;
+        }
 
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
+    .add-btn {
+        background: #2563eb;
+        border: none;
+        padding: 8px 18px;
+        color: white;
+        border-radius: 6px;
+    }
 
-	<!-- /DATATABLE -->
+    .user-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+    }
+
+    .user-info {
+        background-color: white;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .user-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #8b5cf6;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+    }
+
+    .table td {
+        vertical-align: middle;
+    }
+
+</style>
+
+<div class="container-xxl">
+
+    <!-- HEADER -->
+    <div class="page-header">
+
+        <h2>Quản lý người dùng</h2>
+
+    </div>
+
+    <!-- CARD -->
+    <div class="user-card">
+
+        <table id="user-table" class="table table-hover">
+
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Người dùng</th>
+                    <th>Email</th>
+                    <th>Điện thoại</th>
+                    <th>Ngày tạo</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @{
+                    int stt = 1;
+                }
+
+                @if (Model != null)
+                {
+                    foreach (var user in Model)
+                    {
+                        <tr>
+
+                            <td>@stt</td>
+
+                            <td>
+                                <div class="user-info">
+
+                                    <div class="user-avatar">
+                                        @user.Username.Substring(0, 1).ToUpper()
+                                    </div>
+
+                                    <div>
+                                        <div>@user.Username</div>
+                                        <small>ID: @user.Id</small>
+                                    </div>
+
+                                </div>
+                            </td>
+
+                            <td>@user.Email</td>
+                            <td>@user.Phone</td>
+                            <td>@user.CreatedAt</td>
+
+                            
+
+                        </tr>
+
+                        stt++;
+                    }
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
 </div>
 
 
